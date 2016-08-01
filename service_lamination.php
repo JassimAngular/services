@@ -528,17 +528,17 @@ width: 17px;
                                                                         <div style="float:left;margin-right:0px;">
                                                                             <select class="order_0_set1_0_mounting kdSelect " style="width:150px;" id="mounting_select" name="mounting_select" onchange="return restrict_number();">
                                                                                 <option value="none" selected="selected">None</option>
-                                                                                <option value="3308">FoamBoard 3/16 White</option>
+                                                                                <option value="FoamBoard 3/16 White">FoamBoard 3/16 White</option>
                                                                                 <option value="3309">FoamBoard 3/16 Black</option>
-                                                                                <option value="3315">FoamBoard 1/2 White</option>
-                                                                                <option value="3316">FoamBoard 1/2 Black</option>
-                                                                                <option value="3311">GatorBoard 3/16 White</option>
-                                                                                <option value="3312">GatorBoard 3/16 Black</option>
-                                                                                <option value="3317">GatorBoard 1/2 White</option>
-                                                                                <option value="3318">GatorBoard 1/2 Black</option>
-                                                                                <option value="3319">Plasti-Cor  WHITE</option>
-                                                                                <option value="11">Illustration Board 1/8 White</option>
-                                                                                <option value="22">Illustration Board 1/8 Black</option>                                                                                
+                                                                                <option value="FoamBoard 3/16 Black">FoamBoard 1/2 White</option>
+                                                                                <option value="FoamBoard 1/2 Black">FoamBoard 1/2 Black</option>
+                                                                                <option value="GatorBoard 3/16 White">GatorBoard 3/16 White</option>
+                                                                                <option value="GatorBoard 3/16 Black">GatorBoard 3/16 Black</option>
+                                                                                <option value="GatorBoard 1/2 White">GatorBoard 1/2 White</option>
+                                                                                <option value="GatorBoard 1/2 Black">GatorBoard 1/2 Black</option>
+                                                                                <option value="Plasti-Cor  WHITE">Plasti-Cor  WHITE</option>
+                                                                                <option value="Illustration Board 1/8 White">Illustration Board 1/8 White</option>
+                                                                                <option value="Illustration Board 1/8 Black">Illustration Board 1/8 Black</option>                                                                                
                                                                             </select>
                                                                         </div>
                                                                         <div class="dropdown_selector">
@@ -554,10 +554,10 @@ width: 17px;
                                                                         <div style="float:left;margin-right:0px;">
                                                                             <select class="order_0_set1_0_lamination kdSelect " style="width:150px;" id="lamination_select" onchange="return lamination_value_change();" name="lamination_select">
                                                                                 <option value="none" selected="selected">None</option>
-                                                                                <option value="3317">Lamination Pouch,7mil 9x12 Gloss</option>
-                                                                                <option value="3317">Lamination Pouch,7mil 12x18 Gloss</option>
-                                                                                <option value="3319">Lamination, 3mil Satin</option>
-                                                                                <option value="3320">Lamination, 3mil Gloss</option>                                                                               
+                                                                                <option value="Lamination Pouch,7mil 9x12 Gloss">Lamination Pouch,7mil 9x12 Gloss</option>
+                                                                                <option value="Lamination Pouch,7mil 12x18 Gloss">Lamination Pouch,7mil 12x18 Gloss</option>
+                                                                                <option value="Lamination, 3mil Satin">Lamination, 3mil Satin</option>
+                                                                                <option value="Lamination, 3mil Gloss">Lamination, 3mil Gloss</option>                                                                               
                                                                             </select>
                                                                         </div>                                                                        
                                                                     </div>                                                                            

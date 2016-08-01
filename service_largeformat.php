@@ -1099,8 +1099,14 @@ color: red;
         margin: auto;
         margin-top: 10px;
         text-decoration: underline;
+        margin-bottom: 10px;
     }
     .file_option_content_source{
+        width: 90%;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+    .file_option_content_sc_pick{
         width: 90%;
         margin: auto;
         margin-bottom: 10px;

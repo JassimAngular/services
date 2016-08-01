@@ -79,11 +79,11 @@ if ($_POST['service_lfp_add'] == '1') {
     $sql_result = mysql_query($query);
 
     $_SESSION['ref_val'] = $_POST['reference'];
-    
+
     $enteredLFPPrimay = EnteredLFPPrimary($company_id_view_plot, $user_id_add_set);
 
-    $count_option = count($enteredPlotPrimay) + 1;
-    
+    $count_option = count($enteredLFPPrimay) + 1;
+
     $i = 1;
     foreach ($enteredLFPPrimay as $lfp) {
         ?>
@@ -108,19 +108,19 @@ if ($_POST['service_lfp_add'] == '1') {
                     <li>
                         <label>Size:</label><?php echo $lfp['size']; ?>
                     </li>
-                <?php if ($lfp['size_custom'] != '0') { ?>
+                    <?php if ($lfp['size_custom'] != '0') { ?>
                         <li>
                             <label>Custom Size Details:</label><?php echo $lfp['size_custom']; ?>
                         </li>
-                <?php } ?>
+                    <?php } ?>
                     <li>
                         <label>Output:</label><?php echo $lfp['output']; ?>
                     </li>
-                <?php if ($lfp['output_both_page'] != '0') { ?>
+                    <?php if ($lfp['output_both_page'] != '0') { ?>
                         <li>
                             <label>Color Page Number:</label><?php echo $lfp['output_both_page']; ?>
                         </li>
-                <?php } ?>
+                    <?php } ?>
                     <li>
                         <label>Media:</label><?php echo $lfp['media']; ?>
                     </li>
@@ -129,25 +129,54 @@ if ($_POST['service_lfp_add'] == '1') {
                     </li>
                 </ul>                        
             </div>
-            
+
             <div class="file_option">
                 File Options:
             </div>
             <?php
-            if($lfp['ftp_link'] != '0'){
-                $ftp_link   =   ($lfp['ftp_link'] != "0") ? $lfp['ftp_link'] : "";
-                $ftp_user   =   ($lfp['ftp_user_name'] != "0") ? $lfp['ftp_user_name'] : "";
-                $ftp_pass   =   ($lfp['ftp_password'] != "0") ? $lfp['ftp_password'] : "";
-            ?>
-            <div class="file_option_content">
-                Provide Link to File:
-            </div>
-            <div class="file_option_content_source">
-                FTP Link: <?php echo $ftp_link.'<br>'; ?>
-                User Name: <?php echo $ftp_user.'<br>'; ?>
-                Password: <?php echo $ftp_pass.'<br>'; ?>
-            </div>
-            <?php } ?>            
+            if ($lfp['ftp_link'] != '0') {
+                $ftp_link = ($lfp['ftp_link'] != "0") ? $lfp['ftp_link'] : "";
+                $ftp_user = ($lfp['ftp_user_name'] != "0") ? $lfp['ftp_user_name'] : "";
+                $ftp_pass = ($lfp['ftp_password'] != "0") ? $lfp['ftp_password'] : "";
+                ?>
+                <div class="file_option_content">
+                    Provide Link to File:
+                </div>
+                <div class="file_option_content_source">
+                    FTP Link: <?php echo $ftp_link . '<br>'; ?>
+                    User Name: <?php echo $ftp_user . '<br>'; ?>
+                    Password: <?php echo $ftp_pass . '<br>'; ?>
+                </div>
+            <?php } ?>   
+            <?php
+            if ($lfp['schedule_pickup'] != '0') {
+                ?>
+                <div class="file_option_content_sc_pick">
+                    Schedule a pick up Date/Time: <?php echo $lfp['schedule_pickup']; ?>
+                </div>            
+            <?php
+            if ($lfp['schedule_place'] != '0') {
+
+                $address_dtls = SelectLastEnteredAddress($lfp['schedule_place']);
+                $address_3 = ($address_dtls[0]['address_3'] != '') ? $address_dtls[0]['address_3'] . '<br>' : '';
+                $address_string = $address_dtls[0]['company_name'] . '<br>' . $address_dtls[0]['address_1'] . '<br>' . $address_dtls[0]['address_2'] . '<br>' . $address_3 . $address_dtls[0]['city'] . ',&nbsp;' . StateName($address_dtls[0]['state']) . '&nbsp;' . $address_dtls[0]['zip'];
+
+                $option_sechdule = ($lfp['schedule_place'] == 'my_office') ? '<span style="font-weight: bold">My Office</span>' : '<span style="font-weight: bold">Alternate:</span><br>' . $address_string;
+                ?>
+                <div style="width: 95%;margin: auto;margin-top: 7px;margin-bottom: 40px;">                    
+                    <div style="float: left;width: 22%;margin-top: 5px;font-weight: bold;">Schedule a pick-up Option:</div>
+                    <div style="float: left;width: 50%;margin-top: 5px;">                        
+                        <div style="float: left;width: 100%;margin-bottom: 10px;"><?php echo $option_sechdule; ?></div>
+                    </div> 
+                </div>
+            <?php } } ?>
+             <?php
+            if ($lfp['drop_off_381'] != '0') {               
+                ?>               
+                <div class="file_option_content_source">
+                    Drop off at Soho Repro: <?php echo $lfp['drop_off_381']; ?>                    
+                </div>
+            <?php } ?> 
         </div>
         <?php
         $i++;
@@ -158,7 +187,7 @@ if ($_POST['service_lfp_add'] == '1') {
         <label style="font-weight: bold; margin-bottom: 0px; margin-top: 0px;" for="jo1" class="optional">
             Job Options 
             <div style="float:right;font-weight: bold;">
-                Option - 1                           
+                Option - <?php echo $count_option; ?>                           
             </div>
             <input type="hidden" name="optint_count_check" id="optint_count_check" value="0" />
         </label>  

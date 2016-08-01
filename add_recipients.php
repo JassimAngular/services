@@ -73,8 +73,10 @@ if(count($check_pe_null) > 0){
 
 <script>
 $(document).ready(function() {
-     $("#recipient_1").slideDown('slow');
-     $("#open_accordian_1").val('1');
+    
+    var tab_id = $('.service_tab .service_items:first-child').attr('id');   
+    show_service_acc(tab_id);
+    $("#open_accordian_1").val('1');
 });
     
     
@@ -601,7 +603,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
 ?>
 <div class="service_tab"> 
     <?php if(count($number_of_sets) > 0){ ?>
-    <div class="service_items" id="service_1" onclick="return show_service_acc('1');">
+    <div class="service_items" id="1" onclick="return show_service_acc('1');">
         PLOTTING & ARCHITECTURAL COPIES
     </div>
     <input type="hidden" name="open_accordian_1" class="open_accordian" id="open_accordian_1" value="" />
@@ -769,7 +771,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
     }if (count($number_of_sets_lfp) > 0) {
         $number_of_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_SESSION['sohorepro_userid']);
     ?>
-    <div class="service_items" id="service_2" onclick="return show_service_acc('2');">
+    <div class="service_items" id="2" onclick="return show_service_acc('2');">
      LARGE FORMAT COLOR & BW
     </div>
     <input type="hidden" name="open_accordian_2" class="open_accordian" id="open_accordian_2" value="" />
@@ -934,7 +936,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
     <?php    
     }else{    
     ?>    
-    <div class="service_items" id="service_2" onclick="return show_service_acc('2');">
+    <div class="service_items" id="service_3" onclick="return show_service_acc('2');">
         FINE ART PRINTING
     </div>
     <input type="hidden" name="open_accordian_2" class="open_accordian" id="open_accordian_2" value="" />
