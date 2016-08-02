@@ -190,6 +190,7 @@ if ($_POST['service_lfp_add'] == '1') {
                 Option - <?php echo $count_option; ?>                           
             </div>
             <input type="hidden" name="optint_count_check" id="optint_count_check" value="0" />
+            <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo ($count_option - 1); ?>" />
         </label>  
         <div style="background-color:#FFFFFF" class="serviceOrderSetWapper" setindex="0">
             <div class="serviceOrderSetWapperInternal">

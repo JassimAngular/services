@@ -333,6 +333,8 @@ if ($_POST['service_plotting_add'] == '1') {
             </div>
         </label>  
         <input type="hidden" name="optint_count_check" id="optint_count_check" value="<?php echo count($enteredPlotPrimay); ?>" />
+        <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo count($enteredPlotPrimay); ?>" />
+        
         <div style="background-color:#FFFFFF" class="serviceOrderSetWapper" setindex="0">
             <div class="serviceOrderSetWapperInternal">
                 <div class="serviceOrderSetDIV">

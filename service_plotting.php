@@ -43,7 +43,37 @@ if($_SESSION['sohorepro_companyid']  == '')
  <script src="store_files/jquery.min.js"></script>
  <script type="text/javascript" src="js/jquery.timepicker.js"></script>
  <link rel="stylesheet" type="text/css" href="js/jquery.timepicker.css" media="screen" />
+ <script type="text/javascript" src="js/jquery.sticky.js"></script>
+ 
+<script src="waypoints.js"></script>
+<script src="waypoints-sticky.js"></script>
+<script type="text/javascript">
+     $(document).ready(function() {
+         $('.sticky-navigation').waypoint('sticky');
+     });
+     
+     
+       $(document).ready(function () {  
+        var top = $('.sticky-navigation').offset().top - parseFloat($('.sticky-navigation').css('marginTop').replace(/auto/, 100));
+        $(window).scroll(function (event) {
+          // what the y position of the scroll is
+          var y = $(this).scrollTop();
+
+          // whether that's below the form
+          if (y > top) {
+            // if so, ad the fixed class
+            $('.sticky-navigation').addClass('fixed_1');
+          } else {
+            // otherwise remove it
+            $('.sticky-navigation').removeClass('fixed_1');
+          }
+        });
+      });
+     
+</script>
+ 
 <script> 
+    
 function dtls_reveal(ID)
 {
     var slide_up = $("#slide_id").val();
@@ -328,6 +358,8 @@ color: red;
 .inactive_menu:hover{
     color: red !important;
 }
+
+  
  </style>
  
 <link rel="stylesheet" href="js/jquery-ui.css" />
@@ -1976,12 +2008,15 @@ function update_cust_page_details(ID){
                     beforeSend: loadStart,
                     complete: loadStop,
                     success: function(option)
-                    {                           
+                    {                              
                         $('#sets_all').slideDown();
                         $('#sets_all').html(option);
                         $('#continue_ok').val('1');
                         $( ".modal-overlay" ).remove();
                         $("#validate_imp").val('');
+                        var optint_count_check_pre = $("#optint_count_check_i").val();
+                        $("#cart_count").css("display","inline-block");
+                        $("#cart_count").html(optint_count_check_pre);
                     }
                 });
     }

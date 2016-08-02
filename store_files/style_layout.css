@@ -267,6 +267,7 @@ ul.navigation li a:hover, ul.navigation li a:active, ul.navigation li a.on {
 	display: block;
 	width:98%;
 	float:left;
+        margin-left: 20px;
 }
 #content_output-data {
 	margin-bottom: 0px;

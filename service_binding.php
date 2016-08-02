@@ -27,7 +27,7 @@ if($_SESSION['sohorepro_companyid']  == '')
 
         <link rel="stylesheet" type="text/css" href="store_files/style_layout.css">
         
-        <link href="style/popup_style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="style/popup_style.css" rel="stylesheet" type="text/css" media="all" />
  <!--<link rel="shortcut icon" href="http://soho.thinkdesign.com/favicon.ico" type="image/x-icon">-->
  <link rel="stylesheet" type="text/css" href="store_files/style_layout.css">
  <!--[if IE 7]>
@@ -38,7 +38,33 @@ if($_SESSION['sohorepro_companyid']  == '')
  <link rel="stylesheet" type="text/css" href="js/jquery.timepicker.css" media="screen" />
  <link rel="stylesheet" href="js/jquery-ui.css" />
 <script src="js/jquery-ui_service.js"></script>
+<script src="js/jquery-ui_service.js"></script>
+<script src="waypoints.js"></script>
+<script src="waypoints-sticky.js"></script>
+<script type="text/javascript">
+     $(document).ready(function() {
+         $('.sticky-navigation').waypoint('sticky');
+     });
+     
+     
+       $(document).ready(function () {  
+        var top = $('.sticky-navigation').offset().top - parseFloat($('.sticky-navigation').css('marginTop').replace(/auto/, 100));
+        $(window).scroll(function (event) {
+          // what the y position of the scroll is
+          var y = $(this).scrollTop();
 
+          // whether that's below the form
+          if (y > top) {
+            // if so, ad the fixed class
+            $('.sticky-navigation').addClass('fixed_1');
+          } else {
+            // otherwise remove it
+            $('.sticky-navigation').removeClass('fixed_1');
+          }
+        });
+      });
+     
+</script>
 <script>
 $(function() {
     var all_exist_date       = $("#all_exist_date").val();
