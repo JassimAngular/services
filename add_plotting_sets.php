@@ -485,11 +485,17 @@ if ($_POST['service_plotting_add'] == '1') {
                     <!--Page Number Details End-->
 
                     <div style="width:730px;border-bottom: 1px solid #CCCCCC;float: left;">
+                        
 <!--                        <label style="font-weight: bold;height:28px">
                             Alternative File Options<span style="color: red;">*</span>
                         </label>
                         <input type="checkbox"  style="width: 2%;margin-bottom: 20px;" name="use_same_check" id="use_same_check_box" value="1"  onclick="return use_same_set();" /><span id="use_same_check_box_spn">Use the same File Option as in Job Option <?php echo ($count_option - 1); ?></span>-->
-                        <div id="options_plott" class="check" style="width:730px;border-top: 1px solid #FF7E00;margin-top: 5px;">
+                        <div id="options_plott" class="check" style="/*margin-top: 5px;*/">
+                            <label id="alt_ops" style="font-weight: bold;">
+                                File Options<span style="color: red;">*</span>
+                            </label>
+                            <div style="width:730px;border-top: 1px solid #FF7E00;">                                
+                            </div>
                             <div class="spl_option" style="float: 100%;">
                                 <div>
                                     <input class="filetrigger" name="alt_file_option" value="dropOff" id="drop_file"  type="radio" onclick="return upload_soho();" />
@@ -571,14 +577,16 @@ if ($_POST['service_plotting_add'] == '1') {
 
                                 </div>
                                 
-                                <div style="width: 60%;float: left;border: 1px #F99B3E solid;margin-left: 20px;height: 85px;">
+                                <div style="width: 60%;float: left;border: 1px #F99B3E solid;margin-left: 20px;height: auto;">
                                     <div style="float: left;width: 45%;margin-left: 30px;border: 0px #F99B3E solid;margin-top: 30px;">
                                         <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="my_office();" id="my_office" value="my_office" />My Office
                                     </div>
                                     <div style="float: left;width: 45%;border: 0px #F99B3E solid;margin-top: 30px;">
                                         <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="alternate();" id="alternate" value="alternate" />Alternative
-                                        <select  name="address_book_se" id="address_book_se" class="remove_current" style="" onchange="return select_alternate();">
+                                        <select style="margin-bottom: 10px;"  name="address_book_se" id="address_book_se" class="remove_current" style="" onchange="return select_alternate();">
                                             <option value="0">Address Book</option>
+                                            <option value="N" style="border-bottom: 1px solid #000;">Add New Address</option>
+                                            <option value="NL" style="width: 100%;" disabled>---------------------------</option>
                                             <?php
                                             $address_book = AddressBookCompanyService($_SESSION['sohorepro_companyid']);
                                             foreach ($address_book as $address) { ?>                                                                                        
@@ -588,6 +596,43 @@ if ($_POST['service_plotting_add'] == '1') {
                                             ?>
                                         </select>
                                     </div>
+                                    <div id="alt_new_address_main" style="float: left;width: 100%;display: none;">
+                                        <div style="float: left;width: 40%;border: 0px #F99B3E solid;">&nbsp;</div>
+                                        <div style="float: left;width: 55%;border: 1px #F99B3E solid;margin-top: 5px;margin-bottom: 5px;">
+                                            <div class="alt_new_address_container_hdr">
+                                                Add New Address
+                                            </div>
+                                            <div class="alt_new_address_container">
+                                                <ul>
+                                                    <li><label>Company Name:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_name" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Attention_To:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_att" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 1:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add1" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 2:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add2" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 3:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add3" class="alt_new_address_container_val" /></li>
+                                                    <li><label>City:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_city" class="alt_new_address_container_val" /></li>
+                                                    <li>
+                                                        <label>State:</label>
+                                                        <select name="state" id="alt_new_comp_state" class="required reginput comp_det_view" style="width: 50px;" tabindex="12" >
+                                                            <option value="">----</option>
+                                                            <?php
+                                                            $sel_state = mysql_query("select * from sohorepro_states");
+                                                            while ($fth_states = mysql_fetch_array($sel_state)) {
+                                                                ?>
+                                                            <option value="<?php echo $fth_states['state_abbr']; ?>" <?php if($fth_states['state_abbr'] == "NY"){ ?>selected="selected"<?php } ?>><?php echo $fth_states['state_abbr']; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </li>
+                                                    <li><label>Zip:</label><input type="text" name="alt_new_comp_zip" id="alt_new_comp_zip" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Phone:</label><input type="text" name="alt_new_comp_phone" id="alt_new_comp_phone" class="alt_new_address_container_val" /></li>
+                                                </ul>
+                                            </div>
+                                            <div class="alt_new_address_container_ftr">
+                                                <span class="alt_new_address_container_ftr_can" onclick="return can_alt();">Cancel</span>
+                                                <span class="alt_new_address_container_ftr_sav" onclick="return save_alt();">Save</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <!--Pickup Details End-->

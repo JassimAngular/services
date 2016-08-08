@@ -185,10 +185,10 @@ if ($_POST['service_lfp_add'] == '1') {
     <!--New Job Add Start -->
     <div class="serviceOrderSetHolder">
         <label style="font-weight: bold; margin-bottom: 0px; margin-top: 0px;" for="jo1" class="optional">
-            Job Options 
-            <div style="float:right;font-weight: bold;">
-                Option - <?php echo $count_option; ?>                           
-            </div>
+            Job Options - <?php echo $count_option; ?>            
+<!--            <div style="float:right;font-weight: bold;">
+                Option                
+            </div>-->
             <input type="hidden" name="optint_count_check" id="optint_count_check" value="0" />
             <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo ($count_option - 1); ?>" />
         </label>  

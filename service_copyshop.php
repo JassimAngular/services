@@ -90,19 +90,19 @@ include './admin/db_connection.php';
                                                                         <div style="border-right: 1px solid #CCCCCC;width:167px; height:110px;float:left;display:none;">                             
                                                                         </div>
                                                                         <div style="width: 300px; height: 100px; float: left; margin-left: -200px; margin-bottom: 20px;">
-                                                                            <div id="nn" class="optionwapper">
+<!--                                                                            <div id="nn" class="optionwapper">
                                                                                 <div><br>
                                                                                     <div class="k-widget k-upload"><div class="k-dropzone"><div class="k-button k-upload-button"><input autocomplete="off" multiple="multiple" name="jobfile" id="order_0_set2_0_jobfiles" class="addFileToOrder" type="file"><span>Upload File</span></div><em>drop files here to upload</em></div></div>
-                                                                                    <!--<input name="jobfile" id="" class="addFileToOrder" type="file" />-->
+                                                                                    <input name="jobfile" id="" class="addFileToOrder" type="file" />
                                                                                 </div>  
-                                                                            </div>
+                                                                            </div>-->
 
                                                                         </div>
 
                                                                         <div style="clear:both;"></div>
 
                                                                     </div>
-                                                                    <div style="width:730px;border-bottom: 1px solid #CCCCCC;"><label style="font-weight: bold; height: 28px; margin-left: -300px; margin-top: -20px;">Alternative File Options</label>               
+                                                                    <div style="width:730px;border-bottom: 1px solid #CCCCCC;"><label style="font-weight: bold; height: 28px; margin-left: -300px; margin-top: -20px;">&nbsp;</label>               
                                                                         <div class="check" style="width:730px;border-top: 1px solid #FF7E00;margin-top:-13px;">
                                                                             <div style="width:222px;">
                                                                                 <label for="pick" style="float:left;margin-left:2px;margin-top:10px;height:10px;">Schedule a pick up</label>
@@ -282,7 +282,7 @@ include './admin/db_connection.php';
                                                                                 })
                                                                             });</script></span></li>
                                         <li class="clear"><span>
-                                                <div style="height:29px;">&nbsp;</div><input class="addproductActionLink" value="Continue" style="cursor: pointer;float:right;font-size:12px; padding:1.5px; width: 100px;margin-right:14px;margin-top:15px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="submit"><div style="clear:both"></div></span></li></ul></form>           <!--  <div class="continute_service_shopping">
+                                                <div style="height:29px;">&nbsp;</div><input class="addproductActionLink" value="Save to Cart" style="cursor: pointer;float:right;font-size:12px; padding:1.5px; width: 100px;margin-right:14px;margin-top:15px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="submit"><div style="clear:both"></div></span></li></ul></form>           <!--  <div class="continute_service_shopping">
                                                                     Add <select name="redirect_to" id="redirect_to">
                                                                         <option value="plotting">Plotting</option>
                                                                         <option value="view/store">Supplies</option>

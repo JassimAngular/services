@@ -959,15 +959,15 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
             </div>
          <!--- LFP Services End --> 
     <?php    
-    }else{    
+    }  
     ?>    
-    <div class="service_items" id="service_3" onclick="return show_service_acc('2');">
+<!--    <div class="service_items" id="service_3" onclick="return show_service_acc('2');">
         FINE ART PRINTING
     </div>
     <input type="hidden" name="open_accordian_2" class="open_accordian" id="open_accordian_2" value="" />
     <div class="service_recipient" id="recipient_2">
         
-        <!--- Fine Art Printing Services Start -->
+        - Fine Art Printing Services Start 
         
         <div style="width: 95%;float: left;">
                 <span style="font-weight: bold;float: left;margin-top: 5px;margin-bottom: 5px;">ORIGINAL ORDER</span>
@@ -1015,7 +1015,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
         
             <div id="set_form">
             <div id="plotting" action="" method="post" class="systemForm orderform">
-                    <!--<form id="plotting" action="" method="post" class="systemForm orderform" >-->
+                    <form id="plotting" action="" method="post" class="systemForm orderform" >
                         
                   <input type="hidden" name="plotting_set" value="0" />
                   <input type="hidden" name="user_session" id="user_session" value="<?php echo $_SESSION['sohorepro_userid']; ?>" />
@@ -1028,7 +1028,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
                         <input type="hidden" name="pri_inc_val" id="pri_inc_val" value="1" />
                   <li class="clear">
                       
-<!--                      <div style="float:left;width: 100%;">
+                      <div style="float:left;width: 100%;">
                           <?php
                             $services_items = ServicesItemsReci(); 
                             foreach ($services_items as $items){
@@ -1037,7 +1037,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
                               <span><?php echo $items['int']; ?></span>
                           </div>
                             <?php } ?>                          
-                      </div>-->
+                      </div>
                       <div id="tab_content" class="tabs_with_contents">
                           
                      
@@ -1086,7 +1086,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
                                 </div>
                             
                             <div style="float:right;">
-                                <!--<input class="addNewOrderSet" value="Add Set" style="float:right;cursor: pointer;font-size:12px; padding:1.5px; width: 100px;margin-top:-51px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="button" onclick="return validate_plotting();" />-->
+                                <input class="addNewOrderSet" value="Add Set" style="float:right;cursor: pointer;font-size:12px; padding:1.5px; width: 100px;margin-top:-51px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="button" onclick="return validate_plotting();" />
                                 <input class="all_are_done" value="Save and Continue" style="display: none;cursor: pointer;font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -0px !important;" type="button"  />
                             </div>
                               
@@ -1102,7 +1102,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
                         </div>
                           
                         <div style="float:right;">
-                            <!--<input class="addNewOrderSet" value="Add Set" style="float:right;cursor: pointer;font-size:12px; padding:1.5px; width: 100px;margin-top:-51px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="button" onclick="return validate_plotting();" />-->
+                            <input class="addNewOrderSet" value="Add Set" style="float:right;cursor: pointer;font-size:12px; padding:1.5px; width: 100px;margin-top:-51px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="button" onclick="return validate_plotting();" />
                             <input class="addproductActionLink" value="Continue" style="cursor: pointer;font-size: 12px; padding: 1.5px; width: 135px; margin-right: 37px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -0px !important;" type="button" onclick="return continue_recipient();" />
                         </div>
                       </div>
@@ -1125,9 +1125,9 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
               
                 </div>
             </div>
-         <!--- Fine Art Printing Services End -->
-    <?php } ?>
-    </div>
+         - Fine Art Printing Services End 
+    
+    </div>-->
 </div>
 
 <div class="bkgd-stripes-orange" style="margin-bottom: 0px !important;">

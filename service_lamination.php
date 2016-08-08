@@ -61,7 +61,17 @@ if($_SESSION['sohorepro_companyid']  == '')
               });
 
         </script>
-        <script>
+        
+        <script src="js/jquery.maskedinput.js" type="text/javascript" ></script>
+
+
+<script> 
+    
+    jQuery(function($) {
+        $("#alt_new_comp_phone").mask("999-999-9999");
+        $("#alt_new_comp_zip").mask("99999");  
+    });
+    
 $(function() {
     var all_exist_date       = $("#all_exist_date").val();
     var split_element        = all_exist_date.split(","); 
@@ -661,9 +671,9 @@ width: 17px;
 
                   <div id="date_time_arch" style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 5px;display:none;">
                                 <input type="hidden" name="all_exist_date" id="all_exist_date" value="<?php echo $all_date_exist; ?>" />                                
-                                <div style="width: 34%;float: left;margin-top: 10px;"> 
+                                <div style="width: 34%;float: left;/*margin-top: 10px;*/"> 
 
-                                    <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;border-bottom: 0px;text-align: center;margin-bottom: 0px !important;">
+                                    <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 45px;border-bottom: 0px;text-align: center;margin-bottom: 0px !important;">
                                         <span id="asap_status" class="asap_orange" onclick="return asap();">READY NOW</span>
                                     </div>
 
@@ -672,7 +682,66 @@ width: 17px;
                                         <input id="time_for_alt" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time();" />
                                     </div>
 
-                                </div>                                
+                                </div>
+                                
+                                <div style="width: 60%;float: left;border: 1px #F99B3E solid;margin-left: 20px;height: auto;">
+                                    <div style="float: left;width: 45%;margin-left: 30px;border: 0px #F99B3E solid;margin-top: 30px;">
+                                        <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="my_office();" id="my_office" checked="checked" value="my_office" />My Office
+                                    </div>
+                                    <div style="float: left;width: 40%;border: 0px #F99B3E solid;margin-top: 30px;">
+                                        <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="alternate();" id="alternate" value="alternate" />Alternative
+                                        <select  name="address_book_se" id="address_book_se" class="remove_current" onchange="return select_alternate();" style="margin-bottom: 15px;">
+                                            <option value="0">Address Book</option>
+                                            <option value="N" style="border-bottom: 1px solid #000;">Add New Address</option>
+                                            <option value="NL" style="width: 100%;" disabled>---------------------------</option>
+                                            <?php
+                                            $address_book = AddressBookCompanyService($_SESSION['sohorepro_companyid']);
+                                            foreach ($address_book as $address) { ?>                                                                                        
+                                            <option value="<?php echo $address['id']; ?>"><?php echo $address['company_name']; ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="alt_new_address_main" style="float: left;width: 100%;display: none;">
+                                        <div style="float: left;width: 35%;border: 0px #F99B3E solid;">&nbsp;</div>
+                                        <div style="float: left;width: 55%;border: 1px #F99B3E solid;margin-top: 5px;margin-bottom: 5px;">
+                                            <div class="alt_new_address_container_hdr">
+                                                Add New Address
+                                            </div>
+                                            <div class="alt_new_address_container">
+                                                <ul>
+                                                    <li><label>Company Name:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_name" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Attention_To:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_att" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 1:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add1" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 2:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add2" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 3:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add3" class="alt_new_address_container_val" /></li>
+                                                    <li><label>City:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_city" class="alt_new_address_container_val" /></li>
+                                                    <li>
+                                                        <label>State:</label>
+                                                        <select name="state" id="alt_new_comp_state" class="required reginput comp_det_view" style="width: 50px;" tabindex="12" >
+                                                            <option value="">----</option>
+                                                            <?php
+                                                            $sel_state = mysql_query("select * from sohorepro_states");
+                                                            while ($fth_states = mysql_fetch_array($sel_state)) {
+                                                                ?>
+                                                            <option value="<?php echo $fth_states['state_abbr']; ?>" <?php if($fth_states['state_abbr'] == "NY"){ ?>selected="selected"<?php } ?>><?php echo $fth_states['state_abbr']; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </li>
+                                                    <li><label>Zip:</label><input type="text" name="alt_new_comp_zip" id="alt_new_comp_zip" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Phone:</label><input type="text" name="alt_new_comp_phone" id="alt_new_comp_phone" class="alt_new_address_container_val" /></li>
+                                                </ul>
+                                            </div>
+                                            <div class="alt_new_address_container_ftr" style="margin-bottom: 0px !important;">
+                                                <span class="alt_new_address_container_ftr_can" onclick="return can_alt();">Cancel</span>
+                                                <span class="alt_new_address_container_ftr_sav" onclick="return save_alt();">Save</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
                             </div>
                   <!--Pickup Details End-->
 
@@ -711,7 +780,7 @@ width: 17px;
                                                                         <span>
                 
                                                 <div style="height:29px;">&nbsp;</div>
-                                                <input class="addproductActionLink" onclick = "return continue_mounting();"  value="Continue" style="cursor: pointer;float:right;font-size:12px; padding:1.5px; width: 100px;margin-right:14px;margin-top:15px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="submit">
+                                                <input class="addproductActionLink" onclick = "return continue_mounting();"  value="Save to Cart" style="cursor: pointer;float:right;font-size:12px; padding:1.5px; width: 100px;margin-right:14px;margin-top:15px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="submit">
                                                 <div style="clear:both"></div>
                                                                         </span>
                                                                     </li>
@@ -1568,5 +1637,87 @@ function continue_mounting()
         
         }
 
+
+function my_office()
+{
+    $("#address_book_se").val('0');
+    $("#address_book_se").css("border","1px solid #ccc");
+}
+
+function alternate()
+{
+    $("#address_book_se").css("border","1px solid red");
+    $("#address_book_se").trigger("onclick");
+}
+function select_alternate()
+{
+    var address_book_se = $("#address_book_se").val();
+    if(address_book_se != '0'){
+        $("#alternate").attr("checked", true);
+    }
+    if(address_book_se == "N"){
+        $("#alt_new_address_main").slideDown();
+        //$("#alt_new_comp_name").focus();
+    }else{
+        $("#alt_new_address_main").slideUp();
+    }
+}
+
+
+function save_alt(){
+    
+    var alt_new_comp_name       =   $("#alt_new_comp_name").val();
+    var alt_new_comp_att        =   $("#alt_new_comp_att").val();
+    var alt_new_comp_add1       =   $("#alt_new_comp_add1").val();
+    var alt_new_comp_add2       =   $("#alt_new_comp_add2").val();
+    var alt_new_comp_add3       =   $("#alt_new_comp_add3").val();
+    var alt_new_comp_city       =   $("#alt_new_comp_city").val();
+    var alt_new_comp_state      =   $("#alt_new_comp_state").val();
+    var alt_new_comp_zip        =   $("#alt_new_comp_zip").val();
+    var alt_new_comp_phone      =   $("#alt_new_comp_phone").val();
+    
+    if(alt_new_comp_name == ""){
+        $("#alt_new_comp_name").focus();
+        return false;
+    }
+    
+    if(alt_new_comp_add1 == ""){
+        $("#alt_new_comp_add1").focus();
+        return false;
+    }
+    
+    if(alt_new_comp_name != "")    {
+    $.ajax
+        ({
+            type: "POST",
+            url: "alt_address_save.php",
+            data: "alt_address_save=1&alt_new_comp_name="+encodeURIComponent(alt_new_comp_name)+
+                  "&alt_new_comp_att="+encodeURIComponent(alt_new_comp_att)+
+                  "&alt_new_comp_add1="+encodeURIComponent(alt_new_comp_add1)+
+                  "&alt_new_comp_add2="+encodeURIComponent(alt_new_comp_add2)+
+                  "&alt_new_comp_add3="+encodeURIComponent(alt_new_comp_add3)+
+                  "&alt_new_comp_city="+encodeURIComponent(alt_new_comp_city)+
+                  "&alt_new_comp_state="+encodeURIComponent(alt_new_comp_state)+
+                  "&alt_new_comp_zip="+encodeURIComponent(alt_new_comp_zip)+
+                  "&alt_new_comp_phone="+encodeURIComponent(alt_new_comp_phone),
+            beforeSend: loadStart,
+            complete: loadStop,
+            success: function(option)
+            {   
+                var option_split = option.split("~");
+                if(option_split[0] == true){ 
+                    $("#address_book_se").html(option_split[1]);
+                    $("#alt_new_address_main").slideUp();  
+                }
+            }
+        });
+    }
+    
+}
+
+function can_alt(){
+    $("#alt_new_address_main").slideUp();   
+    $("#address_book_se").val('0');
+}
  </script>
 </html>

@@ -577,9 +577,12 @@ if (isset($_REQUEST['login_submit'])) {
                                                                                                 <div class="inside_mask">
                                                                                                     <div class="mask_content">
                                                                                                         <div class="mask_text">
-                                                                                                            <img src="images/landing.png" style="border: 0px;width: 100%;" />
+                                                                                                            <div style="float: left;width: 100%;font-size: 25px;font-weight: bold;line-height: 35px;margin-bottom: 20px;">
+                                                                                                                Please login on the left or use the links to access an Existing Account or Request a New Account 
+                                                                                                            </div>
+                                                                                                        <!--<img src="images/landing.png" style="border: 0px;width: 100%;" />-->
                                                                                                         </div>
-                                                                                                        <div style="text-align: center;font-weight: bold;font-size: 25px;">
+                                                                                                        <div style="text-align: center;font-weight: bold;font-size: 25px;margin-top: 10px;">
                                                                                                             To continue as a Guest, <a href="https://www.hightail.com/u/sohoreproplot" target="_blank" style="text-align: center;font-weight: bold;font-size: 25px;">click here</a>
                                                                                                         </div>
                                                                                                     </div>

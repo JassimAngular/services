@@ -41,6 +41,7 @@ if($_SESSION['sohorepro_companyid']  == '')
  <link rel="stylesheet" type="text/css" href="css/ie_7_hacks.css" />
  <![endif]-->
  <script src="store_files/jquery.min.js"></script>
+ <script type="text/javascript" src="js/popup_script.js"></script>
  <script type="text/javascript" src="js/jquery.timepicker.js"></script>
  <link rel="stylesheet" type="text/css" href="js/jquery.timepicker.css" media="screen" />
  <script type="text/javascript" src="js/jquery.sticky.js"></script>
@@ -71,8 +72,15 @@ if($_SESSION['sohorepro_companyid']  == '')
       });
      
 </script>
- 
+<script src="js/jquery.maskedinput.js" type="text/javascript" ></script>
+
+
 <script> 
+    
+    jQuery(function($) {
+        $("#alt_new_comp_phone").mask("999-999-9999");
+        $("#alt_new_comp_zip").mask("99999");  
+    });
     
 function dtls_reveal(ID)
 {
@@ -1228,7 +1236,36 @@ function update_cust_page_details(ID){
             <!--<span style="float: left;color: #000;font-weight: bold;margin-top: 5px;margin-left: 15px;">Note: All orders placed after hours will be picked up on the next business day.</span>-->
             <span style="float: right;border: 1px solid #BBB;padding: 3px 10px;border-radius: 3px;cursor: pointer;" onclick="return close_asap();">Close</span>
         </div>
-    </div> 
+    </div>
+     
+     <div id="are_you_continue" style="display: none;font-size: 15px;position: fixed;top: 25%;left: 40%;padding: 5px;z-index: 10;z-index: 1000;width: 35%;background: white;border-bottom: 1px solid #aaa;border-radius: 4px;box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);border: 1px solid rgba(0, 0, 0, 0.1);background-clip: padding-box;">
+        <div style="width: 96%;padding: 2%;float: left;font-size: 14px;line-height: 18px;text-align: center;">
+            <!--<div class="close" onclick="close_cart_prompt();"></div>-->
+            <span class="ecs_tooltip" style="right: -47px !important;top: -35px !important;font-weight: bold !important;">Close <span class="arrow"></span></span>
+            <div style="width: 100%;float: left;font-weight: bold;font-size: 35px;">Continue Session?</div>
+            <div style="width: 100%;float: left;font-weight: bold;font-size: 22px;line-height: 50px;">
+                Jump to:
+                <select id="all_services">
+                    <!--<option value="PAC">PLOTTING & ARCHITECTURAL COPIES</option>-->
+                    <option value="LFP">LARGE FORMAT COLOR & BW</option>
+                    <option value="FAP">FINE ART PRINTING</option>
+                    <option value="ML">MOUNTING & LAMINATING</option>
+                    <option value="BIN">BINDING</option>
+                    <option value="OFP">OFFSET PRINTING</option>
+                    <option value="SCN">SCANNING</option>
+                    <option value="CPS">COPY SHOP</option>                    
+                </select>
+                <span class="all_services_go" onclick="return go_to_other_service();">GO</span>
+            </div>
+            <div class="chechout_btn_main">
+                <div class="chechout_btn_main_cont" onclick="return go_to_cart();">
+                    <div class="chechout_btn">Checkout</div>
+                    <div class="chechout_btn_logo"><img src="images/shopping-cart.png" /></div>
+                </div>                
+            </div>
+        </div>
+        
+    </div>
  <div id="body_container">
  <div id="body_content" class="body_wrapper">
  <div id="body_content-inner" class="body_wrapper-inner">
@@ -1555,16 +1592,18 @@ function update_cust_page_details(ID){
                                         <input class="date_for_alt picker_icon" value="" type="text" name="date_needed" id="date_for_alt" style="width: 75px;" onclick="return date_reveal();" />
                                         <input id="time_for_alt" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time();" />
                                     </div>
-
                                 </div>
-                                <div style="width: 60%;float: left;border: 1px #F99B3E solid;margin-left: 20px;height: 85px;">
+                                
+                                <div style="width: 60%;float: left;border: 1px #F99B3E solid;margin-left: 20px;height: auto;">
                                     <div style="float: left;width: 45%;margin-left: 30px;border: 0px #F99B3E solid;margin-top: 30px;">
                                         <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="my_office();" id="my_office" value="my_office" />My Office
                                     </div>
                                     <div style="float: left;width: 45%;border: 0px #F99B3E solid;margin-top: 30px;">
                                         <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="alternate();" id="alternate" value="alternate" />Alternative
-                                        <select  name="address_book_se" id="address_book_se" class="remove_current" style="" onchange="return select_alternate();">
+                                        <select style="margin-bottom: 10px;"  name="address_book_se" id="address_book_se" class="remove_current" style="" onchange="return select_alternate();">
                                             <option value="0">Address Book</option>
+                                            <option value="N" style="border-bottom: 1px solid #000;">Add New Address</option>
+                                            <option value="NL" style="width: 100%;" disabled>---------------------------</option>
                                             <?php
                                             $address_book = AddressBookCompanyService($_SESSION['sohorepro_companyid']);
                                             foreach ($address_book as $address) { ?>                                                                                        
@@ -1573,6 +1612,42 @@ function update_cust_page_details(ID){
                                             }
                                             ?>
                                         </select>
+                                    </div>
+                                    <div id="alt_new_address_main" style="float: left;width: 100%;display: none;">
+                                        <div style="float: left;width: 40%;border: 0px #F99B3E solid;">&nbsp;</div>
+                                        <div style="float: left;width: 55%;border: 1px #F99B3E solid;margin-top: 5px;margin-bottom: 5px;">
+                                            <div class="alt_new_address_container_hdr">
+                                                Add New Address
+                                            </div>
+                                            <div class="alt_new_address_container">
+                                                <ul>
+                                                    <li><label>Company Name:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_name" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Attention_To:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_att" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 1:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add1" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 2:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add2" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 3:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add3" class="alt_new_address_container_val" /></li>
+                                                    <li><label>City:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_city" class="alt_new_address_container_val" /></li>
+                                                    <li>
+                                                        <label>State:</label>
+                                                        <select name="state" id="alt_new_comp_state" class="required reginput comp_det_view" style="width: 50px;" tabindex="12" >
+                                                            <option value="">----</option>
+                                                            <?php
+                                                            $sel_state = mysql_query("select * from sohorepro_states");
+                                                            while ($fth_states = mysql_fetch_array($sel_state)) {
+                                                                ?>
+                                                            <option value="<?php echo $fth_states['state_abbr']; ?>" <?php if($fth_states['state_abbr'] == "NY"){ ?>selected="selected"<?php } ?>><?php echo $fth_states['state_abbr']; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </li>
+                                                    <li><label>Zip:</label><input type="text" name="alt_new_comp_zip" id="alt_new_comp_zip" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Phone:</label><input type="text" name="alt_new_comp_phone" id="alt_new_comp_phone" class="alt_new_address_container_val" /></li>
+                                                </ul>
+                                            </div>
+                                            <div class="alt_new_address_container_ftr">
+                                                <span class="alt_new_address_container_ftr_can" onclick="return can_alt();">Cancel</span>
+                                                <span class="alt_new_address_container_ftr_sav" onclick="return save_alt();">Save</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1708,7 +1783,7 @@ function update_cust_page_details(ID){
              
                     
               <div style="float:left;width:100%;text-align:right;margin-top: 10px;">                  
-                  <input class="addproductActionLink" value="Save and Continue" style="cursor: pointer; float: right; font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -1px !important;" type="button" onclick="return validate_plotting_cont();" />
+                  <input class="addproductActionLink" value="Save to Cart" style="cursor: pointer; float: right; font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -1px !important;" type="button" onclick="return validate_plotting_cont_pre();" />
                   <input class="addNewOrderSet" value="Add Set" style="float:right;cursor: pointer;font-size:12px; padding:1.5px; width: 100px;margin-top:-51px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-right: 10px;" type="button" onclick="return validate_plotting();" />
               </div> 
               </span>
@@ -2022,6 +2097,79 @@ function update_cust_page_details(ID){
     }
     
   }   
+  
+  
+  function validate_plotting_cont_pre()
+  {
+    var validate_imp            =   $("#validate_imp").val();
+    var optint_count_check_pre  =   $("#optint_count_check").val();
+    
+    if((validate_imp == "") && (optint_count_check_pre == "0")){
+        validate_plotting_cont();
+    }else if((optint_count_check_pre == "0") && (validate_imp == "1")){
+        $("body").append("<div class='modal-overlay js-modal-close'></div>");
+        $("#are_you_continue").fadeIn("slow");
+    }else if((optint_count_check_pre != "0") && (validate_imp == "1")){
+        $("body").append("<div class='modal-overlay js-modal-close'></div>");
+        $("#are_you_continue").fadeIn("slow");
+    }else if((optint_count_check_pre != "0") && (validate_imp == "")){
+        $("body").append("<div class='modal-overlay js-modal-close'></div>");
+        $("#are_you_continue").fadeIn("slow");
+    }    
+  }
+  
+  function go_to_cart()
+  {
+    var validate_imp        =   $("#validate_imp").val();
+    if(validate_imp != ""){
+    validate_plotting_cont();
+    }else{
+    window.location = "add_recipients.php";    
+    }
+  }
+  
+  function go_to_other_service()
+  {
+      var all_services = $("#all_services").val();
+      
+      if(all_services == "LFP"){
+          window.location = "service_largeformat.php";
+      }
+      
+      if(all_services == "FAP"){
+          window.location = "service_finearts.php";
+      }
+      
+      if(all_services == "ML"){
+          window.location = "service_lamination.php";
+      }
+      
+      if(all_services == "BIN"){
+          window.location = "service_binding.php";
+      }
+      
+      if(all_services == "OFP"){
+          window.location = "service_offset.php";
+      }
+      
+      if(all_services == "SCN"){
+          window.location = "service_scanning.php";
+      } 
+      
+      if(all_services == "CPS"){
+          window.location = "service_copyshop.php";
+      } 
+      
+//      if(all_services == "PAC"){
+//          window.location = "service_plotting.php";
+//      } 
+  }
+  
+  function close_cart_prompt()
+  {
+    $(".modal-overlay").fadeOut();
+    $("#are_you_continue").fadeOut("slow"); 
+  }
 
 function validate_plotting_cont()
 {
@@ -2214,8 +2362,15 @@ function validate_plotting_cont()
                     beforeSend: loadStart,
                     complete: loadStop,
                     success: function(option)
-                    {                            
-                        window.location = "add_recipients.php";
+                    {      
+//                        var optint_count_check  =   document.getElementById("optint_count_check").value;
+//                        if(optint_count_check != 0){
+//                            $("body").append("<div class='modal-overlay js-modal-close'></div>");
+//                            $("#are_you_continue").slideDown("slow");
+//                        }else{
+                            window.location = "add_recipients.php";
+//                        }
+                        
                     }
                 });
     }
@@ -2477,8 +2632,72 @@ function select_alternate()
     if(address_book_se != '0'){
         $("#alternate").attr("checked", true);
     }
+    if(address_book_se == "N"){
+        $("#alt_new_address_main").slideDown();
+        //$("#alt_new_comp_name").focus();
+    }else{
+        $("#alt_new_address_main").slideUp();
+    }
+}
+
+function save_alt(){
+    
+    var alt_new_comp_name       =   $("#alt_new_comp_name").val();
+    var alt_new_comp_att        =   $("#alt_new_comp_att").val();
+    var alt_new_comp_add1       =   $("#alt_new_comp_add1").val();
+    var alt_new_comp_add2       =   $("#alt_new_comp_add2").val();
+    var alt_new_comp_add3       =   $("#alt_new_comp_add3").val();
+    var alt_new_comp_city       =   $("#alt_new_comp_city").val();
+    var alt_new_comp_state      =   $("#alt_new_comp_state").val();
+    var alt_new_comp_zip        =   $("#alt_new_comp_zip").val();
+    var alt_new_comp_phone      =   $("#alt_new_comp_phone").val();
+    
+    if(alt_new_comp_name == ""){
+        $("#alt_new_comp_name").focus();
+        return false;
+    }
+    
+    if(alt_new_comp_add1 == ""){
+        $("#alt_new_comp_add1").focus();
+        return false;
+    }
+    
+    if(alt_new_comp_name != "")    {
+    $.ajax
+        ({
+            type: "POST",
+            url: "alt_address_save.php",
+            data: "alt_address_save=1&alt_new_comp_name="+encodeURIComponent(alt_new_comp_name)+
+                  "&alt_new_comp_att="+encodeURIComponent(alt_new_comp_att)+
+                  "&alt_new_comp_add1="+encodeURIComponent(alt_new_comp_add1)+
+                  "&alt_new_comp_add2="+encodeURIComponent(alt_new_comp_add2)+
+                  "&alt_new_comp_add3="+encodeURIComponent(alt_new_comp_add3)+
+                  "&alt_new_comp_city="+encodeURIComponent(alt_new_comp_city)+
+                  "&alt_new_comp_state="+encodeURIComponent(alt_new_comp_state)+
+                  "&alt_new_comp_zip="+encodeURIComponent(alt_new_comp_zip)+
+                  "&alt_new_comp_phone="+encodeURIComponent(alt_new_comp_phone),
+            beforeSend: loadStart,
+            complete: loadStop,
+            success: function(option)
+            {   
+                var option_split = option.split("~");
+                if(option_split[0] == true){ 
+                    $("#address_book_se").html(option_split[1]);
+                    $("#alt_new_address_main").slideUp();  
+                }
+            }
+        });
+    }
     
 }
+
+function can_alt(){
+    $("#alt_new_address_main").slideUp();   
+    $("#address_book_se").val('0');
+}
+
+       
+        
 
 function my_office()
 {

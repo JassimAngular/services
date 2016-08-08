@@ -386,7 +386,7 @@ include './admin/db_connection.php';
                                             <span>
                                                 <textarea name="instruction" id="instruction" cols="60" rows="4"></textarea></span></li>
                                         <li class="clear"><span>
-                                                <div style="height:29px;">&nbsp;</div><input class="addproductActionLink" value="Continue" style="cursor: pointer;float:right;font-size:12px; padding:1.5px; width: 100px;margin-right:14px;margin-top:15px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="submit"><div style="clear:both"></div></span></li></ul></form>         
+                                                <div style="height:29px;">&nbsp;</div><input class="addproductActionLink" value="Save to Cart" style="cursor: pointer;float:right;font-size:12px; padding:1.5px; width: 100px;margin-right:14px;margin-top:15px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="submit"><div style="clear:both"></div></span></li></ul></form>         
                             </div>
 
                             <div style="clear:both;">

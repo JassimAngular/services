@@ -481,27 +481,151 @@ span.arrow {
 }
 
 .sticky-navigation
-    {
-        padding: 10px;
-        background: #FFF;   
-        font-size: 18px;
-        width: 720px;   
-    }
-    .sticky-navigation.stuck
-    {
-        position: fixed;
-        top: 0;
-        /*box-shadow: 0 2px 4px rgba(0, 0, 0, .2);*/
-        z-index: 1;
-    }
-    .sticky-wrapper{
-        height: 75px !important;
-    }
+{
+    padding: 10px;
+    background: #FFF;   
+    font-size: 18px;
+    width: 720px;   
+}
+.sticky-navigation.stuck
+{
+    position: fixed;
+    top: 0;
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, .2);*/
+    z-index: 1;
+}
+.sticky-wrapper{
+    height: 75px !important;
+}
+
+.fixed_1{
+    border-style:solid;
+    border-width:0px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    transition: box-shadow 1s;
+}
+
+.alt_new_address_container{
+    width: 100%;
+    float: left;
+}
+
+.alt_new_address_container ul{
+    width: 100%;
+    float: left;
+    list-style: none;        
+}
+
+.alt_new_address_container ul li label{
+    width: 50%;
+    float: left;
+    font-weight: bold;
+}
+.alt_new_address_container ul li{
+    padding-left: 5px !important;
+    padding-bottom: 0px !important;
+}
+
+
+.alt_new_address_container_val{
+    width: 47% !important;
+    float: left;
+    margin-bottom: 5px !important;
+}
+
+.alt_new_address_container_hdr{
+    width: 100%;
+    float: left;
+    text-align: center;
+    margin-bottom: 3px;
+    background-color: #F99B3E;
+    font-weight: bold;
+    color: #FFF;
+    line-height: 20px;
+}
+
+.alt_new_address_container_ftr{
+    width: 100%;
+    float: left;
+    text-align: center;
+    background-color: #F99B3E;
+    font-weight: bold;
+    color: #FFF;
+    line-height: 20px;
+    margin-bottom: 0px !important;
+}
+
+.alt_new_address_container_ftr_can {
+    cursor: pointer;
+    display: inline;
+    background: #d3412c;
+    padding: 2px 3px;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 11px;
+    border-radius: 5px;
+}
+
+.alt_new_address_container_ftr_sav{
+    cursor: pointer;
+    display: inline;
+    background: #03803E;
+    padding: 2px 5px;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 11px;
+    border-radius: 5px;
+}
+
+#all_services{
+    padding: 10px;
+    box-shadow: 1px 3px 4px rgba(0, 0, 0, .2);
+    border-radius: 5px;
+    /*background-color: #F99B3E;*/
+    /*color: #FFF;*/
+    font-weight: bold;
+}
+
+.all_services_go{
+    background-color: #F99B3E;
+    color: #FFF;
+    padding: 11px;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 1px 3px 4px rgba(0, 0, 0, .2);
+}
+
+.chechout_btn_main{
+    width: 100%;
+    float: left;
+    margin-top: 50px;
+    margin-bottom: 20px;
     
-    .fixed_1{
-        border-style:solid;
-        border-width:0px;
-        background: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-        transition: box-shadow 1s;
-    }
+}
+
+.chechout_btn_main_cont{
+    width: 240px;
+    margin: auto;
+    box-shadow: 1px 3px 4px rgba(0, 0, 0, .2);
+    cursor: pointer;
+}
+
+.chechout_btn{
+    padding: 10px 5px 10px 30px;
+    background-color: #F99B3E;
+    color: #FFF;
+    font-size: 22px;
+    margin-right: 2px;
+    float: left;
+    text-transform: uppercase;
+}
+
+.chechout_btn_logo{
+    float: left;
+    padding: 10px 5px 4px 2px;
+    background-color: #F99B3E;
+    font-size: 22px;
+}
