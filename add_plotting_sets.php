@@ -112,7 +112,11 @@ if ($_POST['service_plotting_add'] == '1') {
                                 $_SESSION['use_the_same']   =   '';
     }
     $enteredPlotPrimay = EnteredPlotttingPrimary($company_id_view_plot, $user_id_add_set);
-
+    
+    $added_cart_count  =    (count($enteredPlotPrimay) > 0) ? "1" : "0";
+    
+    $_SESSION['cart_count'] =   $added_cart_count;
+    
     $count_option = count($enteredPlotPrimay) + 1;
 
     $_SESSION['ref_val'] = $_POST['job_reference'];
@@ -333,7 +337,7 @@ if ($_POST['service_plotting_add'] == '1') {
             </div>
         </label>  
         <input type="hidden" name="optint_count_check" id="optint_count_check" value="<?php echo count($enteredPlotPrimay); ?>" />
-        <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo count($enteredPlotPrimay); ?>" />
+        <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo $added_cart_count; ?>" />
         
         <div style="background-color:#FFFFFF" class="serviceOrderSetWapper" setindex="0">
             <div class="serviceOrderSetWapperInternal">

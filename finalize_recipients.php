@@ -42,6 +42,34 @@ if($_SESSION['sohorepro_companyid']  == '')
  <script src="store_files/jquery.min.js"></script>
  <link rel="stylesheet" href="js/jquery-ui.css" />
 <script src="js/jquery-ui_service.js"></script>
+
+
+<script src="waypoints.js"></script>
+<script src="waypoints-sticky.js"></script>
+<script type="text/javascript">
+     $(document).ready(function() {
+         $('.sticky-navigation').waypoint('sticky');
+     });
+     
+     
+       $(document).ready(function () {  
+        var top = $('.sticky-navigation').offset().top - parseFloat($('.sticky-navigation').css('marginTop').replace(/auto/, 100));
+        $(window).scroll(function (event) {
+          // what the y position of the scroll is
+          var y = $(this).scrollTop();
+
+          // whether that's below the form
+          if (y > top) {
+            // if so, ad the fixed class
+            $('.sticky-navigation').addClass('fixed_1');
+          } else {
+            // otherwise remove it
+            $('.sticky-navigation').removeClass('fixed_1');
+          }
+        });
+      });
+     
+</script>
 <script> 
 function dtls_reveal(ID)
 {
@@ -520,7 +548,7 @@ padding-bottom: 0px !important;
                                 $address_string  = $address_dtls[0]['company_name'].'<br>'.$address_dtls[0]['address_1'].'<br>'.$address_dtls[0]['address_2'].'<br>'.$address_3.$address_dtls[0]['city'].',&nbsp;'.StateName($address_dtls[0]['state']).'&nbsp;'.$address_dtls[0]['zip'];
 
                                 $option_sechdule = ($entered['my_office_alt'] == 'my_office') ? '<span style="font-weight: bold">My Office</span>' : '<span style="font-weight: bold">Alternate:</span><br>'.$address_string;
-                                if($entered['my_office_alt'] == '0'){
+                                if($entered['use_same_alt'] == '1'){
                                 ?>   
                                 <div style="width: 22%;float: left;border: 1px solid #BFC5CD;margin-left: 5px;">
                                     <div style="padding-top: 3px;font-weight: bold;width: 100%;float: left;background-color: #BFC5CD;color: #5C5C5C;text-align: center;">
@@ -531,7 +559,9 @@ padding-bottom: 0px !important;
                                         Use same file as Option <?php echo $entered['use_same_alt']; ?>
                                     </div>
                                 </div>                                
-                            <?php }else{ ?>
+                            <?php }
+                            if($entered['my_office_alt'] == 'my_office'){
+                             ?>
                                 <div style="width: 22%;float: left;border: 1px solid #BFC5CD;margin-left: 5px;">
                                     <div style="padding-top: 3px;font-weight: bold;width: 100%;float: left;background-color: #BFC5CD;color: #5C5C5C;text-align: center;">
                                         Schedule a Pick-up Option
@@ -547,7 +577,7 @@ padding-bottom: 0px !important;
                             <?php if ($entered['drop_off'] != '0') {
                                      if($entered['use_same_alt'] == '0'){
                                 ?>
-                                <div style="width: 22%;float: left;border: 1px solid #BFC5CD;">
+                                <div style="width: 22%;float: left;border: 1px solid #BFC5CD;margin-left: 5px;">
                                     <div style="padding-top: 3px;font-weight: bold;width: 100%;float: left;background-color: #BFC5CD;color: #5C5C5C;text-align: center;">
                                         Drop-off Option
                                     </div>
@@ -557,7 +587,7 @@ padding-bottom: 0px !important;
                                     </div>
                                 </div>
                             <?php }  else {?>
-                                <div style="width: 22%;float: left;border: 1px solid #BFC5CD;">
+                                <div style="width: 22%;float: left;border: 1px solid #BFC5CD;margin-left: 5px;">
                                     <div style="padding-top: 3px;font-weight: bold;width: 100%;float: left;background-color: #BFC5CD;color: #5C5C5C;text-align: center;">
                                         Drop-off Option
                                     </div>

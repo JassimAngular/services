@@ -3542,4 +3542,15 @@ function EnteredLFPPrimary($comp_id, $user_id) {
     endwhile;
     return $value;
 }
+
+
+function LastFileOptionEnteredLFP($company_id, $user_id){
+    $plotting_set = "SELECT * FROM sohorepro_service_lfp WHERE company_id = '".$company_id."' AND user_id = '".$user_id."' AND order_id = '0' ORDER BY option_id DESC LIMIT 1" ;
+    $set = mysql_query($plotting_set);
+    while ($object = mysql_fetch_assoc($set)):
+        $value[] = $object;
+    endwhile;
+    return $value;  
+}
+
 ?>

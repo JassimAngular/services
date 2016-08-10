@@ -19,13 +19,27 @@ if ($_POST['service_lfp_add'] == '1') {
     $media = strtoupper($_POST['media']);
     $binding = strtoupper($_POST['binding']);
     $special_instruction = $_POST['special_instruction'];
-    $drop_file = $_POST['drop_file'];
-    $ftp_link = $_POST['ftp_link'];
-    $ftp_user = $_POST['ftp_user'];
-    $ftp_pass = $_POST['ftp_pass'];
-    $schedule_pickup = $_POST['schedule_pickup_dt'];
-    $schedule_place = $_POST['schedule_place'];
-    $dropoff = $_POST['dropoff'];
+    
+    if($_SESSION['use_the_same'] != ''){
+    $drop_file          =   $_SESSION['upload_file'];    
+    $ftp_link           =   $_SESSION['ftp_link'];
+    $ftp_user           =   $_SESSION['user_name'];
+    $ftp_pass           =   $_SESSION['password'];
+    $schedule_pickup    =   $_SESSION['schedule_pickup'];
+    $schedule_place     =   $_SESSION['schedule_place'];
+    $dropoff            =   $_SESSION['drop_off_381'];
+    }  else {
+    $drop_file          = $_POST['drop_file'];    
+    $ftp_link           = $_POST['ftp_link'];
+    $ftp_user           = $_POST['ftp_user'];
+    $ftp_pass           = $_POST['ftp_pass'];
+    $schedule_pickup    = $_POST['schedule_pickup_dt'];
+    $schedule_place     = $_POST['schedule_place'];
+    $dropoff            = $_POST['dropoff'];
+    $use_same_alt       = '0';  
+    }
+    
+    
 
     $add_ml_val = $_POST['add_ml_val'];
     $original_lam = $_POST['original_lam'];
@@ -65,6 +79,7 @@ if ($_POST['service_lfp_add'] == '1') {
                                 schedule_pickup          = '" . $schedule_pickup . "',
                                 schedule_place           = '" . $schedule_place . "',
                                 drop_off_381             = '" . $dropoff . "',
+                                use_same_alt             = '" . $use_same_alt . "',
                                 special_inc              = '" . $special_instruction . "',
                                 reference                = '" . $job_reference . "',
                                 ml_active                = '" . $add_ml_val . "',
@@ -77,12 +92,32 @@ if ($_POST['service_lfp_add'] == '1') {
                                 ml_grommets              = '" . $grommets . "',    
                                 mal_splns                = '" . $ml_splins . "' ";
     $sql_result = mysql_query($query);
+    
+    if($sql_result){
+                                $_SESSION['upload_file']        =   '';
+                                $_SESSION['ftp_link']           =   '';
+                                $_SESSION['user_name']          =   '';
+                                $_SESSION['password']           =   '';
 
+                                $_SESSION['schedule_pickup']    =   '';
+                                $_SESSION['schedule_place']     =   '';
+                                $_SESSION['drop_off_381']       =   '';
+
+                                $_SESSION['use_the_same']       =   '';
+    }
+    
     $_SESSION['ref_val'] = $_POST['reference'];
 
     $enteredLFPPrimay = EnteredLFPPrimary($company_id_view_plot, $user_id_add_set);
 
     $count_option = count($enteredLFPPrimay) + 1;
+    
+    
+    $added_cart_count_pre       =    (count($enteredLFPPrimay) > 0) ? "1" : "0";
+    $added_cart_session         =    ($_SESSION['cart_count'] > 0) ? "1" : "0";
+    $added_cart_count_session   =    ($added_cart_count_pre + $added_cart_session);  
+    $_SESSION['cart_count']     =     $added_cart_count_session;
+    
 
     $i = 1;
     foreach ($enteredLFPPrimay as $lfp) {
@@ -130,15 +165,16 @@ if ($_POST['service_lfp_add'] == '1') {
                 </ul>                        
             </div>
 
-            <div class="file_option">
-                File Options:
-            </div>
+            
             <?php
             if ($lfp['ftp_link'] != '0') {
                 $ftp_link = ($lfp['ftp_link'] != "0") ? $lfp['ftp_link'] : "";
                 $ftp_user = ($lfp['ftp_user_name'] != "0") ? $lfp['ftp_user_name'] : "";
                 $ftp_pass = ($lfp['ftp_password'] != "0") ? $lfp['ftp_password'] : "";
                 ?>
+                <div class="file_option">
+                File Options:
+                </div>
                 <div class="file_option_content">
                     Provide Link to File:
                 </div>
@@ -151,6 +187,9 @@ if ($_POST['service_lfp_add'] == '1') {
             <?php
             if ($lfp['schedule_pickup'] != '0') {
                 ?>
+                <div class="file_option">
+                    File Options:
+                </div>
                 <div class="file_option_content_sc_pick">
                     Schedule a pick up Date/Time: <?php echo $lfp['schedule_pickup']; ?>
                 </div>            
@@ -163,6 +202,9 @@ if ($_POST['service_lfp_add'] == '1') {
 
                 $option_sechdule = ($lfp['schedule_place'] == 'my_office') ? '<span style="font-weight: bold">My Office</span>' : '<span style="font-weight: bold">Alternate:</span><br>' . $address_string;
                 ?>
+<!--                <div class="file_option">
+                    File Options:
+                </div>-->
                 <div style="width: 95%;margin: auto;margin-top: 7px;margin-bottom: 40px;">                    
                     <div style="float: left;width: 22%;margin-top: 5px;font-weight: bold;">Schedule a pick-up Option:</div>
                     <div style="float: left;width: 50%;margin-top: 5px;">                        
@@ -172,11 +214,25 @@ if ($_POST['service_lfp_add'] == '1') {
             <?php } } ?>
              <?php
             if ($lfp['drop_off_381'] != '0') {               
-                ?>               
+                ?>           
+                <div class="file_option">
+                    File Options:
+                </div>
                 <div class="file_option_content_source">
                     Drop off at Soho Repro: <?php echo $lfp['drop_off_381']; ?>                    
                 </div>
-            <?php } ?> 
+            <?php } ?>
+            
+            <?php
+            if ($lfp['special_inc'] != '0') {               
+                ?>           
+                <div class="file_option">
+                    Special Instructions:
+                </div>
+                <div class="file_option_content_source">
+                    <?php echo $lfp['special_inc']; ?>                    
+                </div>
+            <?php } ?>
         </div>
         <?php
         $i++;
@@ -190,13 +246,18 @@ if ($_POST['service_lfp_add'] == '1') {
                 Option                
             </div>-->
             <input type="hidden" name="optint_count_check" id="optint_count_check" value="0" />
-            <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo ($count_option - 1); ?>" />
+            <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo $added_cart_count_session; ?>" />
         </label>  
         <div style="background-color:#FFFFFF" class="serviceOrderSetWapper" setindex="0">
             <div class="serviceOrderSetWapperInternal">
                 <div class="serviceOrderSetDIV">
                     <div style="width: 880px;float: left;padding-top: 10px;margin-bottom: 0px !important;">  
-
+                        
+                        
+                        <!--JASSIM-->                        
+                        <input type="checkbox"  style="width: 2%;margin-bottom: 20px;" name="use_same_check" id="use_same_check_box" value="1"  onclick="return use_same_set();" /><span id="use_same_check_box_spn">Use the same File as in Job Option <?php echo ($count_option - 1); ?></span>
+                        <!--End-->
+                        
                         <!--Check Box Start-->
                         <div style="float:left;width:100%;">
                             <!--                                    <ul class="arch_radio">
@@ -329,15 +390,12 @@ if ($_POST['service_lfp_add'] == '1') {
                     <!--Page Number Details End-->
 
                     <div style="">
-                        <label id="alt_ops" style="font-weight: bold;height:28px">
-                            File Options<span style="color: red;">*</span>
-                        </label>
-
-                        <label id="pick_ops" style="font-weight: bold;height:28px;display: none;">
-                            Pickup Options<span style="color: red;">*</span>
-                        </label>
+                        
     <!--                    <input type="checkbox"  style="display: none;width: 2%;" name="use_same_check" id="use_same_check_box" value="1"  onclick="return use_same_set('1');" />-->
-                        <div id="options_plott" class="check" style="width:860px;border-top: 1px solid #FF7E00;margin-top:-13px;margin-bottom: 0px;">
+                        <div id="options_plott" class="check" style="width:860px;margin-bottom: 0px;">
+                            <label id="alt_ops" style="font-weight: bold;height:15px;    border-bottom: 1px solid #FF7E00;">
+                                File Options<span style="color: red;">*</span>
+                            </label>
                             <div class="spl_option">
                                 <div>
                                     <input class="filetrigger" name="alt_file_option" value="dropOff" id="drop_file"  type="radio" onclick="return upload_soho();" />
@@ -379,13 +437,13 @@ if ($_POST['service_lfp_add'] == '1') {
                             <br>
 
                             <!--File Upload Details Start-->
-                            <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 99%;padding-bottom: 10px;" id="up_form">
-                                <input type="hidden" name="uploadedfile" id="uploadedfile" value="" /> 
-                                <div id="dragandrophandler">Drag & Drop Files Here</div>
-                                <br><br>
-                                <div id="status1"></div> 
-                            </div>
-                            <!--File Upload Details End-->
+                      <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 99%;padding-bottom: 10px;" id="up_form">
+                        <input type="hidden" name="uploadedfile" id="uploadedfile" value="" /> 
+                        <div id="dragandrophandler">Drag & Drop Files Here</div>
+                        <br><br>
+                        <div id="status1"></div> 
+                      </div>
+                      <!--File Upload Details End-->
 
                             <!--FTP Details Start-->
                             <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 99%;padding-bottom: 10px;" id="provide_link">
@@ -925,4 +983,4 @@ if ($_POST['service_lfp_add'] == '1') {
 }
 ?>
 
-<!--<script src="js/new_set_script.js"></script>-->
+    <script src="js/new_set_script_lpf.js"></script>

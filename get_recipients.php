@@ -4237,7 +4237,7 @@ if ($_POST['recipients'] == '1') {
     $service_address_2 = ($service_billing_address[0]['comp_business_address2'] != '') ? $service_billing_address[0]['comp_business_address2'] . '<br>' : '';
     $service_address_3 = ($service_billing_address[0]['comp_business_address3'] != '') ? $service_billing_address[0]['comp_business_address3'] . '<br>' : '';
 
-
+    unset($_SESSION['cart_count']);
     //PDF Generation Start
     
     $entered_needed_sets_pdf    = SetsOrderedFinalize($job_reference_final[0]['id']);

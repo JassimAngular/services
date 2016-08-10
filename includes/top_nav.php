@@ -9,7 +9,7 @@ $totoal_cart     = totalCart($user_id);
 $comp_name       = getCompName($_SESSION['sohorepro_companyid']);
 ?>
 <?php if (isset($_SESSION['sohorepro_userid'])) { ?>
-<div id="" class="sticky-navigation"  style="float:left;width: 52%;">
+<div id="" class="sticky-navigation"  style="float:left;width: 55%;z-index: 100;">
 <div style="float: left;width: 30%;">
     <ul class="navigation primary" style="float:left !important;width: 100%;">
             <li class="navLargeFormat" style=" border-bottom: none !important;">
@@ -27,7 +27,7 @@ $comp_name       = getCompName($_SESSION['sohorepro_companyid']);
                 <div style="float: left;width: 100%;padding: 0px;margin-top: -10px;"><?php echo $comp_name; ?></div>
             </li>
             <li class="navLargeFormat" style=" border-bottom: none !important;"><a href="service_address_book.php" style="<?php if($page_name_new=='service_address_book.php') { echo "font-weight: bold;"; } ?>">ADDRESS BOOK</a></li>
-            <li class="navLargeFormat" id="cart_li" style=" border-bottom: none !important;width: 64px;"><a href="shoppingcart.php" style="<?php if($page_name_new=='shoppingcart.php') { echo "font-weight: bold;"; } ?>">CART <div id="cart_count"></div></a></li>
+            <li class="navLargeFormat" id="cart_li" style=" border-bottom: none !important;width: 64px;"><a href="shoppingcart.php" style="<?php if($page_name_new=='shoppingcart.php') { echo "font-weight: bold;"; } ?>">CART <div style="<?php if($_SESSION['cart_count'] == ''){ ?>display: none;<?php } ?>" id="cart_count"><?php echo $_SESSION['cart_count']; ?></div></a></li>
             <li class="navLargeFormat" style=" border-bottom: none !important;"><a href="help_box_logged.php" style="color:  #007F2A !important;<?php if($page_name_new=='help_box_logged.php') { echo "font-weight: bold;"; } ?>">HELP BOX</a></li>            
             <li class="navLargeFormat" style=" border-bottom: none !important;"><a href="logout.php">LOGOUT</a></li>            
         </ul>

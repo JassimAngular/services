@@ -1146,6 +1146,12 @@ color: red;
         margin: auto;
         margin-bottom: 10px;
     }
+    
+    .file_option_content_sc_upload{
+        width: 90%;
+        margin: auto;
+        margin-bottom: 10px;
+    }
 //LFP New Set End
 
  
@@ -2095,6 +2101,46 @@ function save_alt(){
         });
     }
     
+}
+
+function use_same_set()
+{   
+    var use_same = document.getElementById('use_same_check_box').checked;     
+    if(use_same == true){            
+     $.ajax
+        ({
+            type: "POST",
+            url: "use_the_same_file_lfp.php",
+            data: "use_thesame_file=1",
+            beforeSend: loadStart,
+            complete: loadStop,
+            success: function(option)
+            {   
+                if(option == true){
+                $("#use_same").slideDown(1000);
+                $("#options_plott").slideUp();
+                $("#validate_imp").val('1');
+                }
+            }
+        });     
+    }else{
+        $.ajax
+        ({
+            type: "POST",
+            url: "use_the_same_file_lfp.php",
+            data: "use_thesame_file=2",
+            beforeSend: loadStart,
+            complete: loadStop,
+            success: function(option)
+            {   
+                if(option == true){                
+                $("#use_same").slideUp(1000);
+                $("#options_plott").slideDown();
+                $("#validate_imp").val('');
+                }
+            }
+        }); 
+    }
 }
 
 function can_alt(){
