@@ -114,9 +114,38 @@ if ($_POST['service_lfp_add'] == '1') {
     
     
     $added_cart_count_pre       =    (count($enteredLFPPrimay) > 0) ? "1" : "0";
-    $added_cart_session         =    ($_SESSION['cart_count'] > 0) ? "1" : "0";
-    $added_cart_count_session   =    ($added_cart_count_pre + $added_cart_session);  
-    $_SESSION['cart_count']     =     $added_cart_count_session;
+    $added_cart_count_session         =    ($_SESSION['cart_count'] != "") ? ($_SESSION['cart_count'] + 1) : "0";
+    
+    
+    $enteredPlotPrimay = EnteredPlotttingPrimary($company_id_view_plot, $user_id_add_set);
+    
+//    if($_SESSION['cart_count'] == ""){
+//        
+//    }
+//    
+//    
+//    $lower_boundary             =    "1";
+//    $upper_boundary             =    "2";
+//    
+//    if (($added_cart_session >= $lower_boundary) && ($added_cart_session <= $upper_boundary)) {
+//        $added_cart_count_session = "2";
+//    }
+    
+//    $added_cart_count_session_p =    ($added_cart_count_pre + $added_cart_session);  
+//    $added_cart_count_session   =    ($added_cart_count_session_p > "2") ? "2" : "1";
+//        $added_cart_count_session     =     "1";    
+    
+    if ((count($enteredLFPPrimay) >= "1") && (count($enteredPlotPrimay)>= "1"))  {
+    $added_cart_count_session     =     "2";    
+    }else{
+    $added_cart_count_session     =     "1";      
+    }
+    
+     if ((count($enteredLFPPrimay) >= "1") && (count($enteredPlotPrimay)>= "1"))  {
+    $_SESSION['cart_count']     =     "2";    
+    }else{
+    $_SESSION['cart_count']     =     "1";      
+    }
     
 
     $i = 1;
@@ -197,15 +226,16 @@ if ($_POST['service_lfp_add'] == '1') {
             if ($lfp['schedule_place'] != '0') {
 
                 $address_dtls = SelectLastEnteredAddress($lfp['schedule_place']);
+                $address_2 = ($address_dtls[0]['address_2'] != '') ? $address_dtls[0]['address_2'] . '<br>' : '';
                 $address_3 = ($address_dtls[0]['address_3'] != '') ? $address_dtls[0]['address_3'] . '<br>' : '';
-                $address_string = $address_dtls[0]['company_name'] . '<br>' . $address_dtls[0]['address_1'] . '<br>' . $address_dtls[0]['address_2'] . '<br>' . $address_3 . $address_dtls[0]['city'] . ',&nbsp;' . StateName($address_dtls[0]['state']) . '&nbsp;' . $address_dtls[0]['zip'];
+                $address_string = $address_dtls[0]['company_name'] . '<br>' . $address_dtls[0]['address_1'] . '<br>' . $address_2.$address_3.$address_dtls[0]['city'] . ',&nbsp;' . StateName($address_dtls[0]['state']) . '&nbsp;' . $address_dtls[0]['zip'];
 
                 $option_sechdule = ($lfp['schedule_place'] == 'my_office') ? '<span style="font-weight: bold">My Office</span>' : '<span style="font-weight: bold">Alternate:</span><br>' . $address_string;
                 ?>
 <!--                <div class="file_option">
                     File Options:
                 </div>-->
-                <div style="width: 95%;margin: auto;margin-top: 7px;margin-bottom: 40px;">                    
+                <div style="width: 95%;margin: auto;margin-top: 7px;margin-bottom: 95px;">                    
                     <div style="float: left;width: 22%;margin-top: 5px;font-weight: bold;">Schedule a pick-up Option:</div>
                     <div style="float: left;width: 50%;margin-top: 5px;">                        
                         <div style="float: left;width: 100%;margin-bottom: 10px;"><?php echo $option_sechdule; ?></div>
@@ -232,6 +262,64 @@ if ($_POST['service_lfp_add'] == '1') {
                 <div class="file_option_content_source">
                     <?php echo $lfp['special_inc']; ?>                    
                 </div>
+            <?php } ?>
+             <?php
+            if ($lfp['ml_active'] != '0') {               
+                ?>   
+            <div class="ml_container border_gle_ml">
+                <div class="ml_header">Mounting / Laminating:</div>
+                
+                <div class="lfp_sets_ml_body">
+                <ul>
+                    <li>
+                        <label>Originals:</label><?php echo $lfp['ml_originals']; ?>
+                    </li>
+                    <li>
+                        <?php
+                        if($lfp['ml_type'] == "M"){
+                            $type_ml        =   "Mounting";    
+                        }elseif ($lfp['ml_type'] == "L") {
+                            $type_ml        =   "Laminating";           
+                        }elseif ($lfp['ml_type'] == "Both") {
+                            $type_ml        =   "Both";         
+                        }
+                        ?>
+                        <label>Type:</label><?php echo $type_ml; ?>
+                    </li>
+                    <?php
+                    if($lfp['ml_mounting'] != "none"){
+                    ?>
+                    <li>
+                        <label>Mounting:</label><?php echo $lfp['ml_mounting']; ?>
+                    </li>
+                    <?php 
+                    }
+                    ?>
+                    <?php
+                    if($lfp['ml_laminating'] != "none"){
+                    ?>
+                    <li>
+                        <label>Lamination:</label><?php echo $lfp['ml_laminating']; ?>
+                    </li>
+                    <?php 
+                    }
+                    ?>
+                    <li>
+                        <label>Dimensions:</label><?php echo "Width:&nbsp;".$lfp['ml_width'].'&nbsp;&nbsp;Length:&nbsp;'.$lfp['ml_length']; ?>
+                    </li>
+                    <li>
+                        <label>Grommets:</label><?php echo $lfp['ml_grommets']; ?>
+                    </li>
+                    <?php
+                    if($lfp['mal_splns'] != ""){
+                    ?>
+                    <li>
+                        <label>Special Instructions:</label><?php echo $lfp['mal_splns']; ?>
+                    </li>                 
+                    <?php } ?>
+                </ul>
+                </div>                
+            </div>
             <?php } ?>
         </div>
         <?php

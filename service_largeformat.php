@@ -8,16 +8,20 @@ if($_SESSION['sohorepro_companyid']  == '')
   exit;
 }
 
+//if($_SESSION['cart_count']  == '1')
+//{
+//  header("Location:service_largeformat.php");
+////  //exit;
+//    
+////    print_r($_SESSION);
+////    exit;
+//}
 
+if($_GET['lfp']  == '1'){
+header("Location:service_largeformat.php");    
+}
 
-
-
-
-
-
-
-
-
+    
 
 ?>
 <!DOCTYPE html>
@@ -57,6 +61,7 @@ if($_SESSION['sohorepro_companyid']  == '')
         <script type="text/javascript">
              $(document).ready(function() {
                  $('.sticky-navigation').waypoint('sticky');
+                 
              });
 
 
@@ -1172,7 +1177,33 @@ color: red;
                 <!--<span style="float: left;color: #000;font-weight: bold;margin-top: 5px;margin-left: 15px;">Note: All orders placed after hours will be picked up on the next business day.</span>-->
                 <span style="float: right;border: 1px solid #BBB;padding: 3px 10px;border-radius: 3px;cursor: pointer;" onclick="return close_asap();">Close</span>
             </div>
-        </div> 
+        </div>
+        <div id="are_you_continue" style="display: none;font-size: 15px;position: fixed;top: 25%;left: 40%;padding: 5px;z-index: 10;z-index: 1000;width: 35%;background: white;border-bottom: 1px solid #aaa;border-radius: 4px;box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);border: 1px solid rgba(0, 0, 0, 0.1);background-clip: padding-box;">
+        <div style="width: 96%;padding: 2%;float: left;font-size: 14px;line-height: 18px;text-align: center;">
+            <!--<div class="close" onclick="close_cart_prompt();"></div>-->            
+            <div style="width: 100%;float: left;font-weight: bold;font-size: 35px;line-height: 35px;">Continue Session?</div>
+            <div style="width: 100%;float: left;font-weight: bold;font-size: 22px;line-height: 70px;">
+                Jump to:
+                <select id="all_services">
+                    <option value="PAC">PLOTTING & ARCHITECTURAL COPIES</option>
+                    <option value="LFP">LARGE FORMAT COLOR & BW</option>
+                    <option value="FAP">FINE ART PRINTING</option>
+                    <option value="ML">MOUNTING & LAMINATING</option>
+                    <option value="BIN">BINDING</option>
+                    <option value="OFP">OFFSET PRINTING</option>
+                    <option value="SCN">SCANNING</option>
+                    <option value="CPS">COPY SHOP</option>                    
+                </select>
+                <span class="all_services_go" onclick="return go_to_other_service();">GO</span>
+            </div>
+            <div class="chechout_btn_main">
+                <div class="chechout_btn_main_cont" onclick="return go_to_cart();">
+                    <div class="chechout_btn" style="line-height: 28px;">Checkout</div>
+                    <div class="chechout_btn_logo"><img src="images/shopping-cart.png" /></div>
+                </div>                
+            </div>
+        </div>
+        </div>
         <div id="body_container">
             <div id="body_content" class="body_wrapper">
                 <div id="body_content-inner" class="body_wrapper-inner">
@@ -1640,6 +1671,7 @@ color: red;
             </div>                   
                 <!--Special Instruction Start-->
                 <input type="hidden" name="validate_imp" id="validate_imp" value="" />
+                <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="0" />
                 <div style="float: left;width: 100%;">
                     <div id="sp_inst" style="margin-top:10px;margin-bottom: 0px;">
                       <label style="font-weight: bold;margin-bottom: -4px; margin-top: -10px;">
@@ -1682,7 +1714,7 @@ color: red;
              
 <!--              <div style="float: left;width: 99%;border-top: 1px solid #CCC;"></div>      -->
               <div style="float:left;width:100%;text-align:right;margin-top: 10px;">                  
-                  <input class="addproductActionLink" value="Save to Cart" style="cursor: pointer; float: right; font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -1px !important;" type="button" onclick="return validate_lfp_cont();" />
+                  <input class="addproductActionLink" value="Save to Cart and Continue" style="cursor: pointer; float: right; font-size: 12px; padding: 1.5px; width: 180px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -1px !important;" type="button" onclick="return validate_lfp_cont_pre();" />
                   <input class="addNewOrderSet" value="Add Set" style="float:right;cursor: pointer;font-size:12px; padding:1.5px; width: 100px;margin-top:-51px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-right: 10px;" type="button" onclick="return validate_lfp();" />
               </div> 
               </span>
@@ -1720,7 +1752,8 @@ color: red;
 
         </div>
                 
-                <script>
+                <script> 
+                    
                     function validate_lfp()
                     {
                        var reference            =       $("#jobref").val();
@@ -1806,7 +1839,7 @@ color: red;
                        var length_values         =       (add_ml == true) ? length_values_pre : "0"; 
                        var grommets              =       (grommets_pre == true) ? "Grommets" : "0";
                        var splins                =       (add_ml == true) ? splins_pre : "0";
-                       
+                       var validate_imp          =        $("#validate_imp").val();
                        //Additional Mounting & Laminating End
                        
                        
@@ -1815,16 +1848,24 @@ color: red;
                            document.getElementById('jobref').focus();
                            return false;
                        }                       
-                       if(original == ''){
-                           alert("Please enter the original.");
-                           document.getElementById('original').focus();
-                           return false;
-                       }                       
+//                            if(original == ''){
+//                                alert("Please enter the original.");
+//                                document.getElementById('original').focus();
+//                                return false;
+//                            }                       
                        if(print_ea == ''){
                            alert("Please enter the Prints of Each.");
                            document.getElementById('print_ea').focus();
                            return false;
-                       }                      
+                       }    
+                       
+                       if(validate_imp == ''){
+                            alert('Please select the file option');
+                            $(".spl_option").css("background-color", "#FFFF00");
+                            return false;
+                        }else{
+                            $(".spl_option").css("background-color", "#FFFF");    
+                        }
                        
                         if (reference != '')
                             {
@@ -1856,6 +1897,90 @@ color: red;
                                         });
                             }
                        
+                    }
+                    
+                    
+                    
+                    function validate_lfp_cont_pre()
+                    {
+                        var validate_imp            =   $("#validate_imp").val();
+                        var optint_count_check_pre  =   $("#optint_count_check_i").val();
+                        var cart_count              =   $("#cart_count").html();
+                        var cart_count_val          =   (cart_count != null) ? (Number(cart_count)+Number(1)) : "1";
+                         
+                        if((validate_imp == "") && (optint_count_check_pre == "0")){
+                            validate_lfp_cont();
+                        }else if((optint_count_check_pre == "0") && (validate_imp == "1")){
+                            $("#cart_count").show();
+                            $("#cart_count").html(cart_count_val);
+                            $("body").append("<div class='modal-overlay js-modal-close'></div>");
+                            $("#are_you_continue").fadeIn("slow");
+                        }else if((optint_count_check_pre != "0") && (validate_imp == "1")){
+                            $("#cart_count").show();
+                            $("#cart_count").html(cart_count_val);
+                            $("body").append("<div class='modal-overlay js-modal-close'></div>");
+                            $("#are_you_continue").fadeIn("slow");
+                        }else if((optint_count_check_pre != "0") && (validate_imp == "")){
+                            $("#cart_count").show();
+                            $("#cart_count").html(cart_count_val);
+                            $("body").append("<div class='modal-overlay js-modal-close'></div>");
+                            $("#are_you_continue").fadeIn("slow");
+                        }
+                    }
+                    
+                    function go_to_cart()
+                    {
+                      var validate_imp        =   $("#validate_imp").val();
+                      if(validate_imp != ""){
+                      validate_lfp_cont();
+                      }else{
+                      window.location = "add_recipients.php";    
+                      }
+                    }
+                    
+                    function go_to_other_service()
+                    {
+                        var all_services = $("#all_services").val();
+                        
+                        if(all_services == "PAC"){
+                            validate_lfp();
+                            window.location = "service_plotting.php";
+                        } 
+
+                        if(all_services == "FAP"){
+                            validate_lfp();
+                            window.location = "service_finearts.php";
+                        }
+
+                        if(all_services == "ML"){
+                            validate_lfp();
+                            window.location = "service_lamination.php";
+                        }
+
+                        if(all_services == "BIN"){
+                            validate_lfp();
+                            window.location = "service_binding.php";
+                        }
+
+                        if(all_services == "OFP"){
+                            validate_lfp();
+                            window.location = "service_offset.php";
+                        }
+
+                        if(all_services == "SCN"){
+                            validate_lfp();
+                            window.location = "service_scanning.php";
+                        } 
+
+                        if(all_services == "CPS"){
+                            validate_lfp();
+                            window.location = "service_copyshop.php";
+                        }      
+                        
+                          if(all_services == "LFP"){
+                          validate_plotting();
+                          window.location = "service_largeformat.php";
+                          }
                     }
                     
                     function validate_lfp_cont()
@@ -1907,7 +2032,7 @@ color: red;
                        var add_ml               =       document.getElementById("add_ml").checked;
                        var add_ml_val           =       (add_ml == true) ? "1" : "0";
                        var original_lam_pre     =       $("#original_lam").val();
-                       
+                       var validate_imp         =       $("#validate_imp").val();
                        
                        
                        var original_lam         =       (add_ml == true) ? original_lam_pre : "0";
@@ -1952,17 +2077,24 @@ color: red;
                            document.getElementById('jobref').focus();
                            return false;
                        }                       
-                       if(original == ''){
-                           alert("Please enter the original.");
-                           document.getElementById('original').focus();
-                           return false;
-                       }                       
+//                            if(original == ''){
+//                                alert("Please enter the original.");
+//                                document.getElementById('original').focus();
+//                                return false;
+//                            }                       
                        if(print_ea == ''){
                            alert("Please enter the Prints of Each.");
                            document.getElementById('print_ea').focus();
                            return false;
-                       }                      
+                       }     
                        
+                       if(validate_imp == ''){
+                            alert('Please select the file option');
+                            $(".spl_option").css("background-color", "#FFFF00");
+                            return false;
+                        }else{
+                            $(".spl_option").css("background-color", "#FFFF");    
+                        }
                         if (reference != '')
                             {
                                 $.ajax

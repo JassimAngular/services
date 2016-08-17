@@ -452,7 +452,31 @@ span.arrow {
     width: 100%;
 }
 
-#cart_count{
+#cart_count {
+    background-color: #ff7e00;
+    /*    border: 1px solid #07c;*/
+    border-radius: 51%;
+    /*    box-shadow: 0 0 5px #07c;*/
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    height: 18px;
+    line-height: 18px;
+    margin-top: 5px;
+    outline: medium none;
+    padding: 0;
+    position: absolute;
+    right: 12%;
+    text-align: center;
+    top: -14px;
+    width: 18px;
+    z-index: 1;
+}
+#cart_li {
+    position: relative;
+}
+
+/*#cart_count{
     background-color: #ff7e00;
     border-radius: 51%;
     color: white;
@@ -467,18 +491,18 @@ span.arrow {
     z-index: 1;
     font-size: 11px;
     font-weight: bold;
-/*    display: none;*/
+    display: none;
     border: 1px solid #07c;
     box-shadow: 0 0 5px #07c;
     outline: none;
     margin-top: 5px;
-}
+}*/
 
-#cart_count_glow{ 
+/*#cart_count_glow{ 
     border: 1px solid #07c;
     box-shadow: 0 0 5px #07c;
     outline: none;
-}
+}*/
 
 .sticky-navigation
 {
@@ -603,7 +627,7 @@ span.arrow {
     float: left;
     margin-top: 50px;
     margin-bottom: 20px;
-    
+
 }
 
 .chechout_btn_main_cont{
@@ -628,4 +652,56 @@ span.arrow {
     padding: 10px 5px 4px 2px;
     background-color: #F99B3E;
     font-size: 22px;
+}
+
+
+
+#show_address_inside_1 input {
+    float: left;
+}
+#show_address_inside_1 select {
+    float: left;
+}
+
+ul.navigation{position:relative;}
+
+
+.border_gle_ml{
+    border-top: 1px solid #e5e5e5;
+    background: #fff;
+    white-space: nowrap;
+    box-shadow: 0px 4px 1px 1px rgba(0,0,0,.1);
+    -webkit-box-shadow: 0px 4px 1px 1px rgba(0,0,0,.1)
+}
+
+.ml_container{
+    width: 95%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.ml_header{
+    width: 90%;
+    margin-bottom: 10px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.lfp_sets_ml_body{
+    width: 90%;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.lfp_sets_ml_body > ul{
+    list-style: none;
+}
+.lfp_sets_ml_body > ul > li{
+    width: 100%;
+}
+.lfp_sets_ml_body > ul > li > label{
+    width: 32%;
+    float: left;
+    font-weight: bold;
 }

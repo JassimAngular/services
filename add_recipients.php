@@ -735,8 +735,8 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
                             <div>
                                 <input type="radio" name="del_type" id="pickup_soho" value="1" style="width: 15% !important;" onclick="return pickup_soho();" /><span style="text-transform: uppercase;font-weight: bold;">WILL PICKUP FROM SOHO REPRO</span>                                
                                 <select style="width: 20% !important;" id="pickup_soho_add" name="pickup_soho_add" onchange="return pickup_soho();">
-                                    <option value="1" selected="selected">381 Broome St</option>
-                                    <option value="2" >307 7th Ave, 5th Floor</option>
+                                    <option value="1" onclick="return pickup_soho();" selected="selected">381 Broome St</option>
+                                    <option value="2" onclick="return pickup_soho();">307 7th Ave, 5th Floor</option>
                                 </select>
                             </div>
                         </div>
@@ -1242,7 +1242,9 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
  
  function send_everything_to()
  {
-      $("#send_everything_to").attr('checked', 'checked');
+     
+//     $("#send_everything_to").attr('checked', true);
+     document.getElementById('send_everything_to').checked = true;
      var send_everything_to = document.getElementById('send_everything_to').checked;
      var address_book_se    = document.getElementById('address_book_se').value;
      $("#address_book_se").css("border", "1px solid #e4e4e4"); 
@@ -1309,7 +1311,9 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
  
  function pickup_soho()
  {
+     //     alert("test");
      // $("body").append("<div class='modal-overlay'></div>");
+     document.getElementById('pickup_soho').checked = true;
      var pickup_soho             = document.getElementById('pickup_soho').checked;
      var pickup_from_soho_add    = document.getElementById('pickup_soho_add').value;
      if(pickup_soho == true){

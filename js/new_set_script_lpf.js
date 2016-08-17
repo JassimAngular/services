@@ -257,3 +257,11 @@ function date_reveal()
             dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             beforeShowDay: disableSpecificDaysAndWeekends}); 
 }
+
+function loadStart() {
+$('#loading').show();
+}
+
+function loadStop() {
+$('#loading').hide();
+}

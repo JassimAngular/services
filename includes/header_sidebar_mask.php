@@ -5,7 +5,7 @@ $page_name_new = $page_names[$pagename_pos];
 
 ?>
 <div id="content_usermeta">
-    <div id="site-logo" onclick="return mask_show();">
+    <div id="site-logo">
         <h1 class="site-logo"><a href="#" class="site-logo"><span>SOHO Repro Graphics</span><img src="store_files/logo-SOHO_Repro.gif" alt="SOHO Repro Graphics" height="182" width="205"></a></h1>
         <input type="hidden" name="usr_id" id="usr_id" value="<?php echo $_SESSION['sohorepro_userid']; ?>" />
     </div>
@@ -49,15 +49,15 @@ $page_name_new = $page_names[$pagename_pos];
                        value="Cancel" type="button" name="cancel" onclick="show_forgot(1);"/>
             </form>
         </div>
-        <div id="panalLoginHelp" onclick="return mask_show();">
+        <div id="panalLoginHelp">
             <div class="sideheadline">                
-                &nbsp;<span style="color: #853E00  !important;font-weight: bold;font-size: 17px;cursor: pointer;">Existing Account -<br>
-                    &nbsp;New User Setup</span>
+                &nbsp;<a href="existing_customer.php" style="color: #853E00  !important;font-weight: bold;font-size: 17px;">Existing Account -<br>
+                    &nbsp;New User Setup</a>
             </div>
             <div class="sideheadline" style="margin-top: 10px;">
                 <!--                <a href="#new_account_add.php" style="color: #853E00  !important;font-weight: bold;font-size: 17px;">
                                     &nbsp;Request New Account</a>                -->
-                <span style="color: #853E00  !important;font-weight: bold;font-size: 17px;cursor: pointer;">&nbsp;Request New Account</span>
+                <span onclick="return check_log();" style="color: #853E00  !important;font-weight: bold;font-size: 17px;cursor: pointer;">&nbsp;Request New Account</span>
             </div>
 <!--            <p style="margin-top:10px!important;">
                 If you've ordered products or services with us, you have an account.
@@ -71,14 +71,14 @@ $page_name_new = $page_names[$pagename_pos];
         </div>
 
     </div>
-    <div onclick="return mask_show();">
-       <img src="./images/plotters.gif" style="border: 0px;width: 100%;" />
+    <div>
+        <a href="#http://sohorepro.com/plotter-equipment-maintenance-and-supplies/" target="_blank"><img src="./images/plotters.gif" style="border: 0px;width: 100%;" /></a>
     </div>
     <?php
     $specials       = Specials('3');
     if($specials == '1'){
     ?>
-    <div onclick="return mask_show();" style="background-color: #fff;border: 1px solid #000;border-bottom: 0px;text-align: center;padding-top: 15px;padding-bottom: 15px;">
+    <div style="background-color: #fff;border: 1px solid #000;border-bottom: 0px;text-align: center;padding-top: 15px;padding-bottom: 15px;">
         <a href="#http://sohorepro.com/specials/" target="_blank" style="text-decoration: none;background: #BFC5CD;padding: 10px;padding-left: 60px;padding-right: 60px;border-radius: 8px;color: #FFF;font-weight: bold;font-size: 17px;">SPECIALS</a>
     </div>
     <?php

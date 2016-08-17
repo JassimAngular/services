@@ -970,14 +970,14 @@ exit;
     <!--                                                                                                <textarea class="reginput comp_det_view" name="address1" id="address1" placeholder="Address1"></textarea>-->
                                                                                                         <input type="text" class="reginput comp_det_view" name="del_address1" id="del_address1" placeholder="Address1" tabindex="" />
                                                                                                         
-                                                                                                        <div class="label_regview">Address3<span style="color: red;"></span> :</div> 
+                                                                                                        <div class="label_regview">Room/Flr/Suite<span style="color: red;"></span> :</div> 
     <!--                                                                                                <textarea class="reginput comp_det_view" name="address1" id="address1" placeholder="Address1"></textarea>-->
-                                                                                                        <input type="text" class="reginput comp_det_view" name="del_address3" id="del_address3" placeholder="Address3" tabindex="" />
+                                                                                                        <input type="text" class="reginput comp_det_view" name="del_address3" id="del_address3" placeholder="Room/Flr/Suite" tabindex="" />
                                                                                                     </div>
                                                                                                     
                                                                                                     <div style="width:40%;float:left;">
                                                                                                         
-                                                                                                        <div class="label_regview">Address2<span style="color: red;">*</span> :</div> 
+                                                                                                        <div class="label_regview">Address2<span style="color: red;"></span> :</div> 
     <!--                                                                                                <textarea class="reginput comp_det_view" name="address1" id="address1" placeholder="Address1"></textarea>-->
                                                                                                         <input type="text" class="reginput comp_det_view" name="del_address2" id="del_address2" placeholder="Address2" tabindex="" />                                                                                                    
                                                                                                         
@@ -1093,7 +1093,7 @@ exit;
                                                                                                      
                                                                                                      if((del_address1 == '') && (del_address2 == '') && (del_phone == '') && (del_busicity == '') && (del_busizip == '')){
                                                                                                         $("#del_address1").css("border","1px solid red");
-                                                                                                        $("#del_address2").css("border","1px solid red");
+//                                                                                                        $("#del_address2").css("border","1px solid red");
                                                                                                         $("#del_phone").css("border","1px solid red");
                                                                                                         $("#del_busicity").css("border","1px solid red");
                                                                                                         $("#del_busizip").css("border","1px solid red");
@@ -1114,13 +1114,13 @@ exit;
                                                                                                         $("#del_address1").css("border","1px solid #e4e4e4"); 
                                                                                                      }                                                                                                    
                                                                                                      
-                                                                                                     if(del_address2 == ''){
-                                                                                                        $("#del_address2").css("border","1px solid red");
-                                                                                                        $("#del_address2").focus();
-                                                                                                        return false;
-                                                                                                     }else{
-                                                                                                        $("#del_address2").css("border","1px solid #e4e4e4"); 
-                                                                                                     }  
+//                                                                                                     if(del_address2 == ''){
+//                                                                                                        $("#del_address2").css("border","1px solid red");
+//                                                                                                        $("#del_address2").focus();
+//                                                                                                        return false;
+//                                                                                                     }else{
+//                                                                                                        $("#del_address2").css("border","1px solid #e4e4e4"); 
+//                                                                                                     }  
                                                                                                      
                                                                                                      if(del_phone == ''){
                                                                                                         $("#del_phone").css("border","1px solid red");

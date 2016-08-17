@@ -1246,7 +1246,7 @@ function update_cust_page_details(ID){
             <div style="width: 100%;float: left;font-weight: bold;font-size: 22px;line-height: 50px;">
                 Jump to:
                 <select id="all_services">
-                    <!--<option value="PAC">PLOTTING & ARCHITECTURAL COPIES</option>-->
+                    <option value="PAC">PLOTTING & ARCHITECTURAL COPIES</option>
                     <option value="LFP">LARGE FORMAT COLOR & BW</option>
                     <option value="FAP">FINE ART PRINTING</option>
                     <option value="ML">MOUNTING & LAMINATING</option>
@@ -1783,7 +1783,7 @@ function update_cust_page_details(ID){
              
                     
               <div style="float:left;width:100%;text-align:right;margin-top: 10px;">                  
-                  <input class="addproductActionLink" value="Save to Cart" style="cursor: pointer; float: right; font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -1px !important;" type="button" onclick="return validate_plotting_cont_pre();" />
+                  <input class="addproductActionLink" value="Save to Cart and Continue" style="cursor: pointer; float: right; font-size: 12px; padding: 1.5px; width: 180px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -1px !important;" type="button" onclick="return validate_plotting_cont_pre();" />
                   <input class="addNewOrderSet" value="Add Set" style="float:right;cursor: pointer;font-size:12px; padding:1.5px; width: 100px;margin-top:-51px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-right: 10px;" type="button" onclick="return validate_plotting();" />
               </div> 
               </span>
@@ -2103,16 +2103,24 @@ function update_cust_page_details(ID){
   {
     var validate_imp            =   $("#validate_imp").val();
     var optint_count_check_pre  =   $("#optint_count_check").val();
+    var cart_count              =   $("#cart_count").html();
+    var cart_count_val          =   (cart_count != null) ? (Number(cart_count)+Number(1)) : "1";
     
     if((validate_imp == "") && (optint_count_check_pre == "0")){
         validate_plotting_cont();
     }else if((optint_count_check_pre == "0") && (validate_imp == "1")){
+        $("#cart_count").show();
+        $("#cart_count").html(cart_count_val);
         $("body").append("<div class='modal-overlay js-modal-close'></div>");
         $("#are_you_continue").fadeIn("slow");
     }else if((optint_count_check_pre != "0") && (validate_imp == "1")){
+        $("#cart_count").show();
+        $("#cart_count").html(cart_count_val);
         $("body").append("<div class='modal-overlay js-modal-close'></div>");
         $("#are_you_continue").fadeIn("slow");
     }else if((optint_count_check_pre != "0") && (validate_imp == "")){
+        $("#cart_count").show();
+        $("#cart_count").html(cart_count_val);
         $("body").append("<div class='modal-overlay js-modal-close'></div>");
         $("#are_you_continue").fadeIn("slow");
     }    
@@ -2133,36 +2141,43 @@ function update_cust_page_details(ID){
       var all_services = $("#all_services").val();
       
       if(all_services == "LFP"){
-          window.location = "service_largeformat.php";
+          validate_plotting();
+          window.location = "service_largeformat.php?lfp=1";
       }
       
       if(all_services == "FAP"){
+          validate_plotting();
           window.location = "service_finearts.php";
       }
       
       if(all_services == "ML"){
+          validate_plotting();
           window.location = "service_lamination.php";
       }
       
       if(all_services == "BIN"){
+          validate_plotting();
           window.location = "service_binding.php";
       }
       
       if(all_services == "OFP"){
+          validate_plotting();
           window.location = "service_offset.php";
       }
       
       if(all_services == "SCN"){
+          validate_plotting();
           window.location = "service_scanning.php";
       } 
       
       if(all_services == "CPS"){
+          validate_plotting();
           window.location = "service_copyshop.php";
       } 
       
-//      if(all_services == "PAC"){
-//          window.location = "service_plotting.php";
-//      } 
+      if(all_services == "PAC"){
+          window.location = "service_plotting.php";
+      } 
   }
   
   function close_cart_prompt()

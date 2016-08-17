@@ -112,10 +112,31 @@ if ($_POST['service_plotting_add'] == '1') {
                                 $_SESSION['use_the_same']   =   '';
     }
     $enteredPlotPrimay = EnteredPlotttingPrimary($company_id_view_plot, $user_id_add_set);
+    $enteredLFPPrimay = EnteredLFPPrimary($company_id_view_plot, $user_id_add_set);
     
-    $added_cart_count  =    (count($enteredPlotPrimay) > 0) ? "1" : "0";
+//    $added_cart_count           =    (count($enteredPlotPrimay) > 0) ? "1" : "0";
+//    $added_cart_session         =    ($_SESSION['cart_count'] == "") ? "1" : "1";
     
-    $_SESSION['cart_count'] =   $added_cart_count;
+//    $added_cart_count_session_p =    ($added_cart_count + $added_cart_session);  
+//    
+//    $added_cart_count_session   =    ($added_cart_count_session_p > "2") ? "2" : "1";
+    
+     if (count($enteredPlotPrimay) >= "1") {
+    $added_cart_session     =     "1";    
+    }elseif(count($enteredLFPPrimay) >= "1"){
+    $added_cart_session     =     "2";      
+    }
+    
+    if (count($enteredPlotPrimay) >= "1") {
+    $_SESSION['cart_count']     =     "1";    
+    }elseif(count($enteredLFPPrimay) >= "1"){
+    $_SESSION['cart_count']     =     "2";      
+    }
+    
+    $_SESSION['cart_count']     =     $added_cart_session;
+    
+    
+    //$_SESSION['cart_count'] =   $added_cart_count;
     
     $count_option = count($enteredPlotPrimay) + 1;
 
@@ -299,8 +320,9 @@ if ($_POST['service_plotting_add'] == '1') {
                 <?php if($plot['my_office_alt'] != '0'){ 
                     
                     $address_dtls    = SelectLastEnteredAddress($plot['address_book_id']);
+                    $address_2       = ($address_dtls[0]['address_2'] != '') ? $address_dtls[0]['address_2'].'<br>' : '';
                     $address_3       = ($address_dtls[0]['address_3'] != '') ? $address_dtls[0]['address_3'].'<br>' : '';
-                    $address_string  = $address_dtls[0]['company_name'].'<br>'.$address_dtls[0]['address_1'].'<br>'.$address_dtls[0]['address_2'].'<br>'.$address_3.$address_dtls[0]['city'].',&nbsp;'.StateName($address_dtls[0]['state']).'&nbsp;'.$address_dtls[0]['zip'];
+                    $address_string  = $address_dtls[0]['company_name'].'<br>'.$address_dtls[0]['address_1'].'<br>'.$address_2.$address_3.$address_dtls[0]['city'].',&nbsp;'.StateName($address_dtls[0]['state']).'&nbsp;'.$address_dtls[0]['zip'];
                     
                     $option_sechdule = ($plot['my_office_alt'] == 'my_office') ? '<span style="font-weight: bold">My Office</span>' : '<span style="font-weight: bold">Alternate:</span><br>'.$address_string;
                     
@@ -337,7 +359,7 @@ if ($_POST['service_plotting_add'] == '1') {
             </div>
         </label>  
         <input type="hidden" name="optint_count_check" id="optint_count_check" value="<?php echo count($enteredPlotPrimay); ?>" />
-        <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo $added_cart_count; ?>" />
+        <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo $added_cart_session; ?>" />
         
         <div style="background-color:#FFFFFF" class="serviceOrderSetWapper" setindex="0">
             <div class="serviceOrderSetWapperInternal">
