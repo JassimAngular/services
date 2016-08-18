@@ -121,17 +121,22 @@ if ($_POST['service_plotting_add'] == '1') {
 //    
 //    $added_cart_count_session   =    ($added_cart_count_session_p > "2") ? "2" : "1";
     
-     if (count($enteredPlotPrimay) >= "1") {
-    $added_cart_session     =     "1";    
-    }elseif(count($enteredLFPPrimay) >= "1"){
-    $added_cart_session     =     "2";      
-    }
+    if ((count($enteredPlotPrimay) >= "1") && (count($enteredLFPPrimay) >= "1")) {
+        $added_cart_session = "2";
+    }elseif (count($enteredLFPPrimay) >= "1") {
+        $added_cart_session = "2";
+    }elseif (count($enteredPlotPrimay) >= "1") {
+        $added_cart_session = "1";
+    } 
+
     
-    if (count($enteredPlotPrimay) >= "1") {
-    $_SESSION['cart_count']     =     "1";    
-    }elseif(count($enteredLFPPrimay) >= "1"){
-    $_SESSION['cart_count']     =     "2";      
-    }
+    if ((count($enteredPlotPrimay) >= "1") && (count($enteredLFPPrimay) >= "1")) {
+        $_SESSION['cart_count'] = "2";
+    }elseif (count($enteredLFPPrimay) >= "1") {
+        $_SESSION['cart_count'] = "2";
+    }elseif (count($enteredPlotPrimay) >= "1") {
+        $_SESSION['cart_count'] = "1";
+    } 
     
     $_SESSION['cart_count']     =     $added_cart_session;
     

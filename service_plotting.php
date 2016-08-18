@@ -1247,7 +1247,7 @@ function update_cust_page_details(ID){
                 Jump to:
                 <select id="all_services">
                     <option value="PAC">PLOTTING & ARCHITECTURAL COPIES</option>
-                    <option value="LFP">LARGE FORMAT COLOR & BW</option>
+                    <option value="LFP" selected="selected">LARGE FORMAT COLOR & BW</option>
                     <option value="FAP">FINE ART PRINTING</option>
                     <option value="ML">MOUNTING & LAMINATING</option>
                     <option value="BIN">BINDING</option>
@@ -1317,7 +1317,7 @@ function update_cust_page_details(ID){
                         <input type="hidden" name="continue_ok" id="continue_ok" value="0" />
                     </div>
                   </li>
-                    <div  id="set">
+                <div  id="set">
                         <input type="hidden" name="pri_inc_val" id="pri_inc_val" value="1" />
                   <li class="clear">
                       <!-- FOR EACH START -->  
@@ -1327,6 +1327,646 @@ function update_cust_page_details(ID){
                     $check_plotting         = PlottingSetWithoutOrderId($company_id_view_plot, $user_id_add_set);
                     $check_plotting_needed  = PlottingNeededSetWithoutOrderId($company_id_view_plot, $user_id_add_set);   
                     $check_plotting_files   = UploadFileExist($company_id_view_plot, $user_id_add_set);
+                    
+                    ?>
+                      <input type="hidden" name="cart_count_pac" id="cart_count_pac" value="<?php echo count($cart_count_pac); ?>" />
+                <!-- Entered Sets Start -->
+                <?php
+                if($_GET['set_existed'] == "1"){
+                $enteredPlotPrimay = EnteredPlotttingPrimary($company_id_view_plot, $user_id_add_set);
+                $count_option = count($enteredPlotPrimay) + 1;
+                ?>
+                <div  id="sets_all">
+                <?php
+                if(count($enteredPlotPrimay) > 0){
+                $i = 1;                
+                foreach ($enteredPlotPrimay as $plot) {
+                    $job_type = ($plot['plot_arch'] == '1') ? 'Plotting' : 'Architectural Copies';
+                    $file_upload_exist = UploadFileExist($_SESSION['sohorepro_companyid'], $_SESSION['sohorepro_userid']);
+                    $output = ($plot['output'] == 'Both') ? $plot['output'].' <b>B&W and COLOR</b>' : $plot['output'];
+                ?>                    
+                    <div class="plot_container" style="width: 100%;float: left;border: 1px #FF7E00 solid;margin-bottom: 20px;">
+                                <div class="plot_wrap" style="padding: 5px;">
+                                    <div style="width: 100%;float: left;margin-bottom: 10px;">
+                                        <div style="float: left;width: 45%;font-weight: bold;">Job Option - <?php echo $i; ?></div>
+                                        <div style="float: left;width: 50%;font-weight: bold;text-align: right;cursor: pointer;" onclick="return delete_added_job(<?php echo $plot['id']; ?>);"><span style="background: #D84B36;color: #FFF;padding: 2px 8px;border-radius: 5px;margin-top: 3px;font-weight: bold;">Delete</span></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <label>Job Type: </label>
+                                            <p id="job_type_<?php echo $plot['id']; ?>" style="cursor: pointer;" onclick="return edit_job_type('<?php echo $plot['id']; ?>');"><?php echo $job_type; ?></p>
+                                            <select class="none" id="job_type_drop_<?php echo $plot['id']; ?>" style="width: 150px;" onchange="return update_job_type('<?php echo $plot['id']; ?>');">
+                                                <option <?php if($plot['plot_arch'] == '1'){ ?> selected="selected" <?php } ?> value="1">Plotting</option>
+                                                <option <?php if($plot['plot_arch'] == '0'){ ?> selected="selected" <?php } ?> value="0">Architectural Copies</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label>Originals:</label>
+                                            <p id="original_p_<?php echo $plot['id']; ?>" style="cursor: pointer;" onclick="return edit_original_option('<?php echo $plot['id']; ?>');"><?php echo $plot['origininals']; ?></p>                        
+                                            <input type="text" name="original_txt_<?php echo $plot['id']; ?>" id="original_txt_<?php echo $plot['id']; ?>" value="<?php echo $plot['origininals']; ?>" class="none" style="width: 40px;float: left;" />
+                                            <div id="action_original_<?php echo $plot['id']; ?>" style="float: left;margin-left: 5px;display: none;cursor: pointer;">
+                                                <img src="admin/images/like_icon.png" style="" alt="Update" title="Update" width="22" height="16" onclick="return update_original('<?php echo $plot['id']; ?>');" class="ad1_update" style="cursor: pointer;" id="">
+                                                <img src="admin/images/cancel_icon.png" style="" alt="Cancel" title="Cancel" width="22" height="16" onclick="return cancel_original('<?php echo $plot['id']; ?>');" class="ad1_update" style="cursor: pointer;" id="">
+                                            </div>                        
+                                        </li>
+                                        <li>
+                                            <label>Prints of Each:</label>
+                                            <p id="poe_p_<?php echo $plot['id']; ?>" style="cursor: pointer;" onclick="return edit_poe_option('<?php echo $plot['id']; ?>');"><?php echo $plot['print_ea']; ?></p>
+                                            <input type="text" name="poe_txt_<?php echo $plot['id']; ?>" id="poe_txt_<?php echo $plot['id']; ?>" value="<?php echo $plot['print_ea']; ?>" class="none" style="width: 40px;float: left;" />
+                                            <div id="action_poe_<?php echo $plot['id']; ?>" style="float: left;margin-left: 5px;display: none;cursor: pointer;">
+                                                <img src="admin/images/like_icon.png" style="" alt="Update" title="Update" width="22" height="16" onclick="return update_poe('<?php echo $plot['id']; ?>');" class="ad1_update" style="cursor: pointer;" id="">
+                                                <img src="admin/images/cancel_icon.png" style="" alt="Cancel" title="Cancel" width="22" height="16" onclick="return cancel_poe('<?php echo $plot['id']; ?>');" class="ad1_update" style="cursor: pointer;" id="">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label>Size:</label>
+                                            <p id="size_p_<?php echo $plot['id']; ?>" onclick="return edit_size_option('<?php echo $plot['id']; ?>');" style="cursor: pointer;"><?php echo $plot['size']; ?></p>
+                                            <select class="none" id="size_drop_<?php echo $plot['id']; ?>" style="width: 150px;" onchange="return update_size('<?php echo $plot['id']; ?>');">
+                                                <option <?php if($plot['size'] == strtoupper('FULL')){ ?> selected="selected" <?php } ?> value="FULL" >FULL</option>
+                                                <option <?php if($plot['size'] == strtoupper('HALF')){ ?> selected="selected" <?php } ?> value="HALF">HALF</option>
+                                                <option <?php if($plot['size'] == strtoupper('Reduce To 11 X 17')){ ?> selected="selected" <?php } ?> value="Reduce to 11 X 17">Reduce to 11 X 17</option>
+                                                <option <?php if($plot['size'] == strtoupper('Custom')){ ?> selected="selected" <?php } ?> value="Custom">Custom</option>  
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label>Output:</label>
+                                            <p id="output_p_<?php echo $plot['id']; ?>" style="cursor: pointer;" onclick="return edit_output_option('<?php echo $plot['id']; ?>');"><?php echo $output; ?></p>
+                                            <select class="none" id="output_drop_<?php echo $plot['id']; ?>" style="width: 150px;" onchange="return update_output('<?php echo $plot['id']; ?>');">
+                                                <option <?php if($output == strtoupper('B/W')){ ?> selected="selected" <?php } ?>  value="B/W">B/W</option>
+                                                <option <?php if($output == strtoupper('Color')){ ?> selected="selected" <?php } ?> value="Color">Color</option>
+                                                <option <?php if($output == strtoupper('Both')){ ?> selected="selected" <?php } ?> value="Both">Both</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label>Media:</label>
+                                            <p id="media_p_<?php echo $plot['id']; ?>" style="cursor: pointer;" onclick="return edit_media_option('<?php echo $plot['id']; ?>');"><?php echo $plot['media']; ?></p>
+                                            <select class="none" id="media_drop_<?php echo $plot['id']; ?>" style="width: 150px;" onchange="return update_media('<?php echo $plot['id']; ?>');">
+                                                <option <?php if($plot['media'] == strtoupper('Bond')){ ?> selected="selected" <?php } ?>  value="Bond">Bond</option>
+                                                <option <?php if($plot['media'] == strtoupper('Vellum')){ ?> selected="selected" <?php } ?> value="Vellum">Vellum</option>
+                                                <option <?php if($plot['media'] == strtoupper('Mylar')){ ?> selected="selected" <?php } ?> value="Mylar">Mylar</option>       
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label>Binding:</label>
+                                            <p id="binding_p_<?php echo $plot['id']; ?>" style="cursor: pointer;" onclick="return edit_binding_option('<?php echo $plot['id']; ?>');"><?php echo $plot['binding']; ?></p>
+                                            <select class="none" id="binding_drop_<?php echo $plot['id']; ?>" style="width: 150px;" onchange="return update_binding('<?php echo $plot['id']; ?>');">
+                                                <option <?php if($plot['binding'] == strtoupper('none')){ ?> selected="selected" <?php } ?> value="none">None</option>                                      
+                                                <option <?php if($plot['binding'] == strtoupper('Bind All')){ ?> selected="selected" <?php } ?> value="Bind All">Bind All</option>                          
+                                                <option <?php if($plot['binding'] == strtoupper('Bind by Discipline')){ ?> selected="selected" <?php } ?> value="Bind by Discipline">Bind by Discipline</option>
+                                                <option <?php if($plot['binding'] == strtoupper('Screw Post')){ ?> selected="selected" <?php } ?> value="Screw Post">Screw Post</option>     
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label>Folding:</label>
+                                            <p id="folding_p_<?php echo $plot['id']; ?>" style="cursor: pointer;" onclick="return edit_folding_option('<?php echo $plot['id']; ?>');"><?php echo $plot['folding']; ?></p>
+                                            <select class="none" id="folding_drop_<?php echo $plot['id']; ?>" style="width: 150px;" onchange="return update_folding('<?php echo $plot['id']; ?>');">
+                                                <option <?php if($plot['folding'] == strtoupper('None')){ ?> selected="selected" <?php } ?> value="None">None</option>
+                                                <option <?php if($plot['folding'] == strtoupper('Yes')){ ?> selected="selected" <?php } ?> value="Yes">Yes</option>    
+                                            </select>
+                                        </li>
+                                    </ul>
+                                    <ul style="margin-left: 20px;">
+                                        <div id="custome_details_<?php echo $plot['id']; ?>">
+                                        <?php
+                                        if ($plot['size'] == strtoupper('Custom')) {
+                                            ?>
+
+                                            <li>
+                                                <label>Custom Size Details: </label>
+                                                <p style="cursor: pointer;" id="custome_dtls_<?php echo $plot['id']; ?>" onclick="return edit_custome('<?php echo $plot['id']; ?>');"><?php echo $plot['custome_details']; ?></p>
+                                                <input type="text" name="cust_dtls_txt_<?php echo $plot['id']; ?>" id="cust_dtls_txt_<?php echo $plot['id']; ?>" value="<?php echo $plot['custome_details']; ?>" class="none" style="width: 60px;float: left;" />
+                                                <div id="action_cust_dtls_<?php echo $plot['id']; ?>" style="float: left;margin-left: 5px;display: none;cursor: pointer;">
+                                                    <img src="admin/images/like_icon.png" style="" alt="Update" title="Update" width="22" height="16" onclick="return update_cust_details('<?php echo $plot['id']; ?>');" class="ad1_update" style="cursor: pointer;" id="">
+                                                    <!--<img src="admin/images/cancel_icon.png" style="" alt="Cancel" title="Cancel" width="22" height="16" onclick="return cancel_cust_dtls('<?php echo $plot['id']; ?>');" class="ad1_update" style="cursor: pointer;" id="">-->
+                                                </div>
+                                            </li>                        
+                                        <?php } ?>
+                                        </div>
+                                    </ul>
+                                    <ul id="color_page_dtls_<?php echo $plot['id']; ?>">
+                                        <?php
+                                        if ($plot['output'] == strtoupper('Both')) { ?>
+                                        <li>
+                                            <label>Color Page Number:</label>
+                                            <p style="cursor: pointer;" id="custome_page_dtls_<?php echo $plot['id']; ?>" onclick="return edit_custome_page('<?php echo $plot['id']; ?>');"><?php echo $plot['output_both']; ?></p>
+                                            <input type="text" name="cust_page_dtls_txt_<?php echo $plot['id']; ?>" id="cust_page_dtls_txt_<?php echo $plot['id']; ?>" value="<?php echo $plot['output_both']; ?>" class="none" style="width: 60px;float: left;" />
+                                            <div id="action_cust_page_dtls_<?php echo $plot['id']; ?>" style="float: left;margin-left: 5px;display: none;cursor: pointer;">
+                                                <img src="admin/images/like_icon.png" style="" alt="Update" title="Update" width="22" height="16" onclick="return update_cust_page_details('<?php echo $plot['id']; ?>');" class="ad1_update" style="cursor: pointer;" id="">
+                                                <!--<img src="admin/images/cancel_icon.png" style="" alt="Cancel" title="Cancel" width="22" height="16" onclick="return cancel_cust_dtls('<?php echo $plot['id']; ?>');" class="ad1_update" style="cursor: pointer;" id="">-->
+                                            </div>
+                                        </li>
+                                        <?php } ?>
+                                    </ul>
+                                    <div style="width: 100%;float: left;margin-top: 5px;">
+                                        <?php if(($file_upload_exist[0]['job_id'] != '') || ($plot['ftp_link'] != '0') || ($plot['pick_up'] != '0') || ($plot['drop_off'] != '0')){ ?>
+                                        <div style="float: left;width: 100%;margin-top: 5px;font-weight: bold;">File Options</div>
+                                        <?php } ?>
+                                        <?php
+                                        if($plot['use_same_alt'] == '0'){
+                                        if ($plot['upload_file'] != '') {
+                                            ?>
+                                            <div style="float: left;width: 100%;">
+                                                <div style="float: left;width: 100%;text-decoration: underline;">Upload File</div>                            
+                                                <div style="float: left;width: 100%;"><?php echo $plot['upload_file']; ?></div>                               
+                                            </div>
+                                        <?php } elseif ($plot['ftp_link'] != '0') {
+                                                $link       = ($plot['ftp_link'] != '0') ? $plot['ftp_link'] : '';
+                                                $user_name  = ($plot['user_name'] != '0') ? $plot['user_name'] : '';
+                                                $password   = ($plot['password'] != '0') ? $plot['password'] : '';
+                                            ?>
+                                            <div style="float: left;width: 100%;">
+                                                <div style="float: left;width: 100%;text-decoration: underline;">Provide Link to File</div>
+                                                <div style="float: left;width: 100%;">FTP Link  : <?php echo $link; ?></div>
+                                                <div style="float: left;width: 100%;">User Name : <?php echo $user_name; ?></div>
+                                                <div style="float: left;width: 100%;">Password  : <?php echo $password; ?></div>
+                                            </div>
+                                        <?php } elseif ($plot['pick_up'] != '0') {
+                                                if(($plot['pick_up'] == 'ASAP') && ($plot['pick_up_time'] == 'ASAP')){
+                                              ?>
+                                                <div style="float: left;width: 100%;">
+                                                      <div style="float: left;width: 100%;">Schedule a pick up Date/Time: <?php echo $plot['pick_up']; ?></div>
+                                                      <!--<div style="float: left;width: 100%;">Pickup Date : <?php echo $plot['pick_up']; ?></div>-->
+                    <!--                                  <div style="float: left;width: 100%;">Pickup Time  : <?php //echo $plot['pick_up_time']; ?></div>-->
+                                                </div>
+                                              <?php
+                                                }else{
+                                            ?>
+                                            <div style="float: left;width: 100%;">
+                                                <div style="float: left;width: 100%;margin-bottom: 10px;">Schedule a pick up Date/Time: <?php echo $plot['pick_up'].'&nbsp;'.$plot['pick_up_time']; ?></div>
+                    <!--                            <div style="float: left;width: 100%;">Pickup Date : <?php //echo $plot['pick_up']; ?></div>
+                                                <div style="float: left;width: 100%;">Pickup Time  : <?php //echo $plot['pick_up_time']; ?></div>-->
+                                            </div>
+                                                <?php }} elseif ($plot['drop_off'] != '0') { ?>
+                                            <div style="float: left;width: 100%;">
+                                                <div style="float: left;width: 100%;text-decoration: underline;">Drop off at Soho Repro</div>                       
+                                                <div style="float: left;width: 100%;margin-bottom: 10px;">Drop off at : <?php echo $plot['drop_off']; ?></div>
+                                            </div>   
+                                        <?php
+                                        }
+                                        }else{
+                                        ?>
+                                        <div style="float: left;width: 100%;">
+                                            <div style="float: left;width: 100%;margin-bottom: 10px;">Use the Same File as in Job Option <?php echo ($plot['use_same_alt']); ?></div>
+                                        </div>   
+                                        <?php
+                                        }
+                                        ?>
+
+                                    </div>
+
+                                    <?php if($plot['my_office_alt'] != '0'){ 
+
+                                        $address_dtls    = SelectLastEnteredAddress($plot['address_book_id']);
+                                        $address_2       = ($address_dtls[0]['address_2'] != '') ? $address_dtls[0]['address_2'].'<br>' : '';
+                                        $address_3       = ($address_dtls[0]['address_3'] != '') ? $address_dtls[0]['address_3'].'<br>' : '';
+                                        $address_string  = $address_dtls[0]['company_name'].'<br>'.$address_dtls[0]['address_1'].'<br>'.$address_2.$address_3.$address_dtls[0]['city'].',&nbsp;'.StateName($address_dtls[0]['state']).'&nbsp;'.$address_dtls[0]['zip'];
+
+                                        $option_sechdule = ($plot['my_office_alt'] == 'my_office') ? '<span style="font-weight: bold">My Office</span>' : '<span style="font-weight: bold">Alternate:</span><br>'.$address_string;
+
+                                        ?>
+                                    <div style="width: 100%;float: left;margin-top: 7px;">                    
+                                        <div style="float: left;width: 22%;margin-top: 5px;font-weight: bold;">Schedule a pick-up Option:</div>
+                                        <div style="float: left;width: 50%;margin-top: 5px;">                        
+                                            <div style="float: left;width: 100%;"><?php echo $option_sechdule; ?></div>
+                                        </div> 
+                                    </div>
+                                        <?php } ?>
+
+
+                                        <?php if($plot['spl_instruction'] != ''){ ?>
+                                    <div style="width: 100%;float: left;margin-top: 7px;">                    
+                                        <div style="float: left;width: 100%;margin-top: 5px;font-weight: bold;">Special Instructions</div>
+                                        <div style="float: left;width: 100%;">                        
+                                            <div style="float: left;width: 100%;"><?php echo $plot['spl_instruction']; ?></div>
+                                        </div> 
+                                    </div>
+                                        <?php } ?>
+
+                                </div>
+                            </div>
+                <?php  
+                $i++;
+                }                
+                ?>
+                 <!-- Entered Sets End -->
+                 <!--New Job Add Start -->
+                            <div class="serviceOrderSetHolder">
+                                <label style="font-weight: bold; margin-bottom: 0px; margin-top: 0px;" for="jo1" class="optional">
+                                    Job Option - <?php echo $count_option; ?>
+                                    <div style="float:right;font-weight: bold;">                                          
+                                    </div>
+                                </label>  
+                                <input type="hidden" name="optint_count_check" id="optint_count_check" value="<?php echo count($enteredPlotPrimay); ?>" />
+                                <input type="hidden" name="optint_count_check_i" id="optint_count_check_i" value="<?php echo $added_cart_session; ?>" />
+
+                                <div style="background-color:#FFFFFF" class="serviceOrderSetWapper" setindex="0">
+                                    <div class="serviceOrderSetWapperInternal">
+                                        <div class="serviceOrderSetDIV">
+                                            <div style="width: 100%;float: left;padding-top: 10px;">  
+
+                                                <!--JASSIM-->                        
+                                                <input type="checkbox"  style="width: 2%;margin-bottom: 20px;" name="use_same_check" id="use_same_check_box" value="1"  onclick="return use_same_set();" /><span id="use_same_check_box_spn">Use the same File as in Job Option <?php echo ($count_option - 1); ?></span>
+                                                <!--End-->
+
+                                                <!--Check Box Start-->
+                                                <div style="float:left;width:100%;">
+                                                    <ul class="arch_radio">
+                                                        <li><input type="radio" name="plotting_check" id="plotting_check" style="width:2% !important;" value="1" onclick="return active_plot_new();" /><span id="plotting_check_spn" style="font-size: 13px;padding-left: 7px;font-weight: bold;">PLOTTING</span></li>
+                                                        <li><input type="radio" name="plotting_check" id="plotting_check_0" style="width:2% !important;" value="0" onclick="return active_arch();" /><span id="plotting_check_0_spn" style="font-size: 13px;padding-left: 7px;font-weight: bold;">ARCHITECTURAL COPIES</span></li>
+                                                    </ul>
+                                                    <span id="errmsg"></span>
+                                                </div>
+                                                <!--Check Box End-->
+
+                                                <!--Originals Start-->
+                                                <div>
+                                                    <label>
+                                                        Originals
+                                                    </label>
+                                                    <input class="order_0_set1_0_original k-input kdText " style="width:50px;" id="original" name="original" type="text" value="" onkeyup="return not_allow_original();" />
+                                                </div>
+                                                <!--Originals End-->
+
+                                                <!--POE Start-->
+                                                <div>
+                                                    <label>
+                                                        Prints of Each<span style="color: red;">*</span>
+                                      <!--                                  <span style="font-weight:bold;color:#cc0000">
+                                                          *
+                                                        </span>-->
+                                                    </label>
+                                                    <input class="ymlrequired order_0_set1_0_printOfEach k-input kdText " style="width:80px;" id="print_ea" name="print_ea" type="text" value="" onkeyup="return not_allow_poe();" />
+                                                </div>
+                                                <!--POE End-->
+
+                                                <!--Size Start-->
+                                                <div>
+                                                    <label>
+                                                        Size<span style="color: red;">*</span>
+                                                    </label>
+                                                    <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                                        <div style="float:left;margin-right:0px;">
+                                                            <select class="order_0_set1_0_size kdSelect" style="width: 135px;" id="size" name="size" onchange="return custome_size();">                            
+                                                                <option value="FULL">FULL</option>
+                                                                <option value="HALF">HALF</option>
+                                                                <option value="Reduce to 11 X 17">Reduce to 11 X 17</option>
+                                                                <option value="Custom">Custom</option>                          
+                                                            </select>
+                                                        </div>
+                                                        <div class="dropdown_selector">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Size End-->
+
+                                                <!--Output Start-->
+                                                <div>
+                                                    <label>
+                                                        Output<span style="color: red;">*</span>
+                                                    </label>
+                                                    <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                                        <div style="float:left;margin-right:0px;">
+                                                            <select class="order_0_set1_0_output kdSelect " style="width: 65px;" id="output" name="output" onchange="return custome_output();">
+                                                                <option value="B/W">B/W</option>
+                                                                <option value="Color">Color</option>
+                                                                <option value="Both">Both</option>
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="dropdown_selector">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Size End-->
+
+                                                <!--Media Start-->
+                                                <div>
+                                                    <label>
+                                                        Media<span style="color: red;">*</span>
+                                                    </label>
+                                                    <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                                        <div style="float:left;margin-right:0px;">
+                                                            <select class="order_0_set1_0_media kdSelect " style="width: 70px;" id="media" name="media">
+                                                                <option value="Bond">Bond</option>
+                                                                <option value="Vellum">Vellum</option>
+                                                                <option value="Mylar">Mylar</option>                          
+                                                            </select>
+                                                        </div>
+                                                        <div class="dropdown_selector">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Media End-->
+
+                                                <!--Binding Start-->
+                                                <div>
+                                                    <label>
+                                                        Binding
+                                                    </label>
+                                                    <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                                        <div style="float:left;margin-right:0px;">
+                                                            <select class="order_0_set1_0_binding kdSelect " style="width: 130px;" id="binding" name="binding">
+                                                                <option value="none">None</option>                                      
+                                                                <option value="Bind All">Bind All</option>                          
+                                                                <option value="Bind by Discipline">Bind by Discipline</option>
+                                                                <option value="Screw Post">Screw Post</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="dropdown_selector">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Binding End-->
+
+                                                <!--Folding Start-->
+                                                <div>
+                                                    <label>
+                                                        Folding
+                                                    </label>
+                                                    <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                                        <div style="float:left;margin-right:0px;">
+                                                            <select class="order_0_set1_0_folding kdSelect " style="width: 100px;" id="folding" name="folding">
+                                                                <option value="none">None</option>
+                                                                <option value="Yes">Yes</option>                          
+                                                            </select>
+                                                        </div>
+                                                        <div class="dropdown_selector">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Folding End-->
+                                            </div>
+                                            <!--Custom Details Start-->
+                                            <div id="size_custom_div" style="border: 1px #FF7E00 solid;width: 100%;padding: 5px;text-align: center;margin-bottom: 10px;display: none;">
+                                                <label>Please Specify Custom Details : </label><textarea name="size_custom" id="size_custom" rows="3" cols="18" style="width: 201px;" placeholder="Custom Size"></textarea>
+                                            </div>
+                                            <!--Custom Details End-->
+                                            <!--Page Number Details Start-->
+                                            <div id="output_both_div" style="border: 1px #FF7E00 solid;width: 100%;padding: 5px;text-align: center;margin-bottom: 10px;display: none;">
+                                                <label>Enter page numbers that are in COLOR (separated by a comma) :</label>
+                                                <input type="text" name="output_both" id="output_both" style="width: 200px;" />
+                                            </div>
+                                            <!--Page Number Details End-->
+
+                                            <div style="width:730px;border-bottom: 1px solid #CCCCCC;float: left;">
+
+                        <!--                        <label style="font-weight: bold;height:28px">
+                                                    Alternative File Options<span style="color: red;">*</span>
+                                                </label>
+                                                <input type="checkbox"  style="width: 2%;margin-bottom: 20px;" name="use_same_check" id="use_same_check_box" value="1"  onclick="return use_same_set();" /><span id="use_same_check_box_spn">Use the same File Option as in Job Option <?php echo ($count_option - 1); ?></span>-->
+                                                <div id="options_plott" class="check" style="/*margin-top: 5px;*/">
+                                                    <label id="alt_ops" style="font-weight: bold;">
+                                                        File Options<span style="color: red;">*</span>
+                                                    </label>
+                                                    <div style="width:730px;border-top: 1px solid #FF7E00;">                                
+                                                    </div>
+                                                    <div class="spl_option" style="float: 100%;">
+                                                        <div>
+                                                            <input class="filetrigger" name="alt_file_option" value="dropOff" id="drop_file"  type="radio" onclick="return upload_soho();" />
+                                                            <label for="drop" >
+                                                                Upload File
+                                                            </label>                    
+                                                        </div>
+
+                                                        <div>
+                                                            <input class="filetrigger" name="alt_file_option" value="dropOff" id="link"  type="radio" onclick="return provide_link();" />
+                                                            <label for="drop" >
+                                                                Provide Link to File
+                                                            </label>                    
+                                                        </div>   
+
+                                                        <div>
+                                                            <input class="filetrigger" name="alt_file_option" value="pickUp" id="pick"  type="radio" onclick="return show_date_picker();" />
+                                                            <label for="pick" >
+                                                                Schedule a pick up
+                                                            </label></br>
+                                                            <?php
+                                                            $all_days_off = AllDayOff();
+                                                            foreach ($all_days_off as $days_off_split) {
+                                                                $all_days_in[] = $days_off_split['date'];
+                                                            }
+                                                            $all_date = implode(",", $all_days_in);
+                                                            $all_date_exist = str_replace("/", "-", $all_date);
+                                                            ?>
+
+                                                        </div>
+
+                                                        <div>
+                                                            <input class="filetrigger" name="alt_file_option" value="dropOff" id="dropoff"  type="radio" onclick="return drop_sohorepro();" />
+                                                            <label for="drop" >
+                                                                Drop off at Soho Repro
+                                                            </label>                    
+                                                        </div>                               
+                                                    </div>
+                                                    <br>
+
+                                                    <!--File Upload Details Start-->
+                                                    <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 100%;padding-bottom: 10px;" id="up_form">
+                                                        <input type="hidden" name="uploadedfile" id="uploadedfile" value="" /> 
+                                                        <div id="dragandrophandler">Drag & Drop Files Here</div>
+                                                        <br><br>
+                                                        <div id="status1"></div> 
+                                                    </div>
+                                                    <!--File Upload Details End-->
+
+                                                    <!--FTP Details Start-->
+                                                    <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 100%;padding-bottom: 10px;" id="provide_link">
+                                                        <div style="margin: auto;width: 60%;">
+                                                            <div style="margin: auto;width: 60%;float:right;">
+                                                            <!--<textarea name="provide_link" id="provide_link_text" rows="3" cols="18" style="width: 201px;"></textarea>-->
+                                                                <input type="text" name="ftp_link" id="ftp_link" placeholder="FTP Link" />
+                                                                <input type="text" name="user_name" id="user_name" placeholder="User Name" />
+                                                                <input type="text" name="password" id="pass_word" placeholder="Password" />
+                                                            </div>
+                                                            <div style="margin: auto;width: 60%;float:right;padding-top: 5px;">
+                                                                <span>If providing an FTP link, please include username and password.</span>
+                                                            </div>
+                                                        </div>   
+                                                    </div>
+                                                    <!--FTP Details Start-->
+
+                                                    <!--Pickup Details Start-->
+                                                    <div id="date_time" style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 5px;display:none;">
+                                                        <input type="hidden" name="all_exist_date" id="all_exist_date" value="<?php echo $all_date_exist; ?>" />                                
+                                                        <div style="width: 34%;float: left;"> 
+
+                                                            <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;border-bottom: 0px;text-align: center;">
+                                                                <span id="asap_status" class="asap_orange" onclick="return asap();">READY NOW</span>
+                                                            </div>
+
+                                                            <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;">
+                                                                <input class="date_for_alt picker_icon" value="" type="text" name="date_needed" id="date_for_alt" style="width: 75px;" onclick="return date_revele();" />
+                                                                <input id="time_for_alt" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time();" />
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div style="width: 60%;float: left;border: 1px #F99B3E solid;margin-left: 20px;height: auto;">
+                                                            <div style="float: left;width: 45%;margin-left: 30px;border: 0px #F99B3E solid;margin-top: 30px;">
+                                                                <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="my_office();" id="my_office" value="my_office" />My Office
+                                                            </div>
+                                                            <div style="float: left;width: 45%;border: 0px #F99B3E solid;margin-top: 30px;">
+                                                                <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="alternate();" id="alternate" value="alternate" />Alternative
+                                                                <select style="margin-bottom: 10px;"  name="address_book_se" id="address_book_se" class="remove_current" style="" onchange="return select_alternate();">
+                                                                    <option value="0">Address Book</option>
+                                                                    <option value="N" style="border-bottom: 1px solid #000;">Add New Address</option>
+                                                                    <option value="NL" style="width: 100%;" disabled>---------------------------</option>
+                                                                    <?php
+                                                                    $address_book = AddressBookCompanyService($_SESSION['sohorepro_companyid']);
+                                                                    foreach ($address_book as $address) { ?>                                                                                        
+                                                                    <option value="<?php echo $address['id']; ?>"><?php echo $address['company_name']; ?></option>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                            <div id="alt_new_address_main" style="float: left;width: 100%;display: none;">
+                                                                <div style="float: left;width: 40%;border: 0px #F99B3E solid;">&nbsp;</div>
+                                                                <div style="float: left;width: 55%;border: 1px #F99B3E solid;margin-top: 5px;margin-bottom: 5px;">
+                                                                    <div class="alt_new_address_container_hdr">
+                                                                        Add New Address
+                                                                    </div>
+                                                                    <div class="alt_new_address_container">
+                                                                        <ul>
+                                                                            <li><label>Company Name:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_name" class="alt_new_address_container_val" /></li>
+                                                                            <li><label>Attention_To:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_att" class="alt_new_address_container_val" /></li>
+                                                                            <li><label>Address 1:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add1" class="alt_new_address_container_val" /></li>
+                                                                            <li><label>Address 2:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add2" class="alt_new_address_container_val" /></li>
+                                                                            <li><label>Address 3:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add3" class="alt_new_address_container_val" /></li>
+                                                                            <li><label>City:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_city" class="alt_new_address_container_val" /></li>
+                                                                            <li>
+                                                                                <label>State:</label>
+                                                                                <select name="state" id="alt_new_comp_state" class="required reginput comp_det_view" style="width: 50px;" tabindex="12" >
+                                                                                    <option value="">----</option>
+                                                                                    <?php
+                                                                                    $sel_state = mysql_query("select * from sohorepro_states");
+                                                                                    while ($fth_states = mysql_fetch_array($sel_state)) {
+                                                                                        ?>
+                                                                                    <option value="<?php echo $fth_states['state_abbr']; ?>" <?php if($fth_states['state_abbr'] == "NY"){ ?>selected="selected"<?php } ?>><?php echo $fth_states['state_abbr']; ?></option>
+                                                                                    <?php } ?>
+                                                                                </select>
+                                                                            </li>
+                                                                            <li><label>Zip:</label><input type="text" name="alt_new_comp_zip" id="alt_new_comp_zip" class="alt_new_address_container_val" /></li>
+                                                                            <li><label>Phone:</label><input type="text" name="alt_new_comp_phone" id="alt_new_comp_phone" class="alt_new_address_container_val" /></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div class="alt_new_address_container_ftr">
+                                                                        <span class="alt_new_address_container_ftr_can" onclick="return can_alt();">Cancel</span>
+                                                                        <span class="alt_new_address_container_ftr_sav" onclick="return save_alt();">Save</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <!--Pickup Details End-->
+
+                                                    <!--Drop off Details Start-->
+                                                    <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 100%;padding-bottom: 10px;" id="drop_off">
+                                                        <div style="margin: auto;width: 60%;">
+                                                            <div style="margin: auto;width: 75%;float:right;">
+                                                                <input style="width: 10% !important;" type="radio" name="drop_val" id="drop_val" value="381 Broome Street" />381 Broome Street
+                                                                <input style="width: 10% !important;" type="radio" name="drop_val" id="drop_val_1" value="307 7th Ave, 5th Floor" />307 7th Ave, 5th Floor
+                                                            <!-- <select id="drop_val">
+                                                                    <option value="" selected="selected">Select</option>
+                                                                    <option value="381 Broom">381 Broome St</option>
+                                                                    <option value="307 7th Ave, 5th Floor" >307 7th Ave, 5th Floor</option>
+                                                                </select> -->
+                                                            </div>                             
+                                                        </div>   
+                                                    </div>
+                                                    <!--Drop off Details End-->
+
+                                                </div>
+
+                                                <div id="options_arch" class="check none" style="width:730px;border-top: 1px solid #FF7E00;">
+                                                    <div class="spl_option" style="float: 100%;">
+                                                        <div>
+                                                            <input class="filetrigger" name="alt_file_option" value="pickUp" id="pick"  type="radio" onclick="return show_date_picker_arch();" />
+                                                            <label for="pick" >
+                                                                Schedule a pick up
+                                                            </label></br>
+                                                            <?php
+                                                            $all_days_off = AllDayOff();
+                                                            foreach ($all_days_off as $days_off_split) {
+                                                                $all_days_in[] = $days_off_split['date'];
+                                                            }
+                                                            $all_date = implode(",", $all_days_in);
+                                                            $all_date_exist = str_replace("/", "-", $all_date);
+                                                            ?>
+
+                                                        </div>
+
+                                                        <div>
+                                                            <input class="filetrigger" name="alt_file_option" value="dropOff" id="dropoff"  type="radio" onclick="return drop_sohorepro_arch();" />
+                                                            <label for="drop" >
+                                                                Drop off at Soho Repro
+                                                            </label>                    
+                                                        </div>                               
+                                                    </div>
+                                                    <br>
+
+                                                    <!--Pickup Details Start-->
+
+                                                    <div id="date_time_arch" style="width: 95%;float: left;margin-left: 25px;margin-top: 10px;display:none;">
+                                                    <input type="hidden" name="all_exist_date" id="all_exist_date" value="<?php echo $all_date_exist; ?>" />                                
+                                                    <div style="width: 34%;float: left;"> 
+
+                                                        <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;border-bottom: 0px;text-align: center;">
+                                                            <span id="asap_status_arch" class="asap_orange" onclick="return asap_arc();">READY NOW</span>
+                                                        </div>
+
+                                                        <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;">
+                                                            <input class="date_for_alt picker_icon" value="" type="text" name="date_needed" id="date_for_alt_arc" style="width: 75px;" onclick="return date_reveal();" />
+                                                            <input id="time_for_alt_arc" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time();" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                    <!--Pickup Details End-->
+
+                                                    <!--Drop off Details Start-->
+                                                    <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 100%;padding-bottom: 10px;" id="drop_off_arch">
+                                                        <div style="margin: auto;width: 60%;">
+                                                            <div style="margin: auto;width: 75%;float:right;">
+                                                                <input style="width: 10% !important;" type="radio" name="drop_val" id="drop_val_arc" value="381 Broome Street" />381 Broome Street
+                                                                <input style="width: 10% !important;margin-left: 35px !important;" type="radio" name="drop_val" id="drop_val_arc_1" value="307 7th Ave, 5th Floor" />307 7th Ave, 5th Floor
+                                                            <!-- <select id="drop_val">
+                                                                    <option value="" selected="selected">Select</option>
+                                                                    <option value="381 Broom">381 Broome St</option>
+                                                                    <option value="307 7th Ave, 5th Floor" >307 7th Ave, 5th Floor</option>
+                                                                </select> -->
+                                                            </div>                            
+                                                        </div>   
+                                                    </div>
+                                                    <!--Drop off Details End-->
+
+                                                </div>
+
+                                                <!--Special Instruction Start-->
+                                                <input type="hidden" name="validate_imp" id="validate_imp" value="" />
+                                                <div style="float: left;width: 100%;">
+                                                    <div id="sp_inst" style="margin-top:10px;">
+                                                        <label style="font-weight: bold;margin-bottom: -4px; margin-top: -10px;">
+                                                            Special Instructions
+                                                        </label>
+                                                        <br>
+                                                        <textarea name="special_instruction" class="splins" id="special_instruction" rows="4" cols="60" style="margin-top:-5px;margin-bottom:10px;"><?php echo $entered['spl_instruction']; ?></textarea>
+                                                    </div>
+                                                </div>
+                                                <!--Special Instruction End-->
+                                            </div>
+                                        </div>
+
+                                    </div>  
+                                </div>
+                            </div>
+                            <!--New Job Add End-->                 
+                 </div>
+                <?php }else{ ?>
+                    
+                    <div  id="sets_all">               
+                    <?php
                     if(count($check_plotting) > 0){
                         $delete_empty = "DELETE FROM sohorepro_plotting_set WHERE company_id = '".$company_id_view_plot."' AND user_id = '".$user_id_add_set."' AND order_id = '0'";
                         mysql_query($delete_empty);
@@ -1342,14 +1982,464 @@ function update_cust_page_details(ID){
                         mysql_query($delete_sql);
                     }
                     
-//                    if(count($check_plotting) > 0){
-//                        echo 'IS THERE';
-//                    }  else {
-//                        echo 'Not There';
-//                    }
+                    if(count($check_plotting) > 0){
+                        $delete_empty = "DELETE FROM sohorepro_service_lfp WHERE company_id = '".$company_id_view_plot."' AND user_id = '".$user_id_add_set."' AND order_id = '0'";
+                        mysql_query($delete_empty);
+                    }
                     ?>
-                <div  id="sets_all">               
+                    <div class="serviceOrderSetHolder">
+                        <label style="font-weight: bold; margin-bottom: 0px; margin-top: 0px;" for="jo1" class="optional">
+                        Job Options 
+                        <div style="float:right;font-weight: bold;">
+                            Option - 1                           
+                        </div>
+                        <input type="hidden" name="optint_count_check" id="optint_count_check" value="0" />
+                        </label>  
+                        <div style="background-color:#FFFFFF" class="serviceOrderSetWapper" setindex="0">
+                            <div class="serviceOrderSetWapperInternal">
+                            <div class="serviceOrderSetDIV">
+                            <div style="width: 100%;float: left;padding-top: 10px;">  
+                                
+                                <!--Check Box Start-->
+                                <div style="float:left;width:100%;">
+                                    <ul class="arch_radio">
+                                        <li><input type="radio" name="plotting_check" id="plotting_check" style="width:2% !important;" value="1" onclick="return active_plot();" /><span id="plotting_check_spn" style="font-size: 13px;padding-left: 7px;font-weight: bold;">PLOTTING</span></li>
+                                        <li><input type="radio" name="plotting_check" id="plotting_check_0" style="width:2% !important;" value="0" onclick="return active_arch();" /><span id="plotting_check_0_spn" style="font-size: 13px;padding-left: 7px;font-weight: bold;">ARCHITECTURAL COPIES</span></li>
+                                    </ul>
+                                    <span id="errmsg"></span>
+                                </div>
+                                <!--Check Box End-->
+                                
+                                <!--Originals Start-->
+                                <div>
+                                    <label>
+                                      Originals
+                                    </label>
+                                    <input class="order_0_set1_0_original k-input kdText " style="width:50px;" id="original" name="original" type="text" value="" onkeyup="return not_allow_original();" />
+                                </div>
+                                <!--Originals End-->
+                                
+                                <!--POE Start-->
+                                <div>
+                                    <label>
+                                      Prints of Each<span style="color: red;">*</span>
+    <!--                                  <span style="font-weight:bold;color:#cc0000">
+                                        *
+                                      </span>-->
+                                    </label>
+                                    <input class="ymlrequired order_0_set1_0_printOfEach k-input kdText " style="width:80px;" id="print_ea" name="print_ea" type="text" value="" onkeyup="return not_allow_poe();" />
+                                </div>
+                                <!--POE End-->
+                                
+                                <!--Size Start-->
+                                <div>
+                                  <label>
+                                    Size<span style="color: red;">*</span>
+                                  </label>
+                                  <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                    <div style="float:left;margin-right:0px;">
+                                        <select class="order_0_set1_0_size kdSelect" style="width: 135px;" id="size" name="size" onchange="return custome_size();">                            
+                                            <option value="FULL">FULL</option>
+                                            <option value="HALF">HALF</option>
+                                            <option value="Reduce to 11 X 17">Reduce to 11 X 17</option>
+                                            <option value="Custom">Custom</option>                          
+                                        </select>
+                                    </div>
+                                    <div class="dropdown_selector">
+                                    </div>
+                                  </div>
+                                </div>
+                                <!--Size End-->
+                                
+                                <!--Output Start-->
+                                <div>
+                                  <label>
+                                    Output<span style="color: red;">*</span>
+                                  </label>
+                                  <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                    <div style="float:left;margin-right:0px;">
+                                      <select class="order_0_set1_0_output kdSelect " style="width: 65px;" id="output" name="output" onchange="return custome_output();">
+                                        <option value="B/W">B/W</option>
+                                        <option value="Color">Color</option>
+                                        <option value="Both">Both</option>
+                                      </select>
+
+                                    </div>
+                                    <div class="dropdown_selector">
+                                    </div>
+                                  </div>
+                                </div>
+                                <!--Size End-->
+                                
+                                <!--Media Start-->
+                                <div>
+                                  <label>
+                                    Media<span style="color: red;">*</span>
+                                  </label>
+                                  <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                    <div style="float:left;margin-right:0px;">
+                                      <select class="order_0_set1_0_media kdSelect " style="width: 70px;" id="media" name="media">
+                                        <option value="Bond">Bond</option>
+                                        <option value="Vellum">Vellum</option>
+                                        <option value="Mylar">Mylar</option>                          
+                                      </select>
+                                    </div>
+                                    <div class="dropdown_selector">
+                                    </div>
+                                  </div>
+                                </div>
+                                <!--Media End-->
+                                
+                                <!--Binding Start-->
+                                <div>
+                                  <label>
+                                    Binding
+                                  </label>
+                                  <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                    <div style="float:left;margin-right:0px;">
+                                      <select class="order_0_set1_0_binding kdSelect " style="width: 130px;" id="binding" name="binding">
+                                        <option value="none">None</option>                                      
+                                        <option value="Bind All">Bind All</option>                          
+                                        <option value="Bind by Discipline">Bind by Discipline</option>
+                                        <option value="Screw Post">Screw Post</option>
+                                      </select>
+                                    </div>
+                                    <div class="dropdown_selector">
+                                    </div>
+                                  </div>
+                                </div>
+                                <!--Binding End-->
+                                
+                                <!--Folding Start-->
+                                <div>
+                                  <label>
+                                    Folding
+                                  </label>
+                                  <div class="drop" style="margin-right:0px;margin-left:0px;height:2px;">
+                                    <div style="float:left;margin-right:0px;">
+                                      <select class="order_0_set1_0_folding kdSelect " style="width: 100px;" id="folding" name="folding">
+                                        <option value="None">None</option>
+                                        <option value="Yes">Yes</option>                          
+                                      </select>
+                                    </div>
+                                    <div class="dropdown_selector">
+                                    </div>
+                                  </div>
+                                </div>
+                                <!--Folding End-->
+                            </div>
+                                <!--Custom Details Start-->
+                            <div id="size_custom_div" style="border: 1px #FF7E00 solid;width: 100%;padding: 5px;text-align: center;margin-bottom: 10px;display: none;">
+                                <label style="font-weight: bold;">Please Specify Custom Details : </label><textarea name="size_custom" id="size_custom" rows="3" cols="18" style="width: 201px;" placeholder="Custom Size"></textarea>
+                            </div>
+                                <!--Custom Details End-->
+                                <!--Page Number Details Start-->
+                            <div id="output_both_div" style="border: 1px #FF7E00 solid;width: 100%;padding: 5px;text-align: center;margin-bottom: 10px;display: none;">
+                                <label style="font-weight: bold;">Enter page numbers that are in COLOR (separated by a comma) :</label>
+                                <input type="text" name="output_both" id="output_both" style="width: 200px;" placeholder="Enter page numbers" />
+                            </div>
+                                <!--Page Number Details End-->
+                                
+                <div style="width:730px;border-bottom: 1px solid #CCCCCC;float: left;">
+                    <label id="alt_ops" style="font-weight: bold;height:28px">
+                      File Options<span style="color: red;">*</span>
+                    </label>
+                    
+                    <label id="pick_ops" style="font-weight: bold;height:28px;display: none;">
+                      Pickup Options<span style="color: red;">*</span>
+                    </label>
+<!--                    <input type="checkbox"  style="display: none;width: 2%;" name="use_same_check" id="use_same_check_box" value="1"  onclick="return use_same_set('1');" />-->
+                    <div id="options_plott" class="check" style="width:730px;border-top: 1px solid #FF7E00;margin-top:-13px;">
+                    <div class="spl_option" style="float: 100%;">
+                            <div>
+                                <input class="filetrigger" name="alt_file_option" value="dropOff" id="drop_file"  type="radio" onclick="return upload_soho();" />
+                                <label for="drop" >
+                                  Upload File
+                                </label>                    
+                            </div>
+
+                            <div>
+                                  <input class="filetrigger" name="alt_file_option" value="dropOff" id="link"  type="radio" onclick="return provide_link();" />
+                                <label for="drop" >
+                                  Provide Link to File
+                                </label>                    
+                            </div>   
+                        
+                            <div>
+                                <input class="filetrigger" name="alt_file_option" value="pickUp" id="pick"  type="radio" onclick="return show_date_picker();" />
+                                <label for="pick" >
+                                  Schedule a pick up
+                                </label></br>
+                                <?php 
+                                $all_days_off = AllDayOff();                                                        
+                                foreach ($all_days_off as $days_off_split){
+                                    $all_days_in[]  = $days_off_split['date'];
+                                }                                                        
+                                $all_date  = implode(",", $all_days_in);                                                        
+                                $all_date_exist = str_replace("/", "-", $all_date);
+                                ?>
+
+                            </div>
+                    
+                        <div>
+                            <input class="filetrigger" name="alt_file_option" value="dropOff" id="dropoff"  type="radio" onclick="return drop_sohorepro();" />
+                          <label for="drop" >
+                            Drop off at Soho Repro
+                          </label>                    
+                        </div>                               
+                    </div>
+                  <br>
+                      
+                      <!--File Upload Details Start-->
+                      <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 100%;padding-bottom: 10px;" id="up_form">
+                        <input type="hidden" name="uploadedfile" id="uploadedfile" value="" /> 
+                        <div id="dragandrophandler">Drag & Drop Files Here</div>
+                        <br><br>
+                        <div id="status1"></div> 
+                      </div>
+                      <!--File Upload Details End-->
+                      
+                      <!--FTP Details Start-->
+                      <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 100%;padding-bottom: 10px;" id="provide_link">
+                        <div style="margin: auto;width: 60%;">
+                            <div style="margin: auto;width: 60%;float:right;">
+                            <!--<textarea name="provide_link" id="provide_link_text" rows="3" cols="18" style="width: 201px;"></textarea>-->
+                            <input type="text" name="ftp_link" id="ftp_link" placeholder="FTP Link" />
+                            <input type="text" name="user_name" id="user_name" placeholder="User Name" />
+                            <input type="text" name="password" id="pass_word" placeholder="Password" />
+                            </div>
+                            <div style="margin: auto;width: 60%;float:right;padding-top: 5px;">
+                            <!--<span>If providing an FTP link, please include username and password.</span> -->
+                            </div>
+                        </div>   
+                      </div>
+                      <!--FTP Details Start-->
+                      
+                      <!--Pickup Details Start-->
+                      
+                      <div id="date_time" style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 5px;display:none;">
+                                <input type="hidden" name="all_exist_date" id="all_exist_date" value="<?php echo $all_date_exist; ?>" />                                
+                                <div style="width: 34%;float: left;"> 
+
+                                    <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;border-bottom: 0px;text-align: center;">
+                                        <span id="asap_status" class="asap_orange" onclick="return asap();">READY NOW</span>
+                                    </div>
+
+                                    <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;">
+                                        <input class="date_for_alt picker_icon" value="" type="text" name="date_needed" id="date_for_alt" style="width: 75px;" onclick="return date_reveal();" />
+                                        <input id="time_for_alt" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time();" />
+                                    </div>
+                                </div>
+                                
+                                <div style="width: 60%;float: left;border: 1px #F99B3E solid;margin-left: 20px;height: auto;">
+                                    <div style="float: left;width: 45%;margin-left: 30px;border: 0px #F99B3E solid;margin-top: 30px;">
+                                        <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="my_office();" id="my_office" value="my_office" />My Office
+                                    </div>
+                                    <div style="float: left;width: 45%;border: 0px #F99B3E solid;margin-top: 30px;">
+                                        <input style="width: 10% !important;" type="radio" name="my_office_alternate" onclick="alternate();" id="alternate" value="alternate" />Alternative
+                                        <select style="margin-bottom: 10px;"  name="address_book_se" id="address_book_se" class="remove_current" style="" onchange="return select_alternate();">
+                                            <option value="0">Address Book</option>
+                                            <option value="N" style="border-bottom: 1px solid #000;">Add New Address</option>
+                                            <option value="NL" style="width: 100%;" disabled>---------------------------</option>
+                                            <?php
+                                            $address_book = AddressBookCompanyService($_SESSION['sohorepro_companyid']);
+                                            foreach ($address_book as $address) { ?>                                                                                        
+                                            <option value="<?php echo $address['id']; ?>"><?php echo $address['company_name']; ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div id="alt_new_address_main" style="float: left;width: 100%;display: none;">
+                                        <div style="float: left;width: 40%;border: 0px #F99B3E solid;">&nbsp;</div>
+                                        <div style="float: left;width: 55%;border: 1px #F99B3E solid;margin-top: 5px;margin-bottom: 5px;">
+                                            <div class="alt_new_address_container_hdr">
+                                                Add New Address
+                                            </div>
+                                            <div class="alt_new_address_container">
+                                                <ul>
+                                                    <li><label>Company Name:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_name" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Attention_To:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_att" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 1:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add1" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 2:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add2" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Address 3:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_add3" class="alt_new_address_container_val" /></li>
+                                                    <li><label>City:</label><input type="text" name="alt_new_comp_name" id="alt_new_comp_city" class="alt_new_address_container_val" /></li>
+                                                    <li>
+                                                        <label>State:</label>
+                                                        <select name="state" id="alt_new_comp_state" class="required reginput comp_det_view" style="width: 50px;" tabindex="12" >
+                                                            <option value="">----</option>
+                                                            <?php
+                                                            $sel_state = mysql_query("select * from sohorepro_states");
+                                                            while ($fth_states = mysql_fetch_array($sel_state)) {
+                                                                ?>
+                                                            <option value="<?php echo $fth_states['state_abbr']; ?>" <?php if($fth_states['state_abbr'] == "NY"){ ?>selected="selected"<?php } ?>><?php echo $fth_states['state_abbr']; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </li>
+                                                    <li><label>Zip:</label><input type="text" name="alt_new_comp_zip" id="alt_new_comp_zip" class="alt_new_address_container_val" /></li>
+                                                    <li><label>Phone:</label><input type="text" name="alt_new_comp_phone" id="alt_new_comp_phone" class="alt_new_address_container_val" /></li>
+                                                </ul>
+                                            </div>
+                                            <div class="alt_new_address_container_ftr">
+                                                <span class="alt_new_address_container_ftr_can" onclick="return can_alt();">Cancel</span>
+                                                <span class="alt_new_address_container_ftr_sav" onclick="return save_alt();">Save</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                      
+<!--                        <div id="date_time" style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;float: left;width: 30%;padding-bottom: 10px;display:none;">
+                            <div style="width: 100%;">
+                                <input style="margin-left: 75px;cursor: pointer;font-size:12px; padding:1.5px; width: 100px;margin-top:-51px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;" type="button" name="ready_now" value="READY NOW" id="ready_now" onclick="return ready_now();" />
+                            </div>                      
+
+                            <div style="border: 1px #CCC solid;width: 95%;margin-left: 5px;margin-bottom: 10px;"></div>
+- JASSIM DATE 
+                            <div style="padding: 5px;">
+                            <input type="hidden" name="all_exist_date" id="all_exist_date" value="<?php echo $all_date_exist; ?>" />
+                            <input type="text" name="dahe_for_alt" id="date_for_alt" style="width: 30%;margin-left: 5px;" class="date_for_alt picker_icon" />                        
+
+                            <input id="time_for_alt" type="text" style="width: 30%;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" />
+                            </div>                        
+                            
+                            
+
+                        </div>-->
+                      <!--Pickup Details End-->
+                      
+                      <!--Drop off Details Start Plotting -->
+                      <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 100%;padding-bottom: 10px;" id="drop_off">
+                        <div style="margin: auto;width: 60%;">
+                            <div style="margin: auto;width: 75%;float:right;">
+                                <input style="width: 10% !important;" type="radio" name="drop_val" id="drop_val" value="381 Broome Street" />381 Broome Street
+                                <input style="width: 10% !important;margin-left: 35px !important;" type="radio" name="drop_val" id="drop_val_1" value="307 7th Ave, 5th Floor" />307 7th Ave, 5th Floor
+                            <!-- <select id="drop_val">
+                                    <option value="" selected="selected">Select</option>
+                                    <option value="381 Broom">381 Broome St</option>
+                                    <option value="307 7th Ave, 5th Floor" >307 7th Ave, 5th Floor</option>
+                                </select> -->
+                            </div>                            
+                        </div>   
+                      </div>
+                      <!--Drop off Details End-->
+                      
+                </div> 
+                <div id="options_arch" class="check none" style="width:730px;border-top: 1px solid #FF7E00;">
+                <div class="spl_option" style="float: 100%;">
+                        <div>
+                            <input class="filetrigger" name="alt_file_option" value="pickUp" id="pick"  type="radio" onclick="return show_date_picker_arch();" />
+                            <label for="pick" >
+                              Schedule a pick up
+                            </label></br>
+                            <?php 
+                            $all_days_off = AllDayOff();                                                        
+                            foreach ($all_days_off as $days_off_split){
+                                $all_days_in[]  = $days_off_split['date'];
+                            }                                                        
+                            $all_date  = implode(",", $all_days_in);                                                        
+                            $all_date_exist = str_replace("/", "-", $all_date);
+                            ?>
+
+                        </div>
+
+                    <div>
+                        <input class="filetrigger" name="alt_file_option" value="dropOff" id="dropoff"  type="radio" onclick="return drop_sohorepro_arch();" />
+                      <label for="drop" >
+                        Drop off at Soho Repro
+                      </label>                    
+                    </div>                               
+                </div>
+              <br>
+
+                  <!--Pickup Details Start-->
+
+                  <div id="date_time_arch" style="width: 95%;float: left;margin-left: 25px;margin-top: 10px;display:none;">
+                            <input type="hidden" name="all_exist_date" id="all_exist_date" value="<?php echo $all_date_exist; ?>" />                                
+                            <div style="width: 34%;float: left;"> 
+
+                                <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;border-bottom: 0px;text-align: center;">
+                                    <span id="asap_status_arch" class="asap_orange" onclick="return asap_arc();">READY NOW</span>
+                                </div>
+
+                                <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;">
+                                    <input class="date_for_alt picker_icon" value="" type="text" name="date_needed" id="date_for_alt_arc" style="width: 75px;" onclick="return date_reveal();" />
+                                    <input id="time_for_alt_arc" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time();" />
+                                </div>
+
+                            </div>
+                        </div>
+                  <!--Pickup Details End-->
+
+                  <!--Drop off Details Start-->
+                  <div style="padding-top: 10px;border: 1px #FF7E00 solid;margin-top: 7px;display:none;float: left;width: 100%;padding-bottom: 10px;" id="drop_off_arch">
+                    <div style="margin: auto;width: 60%;">
+                        <div style="margin: auto;width: 75%;float:right;">
+                            <input style="width: 10% !important;" type="radio" name="drop_val" id="drop_val_arc" value="381 Broome Street" />381 Broome Street
+                            <input style="width: 10% !important;margin-left: 35px !important;" type="radio" name="drop_val" id="drop_val_arc_1" value="307 7th Ave, 5th Floor" />307 7th Ave, 5th Floor
+                        <!-- <select id="drop_val">
+                                <option value="" selected="selected">Select</option>
+                                <option value="381 Broom">381 Broome St</option>
+                                <option value="307 7th Ave, 5th Floor" >307 7th Ave, 5th Floor</option>
+                            </select> -->
+                        </div>                            
+                    </div>   
+                  </div>
+                  <!--Drop off Details End-->
+
+            </div>
+                    
+                    
+                        <!--Special Instruction Start-->
+                        <input type="hidden" name="validate_imp" id="validate_imp" value="" />
+                        <div style="float: left;width: 100%;margin-top: 15px;">
+                            <div id="sp_inst" style="margin-top:10px;">
+                              <label style="font-weight: bold;margin-bottom: -4px; margin-top: -10px;">
+                                Special Instructions
+                              </label>
+                              <br>
+                              <textarea name="special_instruction" class="splins" id="special_instruction" rows="4" cols="60" style="margin-top:-5px;margin-bottom:10px;"><?php echo $entered['spl_instruction']; ?></textarea>
+                            </div>
+                        </div>
+                         <!--Special Instruction End-->
+                      </div>
+                      </div>
+
+                      </div>              
+
+
+
+
+                      </div>
+                      </div>
+
+                    </div>
                 
+                
+                <?php } }else{
+                ?>
+                <div  id="sets_all">               
+                    <?php
+                    if(count($check_plotting) > 0){
+                        $delete_empty = "DELETE FROM sohorepro_plotting_set WHERE company_id = '".$company_id_view_plot."' AND user_id = '".$user_id_add_set."' AND order_id = '0'";
+                        mysql_query($delete_empty);
+                    }
+                    
+                    if(count($check_plotting_needed) > 0){
+                        $delete_empty = "DELETE FROM sohorepro_sets_needed WHERE comp_id = '".$company_id_view_plot."' AND usr_id = '".$user_id_add_set."' AND order_id = '0'";
+                        mysql_query($delete_empty);
+                    }
+                    
+                    if(count($check_plotting_files) > 0){
+                        $delete_sql = "DELETE FROM sohorepro_upload_files_set WHERE comp_id = '".$company_id_view_plot."' AND user_id = '".$user_id_add_set."' AND order_id = '0' ";
+                        mysql_query($delete_sql);
+                    }
+                    
+                    if(count($check_plotting) > 0){
+                        $delete_empty = "DELETE FROM sohorepro_service_lfp WHERE company_id = '".$company_id_view_plot."' AND user_id = '".$user_id_add_set."' AND order_id = '0'";
+                        mysql_query($delete_empty);
+                    }
+                    ?>
                     <div class="serviceOrderSetHolder">
                         <label style="font-weight: bold; margin-bottom: 0px; margin-top: 0px;" for="jo1" class="optional">
                         Job Options 
@@ -1777,7 +2867,9 @@ function update_cust_page_details(ID){
               </div>
                     
             </div>    
-               
+            <?php
+            }
+            ?>
                <!-- FOR EACH END -->     
                   
              
@@ -2106,34 +3198,232 @@ function update_cust_page_details(ID){
     var cart_count              =   $("#cart_count").html();
     var cart_count_val          =   (cart_count != null) ? (Number(cart_count)+Number(1)) : "1";
     
-    if((validate_imp == "") && (optint_count_check_pre == "0")){
-        validate_plotting_cont();
-    }else if((optint_count_check_pre == "0") && (validate_imp == "1")){
-        $("#cart_count").show();
-        $("#cart_count").html(cart_count_val);
-        $("body").append("<div class='modal-overlay js-modal-close'></div>");
-        $("#are_you_continue").fadeIn("slow");
-    }else if((optint_count_check_pre != "0") && (validate_imp == "1")){
-        $("#cart_count").show();
-        $("#cart_count").html(cart_count_val);
-        $("body").append("<div class='modal-overlay js-modal-close'></div>");
-        $("#are_you_continue").fadeIn("slow");
-    }else if((optint_count_check_pre != "0") && (validate_imp == "")){
-        $("#cart_count").show();
-        $("#cart_count").html(cart_count_val);
-        $("body").append("<div class='modal-overlay js-modal-close'></div>");
-        $("#are_you_continue").fadeIn("slow");
-    }    
+    
+    var jobreference        =   document.getElementById("jobref").value;
+    var optint_count_check  =   document.getElementById("optint_count_check").value;
+    
+    var check_val           = document.getElementById("plotting_check").checked;
+    var check_val_0         = document.getElementById("plotting_check_0").checked;
+    //var plotting_check_jk   = document.getElementsByName("plotting_check").checked;
+    
+    var plotting_check      = (check_val == true) ? '1' : '0';
+    
+    var original            = document.getElementById("original").value;
+    var print_ea            = document.getElementById("print_ea").value;
+    var size                = document.getElementById("size").value;
+    var output              = document.getElementById("output").value;
+    var media               = document.getElementById("media").value;
+    var binding             = document.getElementById("binding").value;
+    var folding             = document.getElementById("folding").value;
+    var special_instruction = document.getElementById("special_instruction").value;
+    var size_custom         = document.getElementById("size_custom").value;
+    var output_both         = document.getElementById("output_both").value;
+    var uploadedfile_pre    = $(".filename").html();
+    var uploadedfile_option = (uploadedfile_pre != "") ? uploadedfile_pre : '';
+    
+    var date_for_alt        = document.getElementById("date_for_alt").value;
+    var date_for_alt_arc    = document.getElementById("date_for_alt_arc").value;
+    if(date_for_alt != ''){
+        var date_for_alt_val    = date_for_alt;
+    }else if(date_for_alt_arc != ''){
+        var date_for_alt_val    = date_for_alt_arc;
+    }else{
+        var date_for_alt_val    = '0';
+    }
+    
+    var my_office           = document.getElementById("my_office").value;
+    var alternate           = document.getElementById("alternate").value;
+    var address_book_se     = document.getElementById("address_book_se").value;  
+    var my_office_1         = document.getElementById("my_office").checked;
+    var alternate_1         = document.getElementById("alternate").checked;
+    
+    if(my_office_1 == true){
+        var my_office_alt       = my_office;
+        var address_book_se_val = "0"; 
+    }else if(alternate_1 == true){
+        var my_office_alt   = alternate;
+        var address_book_se_val = address_book_se; 
+    }else{
+        var my_office_alt   = "0";
+        var address_book_se_val = "0"; 
+    }
+    
+    
+    var time_for_alt        =  document.getElementById("time_for_alt").value;
+    var time_for_alt_arc    =  document.getElementById("time_for_alt_arc").value;
+    if(time_for_alt != ''){
+        var time_for_alt_val    =  time_for_alt;
+    }else if(time_for_alt_arc != ''){
+        var time_for_alt_val    =  time_for_alt_arc;
+    }else{
+        var time_for_alt_val    =  '0';
+    }
+    
+    var drop_chk_val_0          =   document.getElementById("drop_val").value;
+    var drop_chk_val_1          =   document.getElementById("drop_val_1").value;
+    
+    var drop_chk_arc_val_0      =   document.getElementById("drop_val_arc").value;
+    var drop_chk_arc_val_1      =   document.getElementById("drop_val_arc_1").value;
+    
+    var drop_chk_1          =   document.getElementById("drop_val").checked;
+    var drop_chk_2          =   document.getElementById("drop_val_1").checked;
+    var drop_chk_arc_1      =   document.getElementById("drop_val_arc").checked;
+    var drop_chk_arc_2      =   document.getElementById("drop_val_arc_1").checked;
+    
+    var drop_off_select_val =   document.getElementById("drop_off_select_val").value;
+    
+    if(drop_off_select_val == '1'){
+        if(drop_chk_1 == true){
+            var drop_val            =   drop_chk_val_0;
+        }else if(drop_chk_2 == true){
+            var drop_val            =   drop_chk_val_1;
+        }else if(drop_chk_arc_1 == true){
+            var drop_val            =   drop_chk_arc_val_0;
+        }else if(drop_chk_arc_2 == true){
+            var drop_val            =   drop_chk_arc_val_1;
+        }
+    }else{
+            var drop_val            =   '0';
+    }
+    
+    var ftp_link            =   document.getElementById("ftp_link").value;
+    var user_name           =   document.getElementById("user_name").value;
+    var password            =   document.getElementById("pass_word").value;
+    
+    var ftp_link_val        =   (ftp_link != '') ? ftp_link : '0';
+    var user_name_val       =   (user_name != '') ? user_name : '0';
+    var password_val        =   (password != '') ? password : '0';
+        
+    var size_custom_val     =  (size_custom != '') ? size_custom : '0';
+    var output_both_val     =  (output_both != '') ? output_both : '0';
+    
+    var size_custom         = (size == 'Custom') ? document.getElementById("size_custom").value : '0';
+    
+    
+    var uploadedfile        =   $("#filename_odd").html();   
+    var dropoff             =   $("#dropoff").val();
+    var drop_file           =   document.getElementById("drop_file").checked;
+    var link                =   document.getElementById("link").checked;
+   
+    var validate_imp        =   $("#validate_imp").val();
+    
+    if(jobreference == ''){
+        alert('Please enter the Job Reference');
+        document.getElementById("jobref").focus();
+        $("#jobref").css("background-color", "#FFFF00");
+        return false;
+    }else{
+        $("#jobref").css("background-color", "FFF");
+    }
+    
+    if($('input[name=plotting_check]:checked').length<=0)
+    {
+        alert('Please select a job type');
+        document.getElementById("plotting_check").focus();
+        $("#plotting_check_spn").css("background-color", "#FFFF00");
+        $("#plotting_check_0_spn").css("background-color", "#FFFF00");
+        return false;
+    }else{
+        $("#plotting_check_spn").css("background-color", "#FFF");
+        $("#plotting_check_0_spn").css("background-color", "#FFF");
+    }  
+        if(validate_imp == ''){
+        alert('Please select the file option');
+        $(".spl_option").css("background-color", "#FFFF00");
+        return false;
+        }else{
+        $(".spl_option").css("background-color", "#FFFF");    
+        }
+    
+    if(continue_ok != '1'){
+    if(print_ea == ''){
+        alert('Please enter Prints of Each');
+        document.getElementById("print_ea").focus();
+        return false;
+    }  
+//    if(output == 'Both'){
+//        if(special_instruction == ''){
+//        alert('Please enter the special instructions');
+//        document.getElementById("special_instruction").focus();
+//        return false;  
+//        }      
+//    }
+    if(size == 'Custom'){
+       if(size_custom == ''){
+        alert('Please enter the custom size');
+        document.getElementById("size_custom").focus();
+        $("#size_custom").css("background-color", "#FFFF00");
+        return false;  
+        }else{
+        $("#size_custom").css("background-color", "#FFFF");    
+        }   
+    }
+    }
+    
+    if(alternate_1 == true){
+        if(address_book_se == '0'){
+        alert('Please select the address');
+        $("#address_book_se").css("border","1px solid red");
+        return false;
+        }else{
+        $("#address_book_se").css("border","1px solid #CCC");
+        }
+    }
+    if (jobreference != '')
+    {
+     $.ajax
+        ({
+            type: "POST",
+            url: "save_and_continue.php",
+            data: "save_and_continue=1&job_reference="+encodeURIComponent(jobreference)+
+                          "&original="+encodeURIComponent(original)+"&print_ea="+encodeURIComponent(print_ea)+
+                          "&size="+encodeURIComponent(size)+"&output="+encodeURIComponent(output)+
+                          "&media="+encodeURIComponent(media)+
+                          "&binding="+encodeURIComponent(binding)+"&folding="+encodeURIComponent(folding)+
+                          "&plot_arch="+encodeURIComponent(plotting_check)+"&special_instruction="+encodeURIComponent(special_instruction)+
+                          "&size_custom_val="+encodeURIComponent(size_custom_val)+"&output_both_val="+encodeURIComponent(output_both_val)+
+                          "&pickup_date="+encodeURIComponent(date_for_alt_val)+"&pickup_time="+encodeURIComponent(time_for_alt_val)+
+                          "&drop_val="+encodeURIComponent(drop_val)+"&ftp_link_val="+encodeURIComponent(ftp_link_val)+
+                          "&user_name_val="+encodeURIComponent(user_name_val)+"&password_val="+encodeURIComponent(password_val)+
+                          "&size_custom="+encodeURIComponent(size_custom)+"&uploadedfile_option="+encodeURIComponent(uploadedfile_option)+
+                          "&my_office_alt="+encodeURIComponent(my_office_alt)+"&address_book_se_val="+encodeURIComponent(address_book_se_val),
+            beforeSend: loadStart,
+            complete: loadStop,
+            success: function(option)
+            {   
+                if(option != ""){
+                    if((validate_imp == "") && (optint_count_check_pre == "0")){
+                        validate_plotting_cont();
+                    }else if((optint_count_check_pre == "0") && (validate_imp == "1")){
+                        $("#cart_count").show();
+                        $("#cart_count").html(option);
+                        $("body").append("<div class='modal-overlay js-modal-close'></div>");
+                        $("#are_you_continue").fadeIn("slow");
+                    }else if((optint_count_check_pre != "0") && (validate_imp == "1")){
+                        $("#cart_count").show();
+                        $("#cart_count").html(option);
+                        $("body").append("<div class='modal-overlay js-modal-close'></div>");
+                        $("#are_you_continue").fadeIn("slow");
+                    }else if((optint_count_check_pre != "0") && (validate_imp == "")){
+                        $("#cart_count").show();
+                        $("#cart_count").html(option);
+                        $("body").append("<div class='modal-overlay js-modal-close'></div>");
+                        $("#are_you_continue").fadeIn("slow");
+                    }
+                }
+            }
+        });
+    }
   }
   
   function go_to_cart()
   {
-    var validate_imp        =   $("#validate_imp").val();
-    if(validate_imp != ""){
-    validate_plotting_cont();
-    }else{
+//    var validate_imp        =   $("#validate_imp").val();
+//    if(validate_imp != ""){
+//    validate_plotting_cont();
+//    }else{
     window.location = "add_recipients.php";    
-    }
+//    }
   }
   
   function go_to_other_service()
@@ -2141,8 +3431,8 @@ function update_cust_page_details(ID){
       var all_services = $("#all_services").val();
       
       if(all_services == "LFP"){
-          validate_plotting();
-          window.location = "service_largeformat.php?lfp=1";
+          //validate_plotting();
+          window.location = "service_largeformat.php?set_existed=1";
       }
       
       if(all_services == "FAP"){
@@ -2176,7 +3466,7 @@ function update_cust_page_details(ID){
       } 
       
       if(all_services == "PAC"){
-          window.location = "service_plotting.php";
+          window.location = "service_plotting.php?set_existed=1";
       } 
   }
   
@@ -2646,6 +3936,7 @@ function select_alternate()
     var address_book_se = $("#address_book_se").val();
     if(address_book_se != '0'){
         $("#alternate").attr("checked", true);
+        $("#address_book_se").css("border", "1px solid #ccc");
     }
     if(address_book_se == "N"){
         $("#alt_new_address_main").slideDown();
