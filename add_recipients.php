@@ -798,9 +798,10 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
     ?>
     <div class="service_items" id="2" onclick="return show_service_acc('2');">
      LARGE FORMAT COLOR & BW
-    </div>
-    <input type="hidden" name="open_accordian_2" class="open_accordian" id="open_accordian_2" value="" />
+    </div>                
     <div class="service_recipient" id="recipient_2">
+        <input type="hidden" name="open_accordian_2" class="open_accordian" id="open_accordian_2" value="" />
+        <input type="hidden" name="lfp_exist" id="lfp_exist" value="<?php echo count($number_of_lfp); ?>" />
         
         <!--- Fine Art Printing Services Start -->
         
@@ -900,8 +901,8 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
                                 <input type="radio" name="del_type" id="del_type_multi" value="1" style="width: 15% !important;" onclick="return multiple_recipient();"  /><span style="text-transform: uppercase;font-weight: bold;">Distribute to one or more locations</span>
                             </div>
                             <div>
-                                <input type="radio" name="del_type" id="pickup_soho" value="1" style="width: 15% !important;" onclick="return pickup_soho();" /><span style="text-transform: uppercase;font-weight: bold;">WILL PICKUP FROM SOHO REPRO</span>                                
-                                <select style="width: 20% !important;" id="pickup_soho_add" name="pickup_soho_add" onchange="return pickup_soho();">
+                                <input type="radio" name="del_type" id="pickup_soho_lfp" value="1" style="width: 15% !important;" onclick="return pickup_soho_lfp();" /><span style="text-transform: uppercase;font-weight: bold;">WILL PICKUP FROM SOHO REPRO</span>                                
+                                <select style="width: 20% !important;" id="pickup_soho_add_lfp" name="pickup_soho_add_lfp" onchange="return pickup_soho_lfp();">
                                     <option value="1" selected="selected">381 Broome St</option>
                                     <option value="2" >307 7th Ave, 5th Floor</option>
                                 </select>
@@ -913,7 +914,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
 
                                 </div>
                                 
-                                <div id="multi_recipients">
+                                <div id="multi_recipients_lfp">
 
                                 </div>
                             
@@ -1167,6 +1168,9 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
      
      var delivery_comp          = (arrange_del == false) ? document.getElementById("delivery_comp").value : '0';
      var bill_number            = (arrange_del == false) ? document.getElementById("bill_number").value : '0';
+     
+     var lfp_exist              = $("#lfp_exist").val();
+     
      if(arrange_del == false)
      {
         var shipp_comp_1        =   document.getElementById('shipp_comp_1').checked;
@@ -1210,7 +1214,11 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
             success: function(option)
             {  
                 if(option == '1'){
+                    if(lfp_exist > "0"){
+                    show_service_acc('2');   
+                    }else{
                     window.location = "view_all_recipients.php";
+                    }
                 }
             }
         });
@@ -1339,6 +1347,40 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
          $('#add_recipients').slideUp();
      }
  }
+ 
+ 
+ function pickup_soho_lfp()
+ {
+     //     alert("test");
+     // $("body").append("<div class='modal-overlay'></div>");
+     document.getElementById('pickup_soho_lfp').checked = true;
+     var pickup_soho             = document.getElementById('pickup_soho_lfp').checked;
+     var pickup_from_soho_add    = document.getElementById('pickup_soho_add_lfp').value;
+     if(pickup_soho == true){
+         $.ajax
+                ({
+                    type: "POST",
+                    url: "pickup_from_soho_lfp.php",
+                    data: "pickup_from_soho=1&pickup_from_soho_add="+pickup_from_soho_add,
+                    beforeSend: loadStart,
+                    complete: loadStop,
+                    success: function(option)
+                    {  
+                        $('#multi_recipients_lfp').slideDown();
+                        $('#multi_recipients_lfp').html(option);
+                        $('#add_recipients').slideDown();
+                        $('.addrecipientActionLink').hide();
+                        $(".addproductActionLink").hide();
+                        //$( ".modal-overlay" ).remove();
+                    }
+                });
+     }else{
+         $('#multi_recipients').slideUp();
+         $('#add_recipients').slideUp();
+     }
+ }
+ 
+ 
  
  function pickup_soho_p()
  {
@@ -3867,6 +3909,7 @@ function ste_function(){
      var date_needed            = $("#date_needed").val();
      var time_needed            = $("#time_picker_icon").val();
      var spl_recipient          = $("#spl_recipient").val();
+     var lfp_exist              = $("#lfp_exist").val();
      
      if(date_needed == ''){
          alert('Please select when needed');
@@ -3884,7 +3927,11 @@ function ste_function(){
             success: function(option)
             {  
                 if(option == '1'){
-                    window.location = "view_all_recipients.php";
+                    if(lfp_exist > "0"){
+                    show_service_acc('2');   
+                    }else{
+                    window.location = "view_all_recipients.php";    
+                    }                    
                 }
             }
         });
