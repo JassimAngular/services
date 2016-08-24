@@ -217,9 +217,9 @@ if (isset($_REQUEST['login_submit'])) {
                                                         <script src="store_files/jquery.min.js"></script>
                                                         <script type="text/javascript" src="jquery.sticky.js"></script>
                                                         <script>
-                                                            $(window).load(function() {
-                                                                $("#supply_hdr").sticky({topSpacing: 0});
-                                                            });
+//                                                            $(window).load(function() {
+//                                                                $("#supply_hdr").sticky({topSpacing: 0});
+//                                                            });
                                                         </script>
                                                         <link href="style/popup_style.css" rel="stylesheet" type="text/css" media="all" />
                                                         <script>
@@ -275,25 +275,25 @@ if (isset($_REQUEST['login_submit'])) {
                                                                 <script src="js/jquery.maskedinput.js" type="text/javascript" ></script>
 
                                                                 <!--scroll set to top--->
-                                                                <!--<script type="text/javascript"> 
+                                                                <script type="text/javascript"> 
                                                                 //STICKY NAV
                                                                 $(document).ready(function () {  
-                                                                  var top = $('#supply_hdr').offset().top - parseFloat($('#supply_hdr').css('marginTop').replace(/auto/, 100));
+                                                                  var top = $('#top_header').offset().top - parseFloat($('#top_header').css('marginTop').replace(/auto/, 100));
                                                                   $(window).scroll(function (event) {
                                                                     // what the y position of the scroll is
                                                                     var y = $(this).scrollTop();
                                                                 
                                                                     // whether that's below the form
-                                                                    if (y >= top) {
+                                                                    if (y > top) {
                                                                       // if so, ad the fixed class
-                                                                      $('#supply_hdr').addClass('fixed_1');
+                                                                      $('.sticky-navigation').addClass('top_header_css');
                                                                     } else {
                                                                       // otherwise remove it
-                                                                      $('#supply_hdr').removeClass('fixed_1');
+                                                                      $('.sticky-navigation').removeClass('top_header_css');
                                                                     }
                                                                   });
                                                                 });
-                                                                </script>-->
+                                                                </script>
 
                                                                 <script src="waypoints.js"></script>
                                                                 <script src="waypoints-sticky.js"></script>
@@ -314,10 +314,12 @@ if (isset($_REQUEST['login_submit'])) {
                                                                     {
                                                                         position: fixed;
                                                                         top: 0;
-                                                                        box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+                                                                        /*box-shadow: 0 2px 4px rgba(0, 0, 0, .2);*/
                                                                         z-index: 1;
                                                                     }
-
+                                                                    .top_header_css{
+                                                                        box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+                                                                    }
                                                                     #result_ref
                                                                     {
                                                                         position: absolute;
@@ -522,7 +524,7 @@ if (isset($_REQUEST['login_submit'])) {
 
                                                                                     <div id="content_output">
 
-<?php include "includes/top_nav.php"; ?>
+
 
                                                                                         <div id="content_output-data" style="margin-bottom:20px;">
 
@@ -730,8 +732,15 @@ if ($_GET['for_err'] == '1') {
                                                                                                 <?php
                                                                                             }
                                                                                             ?>
+                                                                                                
                                                                                             <!-- Header Start --> 
-                                                                                            <div id="supply_hdr" class="sticky-navigation">
+                                                                                            
+                                                                                            <div id="top_header" style="float:left;width: 100%;">
+                                                                                                <?php include "includes/top_nav.php"; ?>
+                                                                                            </div>
+                                                                                            
+                                                                                            <div id="supply_hdr" style="" class="">
+                                                                                                
                                                                                                 <div>
                                                                                                     <h2 class="headline-interior orange">SUPPLY STORE </h2>
                                                                                                     <div class="bkgd-stripes-orange">&nbsp;</div>

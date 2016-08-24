@@ -7654,5 +7654,98 @@ if ($_POST['recipients'] == '1') {
         ?>
         <?php
     }
+}elseif ($_POST['recipients'] == '4_4_LFP') {
+
+    $cust_original_order = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_SESSION['sohorepro_userid']);
+
+//    echo '<pre>';
+//    print_r($cust_original_order);
+//    echo '</pre>';
+
+
+
+    $shipping_id_rec_pre = explode("_", $_POST['shipping_id_rec']);
+    $shipping_id_rec = ($shipping_id_rec_pre[0] == "PEVERY") ? $shipping_id_rec_pre[1] : $_POST['shipping_id_rec'];
+
+
+    $date_needed = $_POST['date_needed'];
+    $time_needed = $_POST['time_needed'];
+    $spl_recipient = $_POST['spl_recipient'];
+
+
+    $delivery_type = $_POST['delivery_type'];
+    $bill_number = $_POST['bill_number'];
+    $shipp_comp_1_f = $_POST['shipp_comp_1_f'];
+    $shipp_comp_2_f = $_POST['shipp_comp_2_f'];
+    $shipp_comp_3_f = $_POST['shipp_comp_3_f'];
+
+    $size_custom_details = $_POST['size_custom_details'];
+
+    $output_page_details = $_POST['output_page_details'];
+
+    $attention_to = $_POST['attention_to'];
+
+    $contact_ph = $_POST['contact_ph'];
+
+    $_SESSION['attention_every'] = $_POST['attention_to'];
+
+    $_SESSION['tel_every'] = $_POST['contact_ph'];
+
+    $option_id = $_POST['option_id'];
+
+    $delivery_type_option = $_POST['delivery_type_option'];
+
+
+    foreach ($cust_original_order as $original_order) {
+        $plot_neede = ($original_order['plot_arch'] == '1') ? $original_order['print_ea'] : '0';
+        $arch_neede = ($original_order['plot_arch'] == '1') ? '0' : $original_order['print_ea'];
+        $query = "INSERT INTO sohorepro_service_lfp_sets_needed
+			SET     company_id               = '" . $original_order['company_id'] . "',
+                                user_id                  = '" . $original_order['user_id'] . "',
+                                option_id                = '" . $original_order['option_id'] . "',
+                                original                 = '" . $original_order['original'] . "',
+                                print_of_need            = '" . $original_order['print_of_each'] . "', 
+                                size                     = '" . $original_order['size'] . "', 
+                                size_custom              = '" . $original_order['size_custom'] . "', 
+                                output                   = '" . $original_order['output'] . "', 
+                                output_both_page         = '" . $original_order['output_both_page'] . "', 
+                                media                    = '" . $original_order['media'] . "', 
+                                binding                  = '" . $original_order['binding'] . "', 
+                                upload_file              = '" . $original_order['upload_file'] . "',
+                                ftp_link                 = '" . $original_order['ftp_link'] . "',
+                                ftp_user_name            = '" . $original_order['ftp_user_name'] . "',    
+                                ftp_password             = '" . $original_order['ftp_password'] . "',
+                                schedule_pickup          = '" . $original_order['schedule_pickup'] . "',
+                                schedule_place           = '" . $original_order['schedule_place'] . "',
+                                drop_off_381             = '" . $original_order['drop_off_381'] . "',
+                                use_same_alt             = '" . $original_order['use_same_alt'] . "',
+                                special_inc              = '" . $original_order['special_inc'] . "',
+                                reference                = '" . $original_order['reference'] . "',
+                                ml_active                = '" . $original_order['ml_active'] . "',
+                                ml_originals             = '" . $original_order['ml_originals'] . "',    
+                                ml_type                  = '" . $original_order['ml_type'] . "',
+                                ml_mounting              = '" . $original_order['ml_mounting'] . "',
+                                ml_laminating            = '" . $original_order['ml_laminating'] . "',    
+                                ml_width                 = '" . $original_order['ml_width'] . "',
+                                ml_length                = '" . $original_order['ml_length'] . "',
+                                ml_grommets              = '" . $original_order['ml_grommets'] . "',    
+                                mal_splns                = '" . $original_order['mal_splns'] . "',
+                                    
+                
+                                shipp_id                 = '" . $shipping_id_rec . "',
+                                attention_to             = '" . $attention_to . "',
+                                contact_ph               = '" . $contact_ph . "',    
+                                shipp_date               = '" . $date_needed . "',
+                                shipp_time               = '" . $time_needed . "',    
+                                spl_inc                  = '" . $spl_recipient . "',
+                                delivery_type            = '" . $delivery_type . "',
+                                billing_number           = '" . $bill_number . "',
+                                shipp_comp_1             = '" . $shipp_comp_1_f . "',
+                                shipp_comp_2             = '" . $shipp_comp_2_f . "',
+                                shipp_comp_3             = '" . $shipp_comp_3_f . "'  ";
+        $sql_result = mysql_query($query);
+    }
+
+    echo '1';
 }
 ?>

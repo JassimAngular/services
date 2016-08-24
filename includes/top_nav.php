@@ -13,7 +13,7 @@ $comp_name       = getCompName($_SESSION['sohorepro_companyid']);
 <div style="float: left;width: 30%;">
     <ul class="navigation primary" style="float:left !important;width: 100%;">
             <li class="navLargeFormat" style=" border-bottom: none !important;">
-                <a onclick="<?php if(($page_name_new == 'service_plotting.php') || ($page_name_new == 'add_recipients.php') || ($page_name_new == 'view_all_recipients.php')) { ?>return please_proceed();<?php } ?>" href="index.php" style="<?php if($page_name_new=='index.php') { echo "font-weight: bold;"; } ?>">SUPPLIES</a>
+                <a onclick="<?php if(($page_name_new == 'service_plotting.php') || ($page_name_new == 'add_recipients.php') || ($page_name_new == 'view_all_recipients.php')) { ?>return please_proceed();<?php } ?>" href="supplies.php" style="<?php if($page_name_new=='index.php') { echo "font-weight: bold;"; } ?>">SUPPLIES</a>
             </li>
             <li class="navLargeFormat" style=" border-bottom: none !important;">
                 <a href="service_plotting.php" style="<?php if($page_name_new=='service_plotting.php') { echo "font-weight: bold;"; } ?>">SERVICES</a>

@@ -60,6 +60,7 @@ header("Location:service_largeformat.php");
         <script src="waypoints-sticky.js"></script>
         <script type="text/javascript">
              $(document).ready(function() {
+                 $(".sticky-navigation").removeClass("pre_class");
                  $('.sticky-navigation').waypoint('sticky');
                  
              });
@@ -486,11 +487,12 @@ $('#loading').hide();
         }
         
         if(width_val_se != ""){
-        if(width_values > max_val){
-        $("#width_values").val('');
-        $("#errmsg_mount").html("Cannot be exceed "+max_val).show().fadeOut(1500);
-        return false;
-        }
+            if(width_values > max_val){
+            $("#errmsg_mount").html("Cannot be exceed "+max_val).show();
+            return false;
+            }else{
+            $("#errmsg_mount").html("Cannot be exceed "+max_val).hide();
+            }
         }
         
    }
@@ -508,11 +510,12 @@ $('#loading').hide();
         }
         
         if(length_val_set != ""){
-        if(length_values > max_val){
-        $("#length_values").val('');
-        $("#errmsg_mount").html("Cannot be exceed "+max_val).show().fadeOut(1500);
-        return false;
-        }
+            if(length_values > max_val){
+            $("#errmsg_mount").html("Cannot be exceed "+max_val).show();
+            return false;
+            }else{
+            $("#errmsg_mount").html("Cannot be exceed "+max_val).hide();
+            }
         }
         
    }

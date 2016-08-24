@@ -50,6 +50,7 @@ if($_SESSION['sohorepro_companyid']  == '')
 <script src="waypoints-sticky.js"></script>
 <script type="text/javascript">
      $(document).ready(function() {
+         $(".sticky-navigation").removeClass("pre_class");
          $('.sticky-navigation').waypoint('sticky');
      });
      

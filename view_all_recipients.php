@@ -1696,7 +1696,7 @@ $upload_file_exist       = UploadFileExist($user_session_comp, $user_session);
 
  <div class="footerSRwapper" style="margin:auto;height:61px;">
  <div id="body_footer-inner" class="body_wrapper-inner">
- <ul class="navigation footer">
+<!-- <ul class="navigation footer">
  <li><a href="#"><span>About SohoRepro</span></a></li>
  <li><a href="#"><span>FAQs</span></a></li>
  <li><a href="#"><span>Privacy Policy</span></a></li>
@@ -1704,7 +1704,7 @@ $upload_file_exist       = UploadFileExist($user_session_comp, $user_session);
  <li><a href="#"><span>Terms of Use</span></a></li>
  <li><a href="#"><span>Contact</span></a></li>
  <div class="clear"></div>
- </ul>
+ </ul>-->
  </div>
  </div>
 

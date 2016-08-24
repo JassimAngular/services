@@ -286,7 +286,7 @@ padding-bottom: 0px !important;
  
  <div id="content_output-data" style="margin-bottom:20px;">  
 <!--- TABLE START -->
-<?php // include "./service_nav.php"; ?>
+<?php include "./service_nav.php"; ?>
 <div id="orderWapper">
   <!-- 
 <div class="orderBreadCrumb">
@@ -315,7 +315,7 @@ padding-bottom: 0px !important;
     <?php
     }
     ?>
-   
+        
         <div id="set_form">
             <div id="plotting" action="" method="post" class="systemForm orderform">
                     <!--<form id="plotting" action="" method="post" class="systemForm orderform" >-->
@@ -1566,12 +1566,12 @@ padding-bottom: 0px !important;
                     </div>
                         <div style="border:1px solid #F99B3E;width: 100%;float: left;margin-top: 12px;"></div>
                       
-                        <div style="float:left;width:100%;padding-top: 10px;">    
+<!--                        <div style="float:left;width:100%;padding-top: 10px;">    
                             <select style="width: 25% !important;">
                                 <option value="copy">Copy Shop</option>
                             </select>
                            <input class="addproductActionLink" value="Continue" style="cursor: pointer;font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -0px !important;" type="button" onclick="return goto_index('<?php echo $user_session_comp; ?>','<?php echo $user_session; ?>');" />
-                        </div> 
+                        </div> -->
                         
                      
                     

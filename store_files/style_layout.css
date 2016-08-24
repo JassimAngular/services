@@ -924,3 +924,6 @@ div.form-submit {
     .last_btn input[type="button"]{float:left;}
 }
 
+.pre_class{
+    width: 115% !important;
+}

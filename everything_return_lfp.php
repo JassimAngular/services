@@ -24,9 +24,9 @@ if ($_POST['everything_return'] == '1') {
                 ?>
                 <!-- Address Show End -->
                 <div style="width: 95%;float: left;margin-left: 25px;margin-top: 10px;">
-                    <?php
+                     <?php
                         $number_of_sets = EnteredPlotttingPrimary($_SESSION['sohorepro_companyid'],$_SESSION['sohorepro_userid']);
-                        $cust_original_order    = EnteredPlotRecipientsMulti($_SESSION['sohorepro_companyid'],$_SESSION['sohorepro_userid'], $_SESSION['ref_val']);
+                        $number_of_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_SESSION['sohorepro_userid']);
                         ?>
                         <div style="width: 100%;float: left;">                            
                             <table border="1" style="width: 100%;">
@@ -39,28 +39,26 @@ if ($_POST['everything_return'] == '1') {
                                     <td style="font-weight: bold;">Output</td>
                                     <td style="font-weight: bold;">Media</td>
                                     <td style="font-weight: bold;">Binding</td>
-                                    <td style="font-weight: bold;">Folding</td>
                                 </tr>
                                 <?php
-                                foreach ($cust_original_order as $original){
-                                    $cust_needed_sets       = ($original['print_ea'] != '0') ? $original['print_ea'] : $original['arch_needed'];
-                                    $cust_order_type        = ($original['plot_arch'] == '0') ? 'Architectural Copies' : 'Plotting on Bond';  
-                                    $size         = ($original['size'] == 'undefined') ? $original['arch_size'] : $original['size'];
-                                    $output       = ($original['output'] == 'undefined') ? $original['arch_output'] : $original['output'];
-                                    $media        = ($original['media'] == 'undefined') ? $original['arch_media'] : $original['media'];
-                                    $binding      = ($original['binding'] == 'undefined') ? $original['arch_binding'] : $original['binding'];
-                                    $folding      = ($original['folding'] == 'undefined') ? $original['arch_folding'] : $original['folding'];    
+                                foreach ($number_of_lfp as $original){
+                                    $rowColor = ($i % 2 != 0) ? '#F9F2DE' : '#FCD9A9';
+                                    $cust_needed_sets       = $original['print_of_each'];
+                                    $cust_order_type        = "LFP";  
+                                    $size         = $original['size'];
+                                    $output       = $original['output'];
+                                    $media        = $original['media'];
+                                    $binding      = $original['binding'];  
                                 ?>
-                                <tr bgcolor="#ffeee1">
-                                    <td><?php echo $original['options']; ?></td>
-                                    <td><?php echo $original['origininals']; ?></td>
+                                <tr bgcolor="<?php echo $rowColor; ?>" style="height: 20px;">
+                                    <td><?php echo $original['option_id']; ?></td>
+                                    <td><?php echo $original['original']; ?></td>
                                     <td><span id="available_<?php echo $original['options']; ?>"><?php echo $cust_needed_sets; ?></span></td>
                                     <td><?php echo $cust_order_type; ?></td>                            
                                     <td><?php echo ucwords(strtolower($size)); ?></td>
                                     <td><?php echo strtoupper($output); ?></td>
                                     <td><?php echo ucfirst($media); ?></td>
                                     <td><?php echo ucfirst($binding); ?></td>
-                                    <td><?php echo ucfirst($folding); ?></td>
                                 </tr>
                                 <?php } ?>
                             </table>
@@ -217,9 +215,9 @@ if ($_POST['everything_return'] == '1') {
                             <div style="float: right;width: 100%;font-weight: bold;">Attention to:   </div>
                         </div>
                         <div style="float: left;width: 100%;margin-top: 10px;">
-                            <div style="float: right;width: 100%;">                                
+                            <div style="float: right;width: 100%;">
                                 <div id="show_address_att" style="float: left;width: 90%;border: 1px #F99B3E solid;padding: 5px;height: 25px;">
-                                    <input type="text" name="shipp_att" id="shipp_att" value="<?php echo $_SESSION['sohorepro_username']; ?>" style="background-color: #F3FA2F; font-weight: bold; font-size: 20px !important;" />
+                                    <input type="text" name="shipp_att" id="shipp_att_lfp" value="<?php echo $_SESSION['sohorepro_username']; ?>" style="background-color: #F3FA2F; font-weight: bold; font-size: 20px !important;" />
                                 </div>
                             </div>
                         </div>
@@ -236,7 +234,7 @@ if ($_POST['everything_return'] == '1') {
                                     <?php
                                     $attention_to_phone = company_phone($_SESSION['sohorepro_companyid']);
                                     ?>
-                                    <input type="text" name="contact_ph" id="contact_ph" onfocus="return contact_phone();"  value="<?php echo $attention_to_phone; ?>" style="background-color: #F3FA2F; font-weight: bold; font-size: 20px !important;" />
+                                    <input type="text" name="contact_ph" id="contact_ph_lfp" onfocus="return contact_phone();"  value="<?php echo $attention_to_phone; ?>" style="background-color: #F3FA2F; font-weight: bold; font-size: 20px !important;" />
                                 </div>
                             </div>
                         </div>
@@ -252,12 +250,12 @@ if ($_POST['everything_return'] == '1') {
                     <div style="width: 34%;float: left;"> 
 
                         <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;border-bottom: 0px;text-align: center;">
-                            <span id="asap_status" class="asap_orange" onclick="return asap();">ASAP</span> 
+                            <span id="asap_status_lfp" class="asap_orange" onclick="return asap_lfp();">ASAP</span> 
                         </div>
 
                         <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;">
-                            <input class="picker_icon" value="" type="text" name="date_needed" id="date_needed" style="width: 75px;" onclick="return date_reveal_return();" />
-                            <input id="time_picker_icon" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time_return();" />
+                            <input class="picker_icon" value="" type="text" name="date_needed" id="date_needed_lfp" style="width: 75px;" onclick="return date_reveal_return();" />
+                            <input id="time_picker_icon_lfp" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time_return();" />
                         </div>
 
                     </div>
@@ -267,22 +265,22 @@ if ($_POST['everything_return'] == '1') {
                     <div style="width: 265px;margin-right: 10px;float: left;margin-right: 10px;">
 
                         <div style="padding: 10px 20px;background: #EFEFEF;border-radius: 5px;width: 225px;margin-right: 10px;float: left;">
-                            <input type="checkbox" name="arrange_del" id="arrange_del" checked style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px;" onclick="uncheck_delivery();" /><span style="text-transform: uppercase;">Soho to arrange delivery</span>
+                            <input type="checkbox" name="arrange_del" id="arrange_del_lfp" checked style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px;" onclick="uncheck_delivery_lfp();" /><span style="text-transform: uppercase;">Soho to arrange delivery</span>
                         </div>              
 
                     </div>
                     <div style="width: 265px;margin-right: 10px;float: left;margin-right: 10px;">
 
                         <div style="padding: 10px 20px;background: #EFEFEF;border-radius: 5px;width: 225px;float: left;">
-                            <input type="checkbox" name="preffer_del" id="preffer_del" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px;" onclick="check_prefer_delivery();" /><span style="text-transform: uppercase;">Use My Carrier</span>
+                            <input type="checkbox" name="preffer_del" id="preffer_del_lfp" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px;" onclick="check_prefer_delivery_lfp();" /><span style="text-transform: uppercase;">Use My Carrier</span>
                         </div>
 
-                        <div id="preffered_info" style="width: 91%;display: none;border: 1px #F99B3E solid;padding: 5px;float: left;margin-left: 5px;margin-top: 5px;">
+                        <div id="preffered_info_lfp" style="width: 91%;display: none;border: 1px #F99B3E solid;padding: 5px;float: left;margin-left: 5px;margin-top: 5px;">
                             <ul>                                       
                                 <ul>
                                     <li>
                                         <span style="font-weight: bold;">Delivery : </span>
-                                        <select  name="delivery_comp" id="delivery_comp" style="width: 45% !important;" onchange="return show_address();">                    
+                                        <select  name="delivery_comp" id="delivery_comp_lfp" style="width: 45% !important;" onchange="return show_address();">                    
                                             <option value="1">Next Day Air</option>
                                             <option value="2">Two Day Air</option>
                                             <option value="3">Three Day Air</option>
@@ -291,12 +289,12 @@ if ($_POST['everything_return'] == '1') {
                                     </li>                    
                                     <li id="shipp_collection">
                                         <label><span style="font-weight: bold;">Shipping Company:  </span></label>
-                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_1" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="FedEx" onclick="return field_color();" /><img src="images/fedex_small.png" style="border:0px;" title="FedEx" alt="FedEx" /></span>
-                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_2" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="UPS" onclick="return field_color();" /><img src="images/ups_small.png" style="border:0px;" title="UPS" alt="UPS" /></span>
-                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_3" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="Other" onclick="return field_color();" /><input type="text" placeholder="Other" name="other_shipp_type" id="other_shipp_type"  onclick="return other_shipp_type();" style="width: 80px;"></span>
+                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_1_lfp" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="FedEx" onclick="return field_color();" /><img src="images/fedex_small.png" style="border:0px;" title="FedEx" alt="FedEx" /></span>
+                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_2_lfp" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="UPS" onclick="return field_color();" /><img src="images/ups_small.png" style="border:0px;" title="UPS" alt="UPS" /></span>
+                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_3_lfp" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="Other" onclick="return field_color();" /><input type="text" placeholder="Other" name="other_shipp_type" id="other_shipp_type_lfp"  onclick="return other_shipp_type();" style="width: 80px;"></span>
                                     </li>
                                     <li>
-                                        <span style="font-weight: bold;">Account #  :</span> <input type="text" name="bill_number" id="bill_number" style="width: 50% !important;margin-bottom: 0px !important;" />
+                                        <span style="font-weight: bold;">Account #  :</span> <input type="text" name="bill_number_lfp" id="contact_phone" style="width: 50% !important;margin-bottom: 0px !important;" />
                                     </li>
                                 </ul>                            
                             </ul>
@@ -316,7 +314,7 @@ if ($_POST['everything_return'] == '1') {
             </div>
         </div>
         <div style="float:right;">            
-            <input class="all_options" value="Continue" style="cursor: pointer;font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -0px !important;" type="button" onclick="return continue_recipient_everyting_return();" />
+            <input class="all_options" value="Continue" style="cursor: pointer;font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -0px !important;" type="button" onclick="return continue_recipient_everyting_return_lfp();" />
         </div>
     <?php
    
@@ -473,7 +471,7 @@ if ($_POST['everything_return'] == '1') {
                 </div>
 
                 <div style="float: left;width: 33%;margin-left: 30px;border: 1px #F99B3E solid;margin-top: 10px;font-weight: bold;padding:3px;">Send to: 
-                    <select  name="address_book_rp" id="address_book_rp" style="width: 75% !important;" onchange="return show_address();">                    
+                    <select  name="address_book_rp" id="address_book_rp_lfp" style="width: 75% !important;" onchange="return show_address();">                    
                         <?php
                         $address_book = AddressBookCompanyPrimary($_SESSION['sohorepro_companyid']);
                         foreach ($address_book as $address) {
@@ -548,17 +546,17 @@ if ($_POST['everything_return'] == '1') {
                     <div style="width: 265px;margin-right: 10px;float: left;margin-right: 10px;">
 
                         <div style="padding: 10px 20px;background: #EFEFEF;border-radius: 5px;width: 225px;margin-right: 10px;float: left;">
-                            <input type="checkbox" name="arrange_del" id="arrange_del" checked style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px;" onclick="uncheck_delivery();" /><span style="text-transform: uppercase;">Soho to arrange delivery</span>
+                            <input type="checkbox" name="arrange_del" id="arrange_del_lfp" checked style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px;" onclick="uncheck_delivery_lfp();" /><span style="text-transform: uppercase;">Soho to arrange delivery</span>
                         </div>              
 
                     </div>
                     <div style="width: 265px;margin-right: 10px;float: left;margin-right: 10px;">
 
                         <div style="padding: 10px 20px;background: #EFEFEF;border-radius: 5px;width: 225px;float: left;">
-                            <input type="checkbox" name="preffer_del" id="preffer_del" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px;" onclick="check_prefer_delivery();" /><span style="text-transform: uppercase;">Use My Carrier</span>
+                            <input type="checkbox" name="preffer_del_lfp" id="preffer_del_lfp" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px;" onclick="check_prefer_delivery_lfp();" /><span style="text-transform: uppercase;">Use My Carrier</span>
                         </div>
 
-                        <div id="preffered_info" style="width: 91%;display: none;border: 1px #F99B3E solid;padding: 5px;float: left;margin-left: 5px;margin-top: 5px;">
+                        <div id="preffered_info_lfp" style="width: 91%;display: none;border: 1px #F99B3E solid;padding: 5px;float: left;margin-left: 5px;margin-top: 5px;">
                             <ul>                                       
                                 <ul>
                                     <li>
@@ -572,9 +570,9 @@ if ($_POST['everything_return'] == '1') {
                                     </li>                    
                                     <li id="shipp_collection">
                                         <label><span style="font-weight: bold;">Shipping Company:  </span></label>
-                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_1" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="FedEx" /><img src="images/fedex_small.png" style="border:0px;" title="FedEx" alt="FedEx" /></span>
-                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_2" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="UPS" /><img src="images/ups_small.png" style="border:0px;" title="UPS" alt="UPS" /></span>
-                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_3" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="Other" /><input type="text" placeholder="Other" name="other_shipp_type" id="other_shipp_type"  onclick="return other_shipp_type();" style="width: 80px;"></span>
+                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_1_lfp" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="FedEx" /><img src="images/fedex_small.png" style="border:0px;" title="FedEx" alt="FedEx" /></span>
+                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_2_lfp" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="UPS" /><img src="images/ups_small.png" style="border:0px;" title="UPS" alt="UPS" /></span>
+                                        <span><input type="radio" name="shipp_comp" id="shipp_comp_3_lfp" style="width: 10% !important;margin-bottom: 0px;margin-bottom: 0px !important;" value="Other" /><input type="text" placeholder="Other" name="other_shipp_type" id="other_shipp_type"  onclick="return other_shipp_type();" style="width: 80px;"></span>
                                     </li>
                                     <li>
                                         <span style="font-weight: bold;">Account #  :</span> <input type="text" name="bill_number" id="bill_number" style="width: 50% !important;margin-bottom: 0px !important;" />

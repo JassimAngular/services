@@ -180,12 +180,12 @@ if ($_POST['pickup_from_soho'] == '1') {
                 <div style="width: 34%;float: left;"> 
 
                     <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;border-bottom: 0px;text-align: center;">
-                        <span id="asap_status" class="asap_orange" onclick="return asap();">ASAP</span> 
+                        <span id="asap_status_lfp" class="asap_orange" onclick="return asap_lfp();">ASAP</span> 
                     </div>
 
                     <div style="width: 100%;float: left;border: 1px #F99B3E solid;padding: 6px;height: 30px;">
-                        <input class="picker_icon" value="" type="text" name="date_needed" id="date_needed" style="width: 75px;" onclick="return date_reveal_return();" />
-                        <input id="time_picker_icon" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time_return();" />
+                        <input class="picker_icon" value="" type="text" name="date_needed" id="date_needed_lfp" style="width: 75px;" onclick="return date_reveal_return();" />
+                        <input id="time_picker_icon_lfp" value="" type="text" style="width: 75px;margin-left: 4px;" class="time time_picker_icon" alt="Time Picker" title="Time Picker" onclick="return show_time_return();" />
                     </div>
 
                 </div>
@@ -245,5 +245,5 @@ if ($_POST['pickup_from_soho'] == '1') {
     </div>
 <?php } ?>
 <div style="float:right;">            
-            <input class="all_options" value="Continue" style="cursor: pointer;font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -0px !important;" type="button" onclick="return continue_recipient_everyting_return_4();" />
+            <input class="all_options" value="Continue" style="cursor: pointer;font-size: 12px; padding: 1.5px; width: 135px; margin-right: 14px; -moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid #8f8f8f;margin-top: -0px !important;" type="button" onclick="return continue_recipient_everyting_return_4_lfp();" />
      </div>

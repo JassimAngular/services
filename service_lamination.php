@@ -855,9 +855,10 @@ width: 17px;
         
         if(width_val_se != ""){
         if(width_values > max_val){
-        $("#width_values").val('');
-        $("#errmsg").html("Cannot be exceed "+max_val).show().fadeOut(1500);
+        $("#errmsg").html("Cannot be exceed "+max_val).show();
         return false;
+        }else{
+        $("#errmsg").html("Cannot be exceed "+max_val).hide();    
         }
         }
         
@@ -877,9 +878,10 @@ width: 17px;
         
         if(length_val_set != ""){
         if(length_values > max_val){
-        $("#length_values").val('');
-        $("#errmsg").html("Cannot be exceed "+max_val).show().fadeOut(1500);
+        $("#errmsg").html("Cannot be exceed "+max_val).show();
         return false;
+        }else{
+        $("#errmsg").html("Cannot be exceed "+max_val).hide();   
         }
         }
         

@@ -74,6 +74,7 @@ if(count($check_pe_null) > 0){
 <script src="waypoints-sticky.js"></script>
 <script type="text/javascript">
      $(document).ready(function() {
+//         $(".sticky-navigation").removeClass("pre_class");
          $('.sticky-navigation').waypoint('sticky');
      });
      
@@ -128,6 +129,12 @@ function show_time(ID)
 function show_time_return()
 {
     $('#time_picker_icon').timepicker({
+        'minTime': '8:00am',
+        'maxTime': '7:00pm',
+        'showDuration': true
+    });
+    
+    $('#time_picker_icon_lfp').timepicker({
         'minTime': '8:00am',
         'maxTime': '7:00pm',
         'showDuration': true
@@ -252,7 +259,7 @@ function show_service_acc(ID){
 
 
  <style>
-     .fixed_1{border-style:solid;border-width:0px; position: fixed; width: 761px; top: 0; z-index: 1; background: #DFDFDF;}
+     /*.fixed_1{border-style:solid;border-width:0px; position: fixed; width: 761px; top: 0; z-index: 1; background: #DFDFDF;}*/
      #result_ref
 {
     background-color: #f3f3f3;
@@ -881,7 +888,7 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
                           <input type="hidden" name="entered_plot_already" id="entered_plot_already" value="<?php echo count($entered_needed_sets); ?>" />
                           <div style="background-color:#FFFFFF" class="serviceOrderSetWapper" setindex="0">                            
                             <div style="padding-top: 10px;">
-                                <input type="radio" name="del_type" id="everything_return" value="1" style="width: 15% !important;" onclick="return everything_return();" /><span style="text-transform: uppercase;font-weight: bold;">Return everything to my office</span>
+                                <input type="radio" name="del_type" id="everything_return_lfp" value="1" style="width: 15% !important;" onclick="return everything_return_lfp();" /><span style="text-transform: uppercase;font-weight: bold;">Return everything to my office</span>
                             </div>
                             <div>
                                 <input type="radio" name="del_type" id="send_everything_to" value="1" style="width: 15% !important;" onclick="return send_everything_to();" /><span style="text-transform: uppercase;font-weight: bold;">Send everything to :</span>                                
@@ -1121,6 +1128,35 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
      }
  }
  
+ 
+  function everything_return_lfp()
+ {
+     $("body").append("<div class='modal-overlay'></div>");
+     var everything_return_lfp = document.getElementById('everything_return_lfp').checked;
+     if(everything_return_lfp == true){ 
+         $.ajax
+                ({
+                    type: "POST",
+                    url: "everything_return_lfp.php",
+                    data: "everything_return=1",
+                    beforeSend: loadStart,
+                    complete: loadStop,
+                    success: function(option)
+                    {  
+                        $('#multi_recipients_lfp').slideDown();
+                        $('#multi_recipients_lfp').html(option);
+                        $('#add_recipients').slideUp();
+                        $(".addproductActionLink").hide();
+                        $( ".modal-overlay" ).remove();
+                    }
+                });
+     }else{
+         $('#multi_recipients').slideUp();
+         $('#add_recipients').slideUp();
+     }
+ }
+ 
+ 
  function continue_recipient_everyting_return()
  {
      var pickup_soho_chk        = document.getElementById('pickup_soho').checked;
@@ -1223,6 +1259,109 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
             }
         });
  }
+ 
+ 
+ function continue_recipient_everyting_return_lfp()
+ {
+//     var pickup_soho_chk        = document.getElementById('pickup_soho').checked;
+     var shipping_id_pre        = $("#address_book_rp_lfp").val();
+     var shipping_id            = shipping_id_pre;
+     var user_session           = $("#user_session").val(); 
+     var user_session_comp      = $("#user_session_comp").val(); 
+     var delivery_type_option   = $("#delivery_type_option").val();
+     var delivery_type          = $("#delivery_comp").val();
+     
+     var avl_sets_1             = $("#avl_sets_1").val();
+     var need_sets_1            = $("#need_sets_1").val();
+     var size_sets_1            = $("#size_sets_1").val();
+     var output_sets_1          = $("#output_sets_1").val();
+     var media_sets_1           = $("#media_sets_1").val();
+     var binding_sets_1_pre     = $("#binding_sets_1").val();
+     var folding_sets_1         = $("#folding_sets_1").val();
+     var binding_sets_1         = (binding_sets_1_pre != '') ? binding_sets_1_pre : '0' ;
+     
+     var avl_sets_2             = $("#avl_sets_2").val();
+     var need_sets_2            = $("#need_sets_2").val();
+     var size_sets_2            = $("#size_sets_2").val();
+     var output_sets_2          = $("#output_sets_2").val();
+     var binding_sets_2_pre     = $("#binding_sets_2").val();
+     var binding_sets_2         = (binding_sets_2_pre != '') ? binding_sets_2_pre : '0' ;
+     var folding_sets_2         = $("#folding_sets_2").val();
+     
+     var date_needed            = $("#date_needed_lfp").val();
+     var time_needed            = $("#time_picker_icon_lfp").val();
+     var spl_recipient          = $("#spl_recipient").val();
+     var contact_ph             = $("#contact_ph").val();
+     
+     var shipp_att              = $("#shipp_att").val();
+     
+     var option_id              =   $("#option_id").val();
+     
+     var size_custom_details    = (size_sets_1 == 'Custom') ? document.getElementById("size_custom_details").value : '0';
+     
+     var output_page_details    = (output_sets_1 == 'Both') ? document.getElementById("output_page_details").value : '0';
+     
+     var preffer_del            = document.getElementById('preffer_del_lfp').checked;  
+     
+     var arrange_del            = document.getElementById('arrange_del_lfp').checked;
+     
+     var delivery_type          = (arrange_del == false) ? $("#delivery_comp_lfp").val() : '0';
+     
+     var delivery_comp          = (arrange_del == false) ? document.getElementById("delivery_comp_lfp").value : '0';
+     var bill_number            = (arrange_del == false) ? document.getElementById("bill_number_lfp").value : '0';
+     
+     var lfp_exist              = $("#lfp_exist").val();
+     
+     if(arrange_del == false)
+     {
+        var shipp_comp_1        =   document.getElementById('shipp_comp_1_lfp').checked;
+            var shipp_comp_1_f  =   (shipp_comp_1 == true) ? document.getElementById("shipp_comp_1_lfp").value : '0';
+        var shipp_comp_2        =   document.getElementById('shipp_comp_2_lfp').checked;
+            var shipp_comp_2_f  =   (shipp_comp_2 == true) ? document.getElementById("shipp_comp_2_lfp").value : '0';
+        var shipp_comp_3        =   document.getElementById('shipp_comp_3_lfp').checked;
+            var shipp_comp_3_f  =   (shipp_comp_3 == true) ? document.getElementById("other_shipp_type_lfp").value : '0';
+     }else{
+            var shipp_comp_1_f  =   '0';
+            var shipp_comp_2_f  =   '0';
+            var shipp_comp_3_f  =   '0';
+     }      
+     
+     
+     if(shipping_id == '0'){
+         alert('Please select send to address');
+         $("#address_book_rp_lfp").focus();
+         return false;
+     }
+     
+//     if(shipp_att == ''){
+//         alert('Please enter the attention to');
+//         $("#shipp_att").focus();
+//         return false;
+//     }
+     
+     if(date_needed == ''){
+         alert('Please select when needed');
+         $("#date_needed_lfp").focus();
+         return false;
+     }
+     
+     $.ajax
+        ({
+            type: "POST",
+            url: "get_recipients.php",                  
+            data: "recipients=4_4_LFP&shipping_id_rec="+encodeURIComponent(shipping_id)+"&avl_sets_1="+encodeURIComponent(avl_sets_1)+"&need_sets_1="+encodeURIComponent(need_sets_1)+"&size_sets_1="+encodeURIComponent(size_sets_1)+"&output_sets_1="+encodeURIComponent(output_sets_1)+"&binding_sets_1="+encodeURIComponent(binding_sets_1)+"&avl_sets_2="+encodeURIComponent(avl_sets_2)+"&need_sets_2="+encodeURIComponent(need_sets_2)+"&size_sets_2="+encodeURIComponent(size_sets_2)+"&output_sets_2="+encodeURIComponent(output_sets_2)+"&binding_sets_2="+encodeURIComponent(binding_sets_2)+"&user_session="+encodeURIComponent(user_session)+"&user_session_comp="+encodeURIComponent(user_session_comp)+"&date_needed="+encodeURIComponent(date_needed)+"&spl_recipient="+encodeURIComponent(spl_recipient)+"&folding_sets_1="+encodeURIComponent(folding_sets_1)+"&folding_sets_2="+encodeURIComponent(folding_sets_2)+"&time_needed="+encodeURIComponent(time_needed)+"&size_custom_details="+encodeURIComponent(size_custom_details)+"&output_page_details="+encodeURIComponent(output_page_details)+"&attention_to="+encodeURIComponent(shipp_att)+"&media_sets_1="+encodeURIComponent(media_sets_1)+"&contact_ph="+encodeURIComponent(contact_ph)+"&option_id="+encodeURIComponent(option_id)+"&delivery_type_option="+encodeURIComponent(delivery_type_option)+"&bill_number="+encodeURIComponent(bill_number)+"&shipp_comp_1_f="+encodeURIComponent(shipp_comp_1_f)+"&shipp_comp_2_f="+encodeURIComponent(shipp_comp_2_f)+"&shipp_comp_3_f="+encodeURIComponent(shipp_comp_3_f)+"&delivery_type="+encodeURIComponent(delivery_type),
+            beforeSend: loadStart,
+            complete: loadStop,
+            success: function(option)
+            {  
+                if(option == '1'){                    
+                    window.location = "view_all_recipients.php";
+                }
+            }
+        });
+ }
+ 
+ 
  
  function everything_return_arch()
  {
@@ -2532,6 +2671,18 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
     }    
  }
  
+  function uncheck_delivery_lfp()
+ {
+     var arrange_del = document.getElementById('arrange_del_lfp').checked;     
+     if(arrange_del == false){          
+     $('#preffered_info_lfp').slideDown();      
+     document.getElementById("preffer_del_lfp").checked = true;
+    }else{
+     $('#preffered_info_lfp').slideUp();  
+     document.getElementById("preffer_del_lfp").checked = false;
+    }    
+ }
+ 
  function check_prefer_delivery()
  {
      var preff_del = document.getElementById('preffer_del').checked;     
@@ -2543,6 +2694,20 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
      $('#preffered_info').slideUp();        
      $('#delivery_info').slideDown();
      document.getElementById("arrange_del").checked = true;
+    }    
+ }
+ 
+ function check_prefer_delivery_lfp()
+ {
+     var preff_del = document.getElementById('preffer_del_lfp').checked;     
+     if(preff_del == true){          
+     $('#preffered_info_lfp').slideDown(); 
+     $('#delivery_info_lfp').slideUp();
+     document.getElementById("arrange_del_lfp").checked = false;
+    }else{
+     $('#preffered_info_lfp').slideUp();        
+     $('#delivery_info_lfp').slideDown();
+     document.getElementById("arrange_del_lfp").checked = true;
     }    
  }
  
@@ -2759,6 +2924,12 @@ $("#date_needed").datepicker({minDate: 0,
             dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             beforeShowDay: disableSpecificDaysAndWeekends}); 
 $("#date_needed").focus();
+$("#date_needed_lfp").datepicker({minDate: 0,
+            dateFormat: 'mm/dd/yy',
+            inline: true,
+            dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            beforeShowDay: disableSpecificDaysAndWeekends});
+$("#date_needed_lfp").focus();
 show_time_return();
 }
 
@@ -2772,6 +2943,10 @@ function field_color()
 {
     $("#bill_number").css("background-color", "#F3FA2F");
     $("#bill_number").focus();
+    
+    $("#bill_number_lfp").css("background-color", "#F3FA2F");
+    $("#bill_number_lfp").focus();
+    
 }
 
 function field_color_dynamic(OPTION_ID)
@@ -2797,8 +2972,29 @@ function asap()
     
     $("#date_needed").val(change_date);
     $("#time_picker_icon").val(change_time);
-
 }
+
+
+
+function asap_lfp()
+{
+    var current_status  =   $("#asap_status_lfp").attr('class');
+    var change_status   =   (current_status == "asap_orange") ? 'asap_green' : 'asap_orange';
+    $("#asap_status_lfp").removeClass(current_status);
+    $("#asap_status_lfp").addClass(change_status);
+    
+    var current_dte_neede    = $("#date_needed_lfp").val();
+    var current_time_neede   = $("#time_picker_icon_lfp").val();
+    
+    var change_date          = (current_status == "asap_orange") ? 'ASAP' : '';
+    var change_time          = (current_status == "asap_orange") ? 'ASAP' : '';
+    
+    //alert(current_dte_neede+' '+current_time_neede);
+    
+    $("#date_needed_lfp").val(change_date);
+    $("#time_picker_icon_lfp").val(change_time);
+}
+
 
 function close_asap()
 {
@@ -3127,6 +3323,7 @@ function ste_function(){
  
  function contact_phone(){
  $("#contact_ph").mask("999-999-9999");
+ $("#contact_ph_lfp").mask("999-999-9999");
  }
  
  function contact_phone_dynamic(OPTION_ID){
@@ -3906,8 +4103,8 @@ function ste_function(){
  function continue_recipient_everyting_return_4()
  {  
      var pickup_soho_add        = $("#pickup_soho_add").val();  
-     var date_needed            = $("#date_needed").val();
-     var time_needed            = $("#time_picker_icon").val();
+     var date_needed            = $("#date_needed_lfp").val();
+     var time_needed            = $("#time_picker_icon_lfp").val();
      var spl_recipient          = $("#spl_recipient").val();
      var lfp_exist              = $("#lfp_exist").val();
      
@@ -3930,14 +4127,42 @@ function ste_function(){
                     if(lfp_exist > "0"){
                     show_service_acc('2');   
                     }else{
-                    window.location = "view_all_recipients.php";    
-                    }                    
+                    window.location = "view_all_recipients.php";
+                    }
                 }
             }
         });
  }
  
- 
+  function continue_recipient_everyting_return_4_lfp()
+ {  
+     var pickup_soho_add        = $("#pickup_soho_add").val();  
+     var date_needed            = $("#date_needed_lfp").val();
+     var time_needed            = $("#time_picker_icon_lfp").val();
+     var spl_recipient          = $("#spl_recipient").val();
+     var lfp_exist              = $("#lfp_exist").val();
+     
+     if(date_needed == ''){
+         alert('Please select when needed');
+         $("#date_needed").focus();
+         return false;
+     }
+     
+     $.ajax
+        ({
+            type: "POST",
+            url: "get_recipients.php",                  
+            data: "recipients=786&date_needed="+encodeURIComponent(date_needed)+"&spl_recipient="+encodeURIComponent(spl_recipient)+"&time_needed="+encodeURIComponent(time_needed)+"&pickup_soho_add="+pickup_soho_add+"&delivery_type_option=3",
+            beforeSend: loadStart,
+            complete: loadStop,
+            success: function(option)
+            {  
+                if(option == '1'){                    
+                    window.location = "view_all_recipients.php";  
+                }
+            }
+        });
+ }
  </script>
 
 
