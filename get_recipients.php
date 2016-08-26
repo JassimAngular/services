@@ -4206,6 +4206,12 @@ if ($_POST['recipients'] == '1') {
 
     $sql_plot = "UPDATE sohorepro_plotting_set SET order_id = '" . $order_id_service . "' WHERE company_id = '" . $_SESSION['sohorepro_companyid'] . "' AND user_id = '" . $_SESSION['sohorepro_userid'] . "' AND order_id = '0' ";
     mysql_query($sql_plot);
+    
+    
+    $delete_empty = "DELETE FROM sohorepro_service_lfp WHERE company_id = '".$_SESSION['sohorepro_companyid']."' AND user_id = '".$_SESSION['sohorepro_userid']."' AND order_id = '0'";
+    mysql_query($delete_empty);
+    
+    
 
     $job_reference_final = ShowOrderedSets($_SESSION['ordere_sequence']);
 

@@ -891,8 +891,8 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
                                 <input type="radio" name="del_type" id="everything_return_lfp" value="1" style="width: 15% !important;" onclick="return everything_return_lfp();" /><span style="text-transform: uppercase;font-weight: bold;">Return everything to my office</span>
                             </div>
                             <div>
-                                <input type="radio" name="del_type" id="send_everything_to" value="1" style="width: 15% !important;" onclick="return send_everything_to();" /><span style="text-transform: uppercase;font-weight: bold;">Send everything to :</span>                                
-                                <select  name="address_book_se" id="address_book_se" class="remove_current" style="width: 20% !important;" onchange="return send_everything_to();">
+                                <input type="radio" name="del_type" id="send_everything_to_lfp" value="1" style="width: 15% !important;" onclick="return send_everything_to_lfp();" /><span style="text-transform: uppercase;font-weight: bold;">Send everything to :</span>                                
+                                <select  name="address_book_se_lfp" id="address_book_se_lfp" class="remove_current" style="width: 20% !important;" onchange="return send_everything_to_lfp();">
                                     <option value="0">Address Book</option>
                                     <?php
                                     $address_book = AddressBookCompanyService($_SESSION['sohorepro_companyid']);
@@ -1424,6 +1424,45 @@ $number_of_sets_lfp     = EnteredLFPPrimary($_SESSION['sohorepro_companyid'],$_S
          $('#add_recipients').slideUp();
      }
  }
+ 
+ 
+ 
+ function send_everything_to_lfp()
+ {
+     document.getElementById('send_everything_to_lfp').checked = true;
+     var send_everything_to = document.getElementById('send_everything_to_lfp').checked;
+     var address_book_se    = document.getElementById('address_book_se_lfp').value;
+     $("#address_book_se_lfp").css("border", "1px solid #e4e4e4"); 
+     if(send_everything_to == true){
+         
+         if(address_book_se != '0'){
+             $.ajax
+                ({
+                    type: "POST",
+                    url: "everything_return_to_lfp.php",
+                    data: "everything_return_to=1&address_book_se="+address_book_se,
+                    beforeSend: loadStart,
+                    complete: loadStop,
+                    success: function(option)
+                    {  
+                        $('#multi_recipients_lfp').slideDown();
+                        $('#multi_recipients_lfp').html(option);
+                        $('#add_recipients').slideDown();
+                        $('.addrecipientActionLink').hide();
+                        $(".addproductActionLink").hide();
+                    }
+                });
+         }else{
+            alert("Select the address.");
+            document.getElementById('address_book_se_lfp').focus();
+            document.getElementById('send_everything_to_lfp').checked = false;
+         }
+     }else{
+         $('#multi_recipients_lfp').slideUp();
+         $('#add_recipients_lfp').slideUp();
+     }
+ }
+ 
  
  function send_everything_to_cancel()
  {
