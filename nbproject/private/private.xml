@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/get_recipients.php</file>
-            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/supplies.php</file>
-            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/service_plotting.php</file>
-            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/view_all_recipients.php</file>
-            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/add_recipients.php</file>
+            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/admin/specialty_items.php</file>
+            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/admin/add_new_products.php</file>
+            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/admin/get_child.php</file>
+            <file>file:/E:/xampp/htdocs/services.sohorepro.com_Rep/admin/config.php</file>
         </group>
     </open-files>
 </project-private>

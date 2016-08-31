@@ -975,7 +975,16 @@ if ($_GET['for_err'] == '1') {
             <?php
             foreach ($SubCategory as $Subc) {
                 $su_id = $Subc['id'];
-                $ProductsUser = getProductsU($c_id, $s_id, $su_id);
+                
+                $check_in_fav               = CheckFavExistCus($_SESSION['sohorepro_companyid']);
+            foreach ($check_in_fav as $fav_items){
+            $fav_id_pre[] =  $fav_items['product_id'];
+            }
+            $fav_arr_form   =   array_unique($fav_id_pre);
+            $fav_arr        =   implode(",", $fav_arr_form); 
+            
+            //$superProductsUser = (count($check_in_fav) > "0") ? getsuperProducts_fav($c_id,$fav_arr) : getsuperProducts($c_id);
+            $ProductsUser = (count($check_in_fav) > "0") ? getProductsU_fav($c_id, $s_id, $su_id,$fav_arr) : getProductsU($c_id, $s_id, $su_id);
                 ?>    
                                                                                                                                     <li>
                                                                                                                                         <h3><div style="width:25px;margin-left:65px; float:left;"><img src="store_files/r2.png"></div><div><h3 style="border:none;padding-top:0px;padding-bottom:0px;width:100%;text-align:left;text-transform: uppercase"><?php echo $Subc['category_name']; ?></h3></div><div class="oline"></div>
@@ -1054,7 +1063,13 @@ echo 'readonly="readonly"';
 
 <li>
             <?php
-            $super_subcatProductsUser = getsuper_subcatProducts($c_id, $s_id);
+            $check_in_fav               = CheckFavExistCus($_SESSION['sohorepro_companyid']);
+            foreach ($check_in_fav as $fav_items){
+            $fav_id_pre[] =  $fav_items['product_id'];
+            }
+            $fav_arr_form   =   array_unique($fav_id_pre);
+            $fav_arr        =   implode(",", $fav_arr_form); 
+            $super_subcatProductsUser   = (count($check_in_fav) > "0") ? getsuper_subcatProducts_fav($c_id, $s_id,$fav_arr) : getsuper_subcatProducts($c_id, $s_id);
             foreach ($super_subcatProductsUser as $get_id) {
                 $id_array[] = $get_id['id'];
             }
@@ -1143,21 +1158,28 @@ $prd_id = implode(",", $product_id_array);
 
                                                                                                             <li>
 
-                                                                                                                        <?php
-                                                                                                                        $superProductsUser = getsuperProducts($c_id);
+            <?php
+            $check_in_fav               = CheckFavExistCus($_SESSION['sohorepro_companyid']);
+            foreach ($check_in_fav as $fav_items){
+            $fav_id_pre[] =  $fav_items['product_id'];
+            }
+            $fav_arr_form   =   array_unique($fav_id_pre);
+            $fav_arr        =   implode(",", $fav_arr_form); 
+            
+            $superProductsUser = (count($check_in_fav) > "0") ? getsuperProducts_fav($c_id,$fav_arr) : getsuperProducts($c_id);
 
-                                                                                                                        if (count($superProductsUser) > 0) {
-                                                                                                                            ?>
+            if (count($superProductsUser) > 0) {
+                ?>
 
-                                                                                                                    <table width="100%" class="cat_products"> 
-                                                                                                                        <tbody><tr style="background-color: #F9F2DE;border-bottom: 1px solid #FF7E00;">
-                                                                                                                                <td style="width:70px"></td>
-                                                                                                                                <td style="padding:8px;font-weight:bold;width:160px;text-align: center;">Product</td>
-                                                                                                                                <td style="padding:8px;font-weight:bold;width:30px;text-align: center;">Price</td>
-                                                                                                                                <td style="padding:8px;font-weight:bold;width:40px;padding-right:14px;">Quantity</td>
-                                                                                                                                <td style="padding:8px;font-weight:bold;width:50px;text-align: center;padding-right:1px;">Sub Total</td>
-                                                                                                                                <td style="padding:8px;font-weight:bold;width:75px;text-align: center;padding-right:1px;"></td>
-                                                                                                                            </tr>
+        <table width="100%" class="cat_products"> 
+            <tbody><tr style="background-color: #F9F2DE;border-bottom: 1px solid #FF7E00;">
+                    <td style="width:70px"></td>
+                    <td style="padding:8px;font-weight:bold;width:160px;text-align: center;">Product</td>
+                    <td style="padding:8px;font-weight:bold;width:30px;text-align: center;">Price</td>
+                    <td style="padding:8px;font-weight:bold;width:40px;padding-right:14px;">Quantity</td>
+                    <td style="padding:8px;font-weight:bold;width:50px;text-align: center;padding-right:1px;">Sub Total</td>
+                    <td style="padding:8px;font-weight:bold;width:75px;text-align: center;padding-right:1px;"></td>
+                </tr>
 
             <?php
             $i = 1;

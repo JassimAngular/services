@@ -1257,6 +1257,7 @@ function update_cust_page_details(ID){
                     <option value="CPS">COPY SHOP</option>                    
                 </select>
                 <span class="all_services_go" onclick="return go_to_other_service();">GO</span>
+                <!--<span class="all_services_go" onclick="return go_to_cart();">GO</span>-->
             </div>
             <div class="chechout_btn_main">
                 <div class="chechout_btn_main_cont" onclick="return go_to_cart();">

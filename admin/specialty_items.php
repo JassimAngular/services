@@ -14,6 +14,8 @@ if (isset($_REQUEST['Delete'])) {
     $cnt = count($_POST['delete_val']);
     for ($i = 0; $i < $cnt; $i++) {
         $id = $_POST['delete_val'][$i];
+        $query_fav = "DELETE FROM sohorepro_favorites WHERE product_id = '" . $id . "'";
+        mysql_query($query_fav);
         $query = "DELETE FROM sohorepro_products WHERE id = '" . $id . "'";
         $result = mysql_query($query);
         if ($result) {
@@ -36,7 +38,8 @@ if (isset($_REQUEST['Delete'])) {
         <script src="../js/jquery.js" type="text/javascript" ></script>
         <!--<script src="js/core.js" type="text/javascript"></script>-->
          <script src="js/jquery.tablednd_0_5.js" type="text/javascript"></script>
-         
+        <link rel="stylesheet" href="docsupport/prism.css">
+        <link rel="stylesheet" href="docsupport/chosen.css">
          <style>
              .std_spl{
                 background-color: #CCC;
@@ -57,7 +60,49 @@ if (isset($_REQUEST['Delete'])) {
                 font-weight: bold;
                 cursor: pointer; 
              }
-             
+             .assi_cus_container{
+                 margin: auto;
+                 width: 80%;
+                 margin-top: 10px;
+                 margin-bottom: 5px;
+             }
+             .assi_cus_container ul li{
+                 margin-bottom: 15px;
+             }
+             .assi_cus_container ul li label{
+                 width: 200px;
+                 float: left;
+             }
+             .assi_cus_container ul li input[type = "text"]{
+                background: white;               
+                height:23px; 
+                width: 320px;
+             }   
+             .assi_cus_container ul li input[type = "button"]{
+                background: #FF7E00;
+                color: #FFF;
+                padding: 5px 10px;
+                border-radius: 6px;
+                font-weight: bold;
+                cursor: pointer;
+                border: 0px;
+             }   
+             .chosen-container{
+                 width: 320px !important;
+             }             
+             .none{
+                 display: none;
+             }
+             .success_class{
+                 float: left;
+                 width: 100%;
+                 color: #34A853;
+                 font-weight: bold;
+                 font-size: 18px;
+                 text-align: center;
+                 margin-bottom: 7px;
+                 margin-top: 5px;                 
+             }
          </style>
          
          <script>
@@ -148,7 +193,86 @@ if (isset($_REQUEST['Delete'])) {
             function loadStop() {
             $('#loading').hide();
             }
+            
+             $(document).ready(function() {
+                
+                 $('#list_price').keyup(function(event) {
+                    var list = document.getElementById('list_price').value;
+                    var discount = document.getElementById('discount').value;
+                    var discount_price = (discount == '') ? '0' : discount;
+                    var price = (discount * (list / 100));
+                    var sell_price = (list - price);
+                    $("#discount").val(discount_price);
+                    $("#sell_price").val(sell_price.toFixed(2));
+                });
+                
+                $('#discount').keyup(function(event) {
+                    var list = document.getElementById('list_price').value;
+                    var discount = document.getElementById('discount').value;
+                    var price = (discount * (list / 100));
+                    var sell_price = (list - price);
+                    $("#discount").val(discount);
+                    $("#sell_price").val(sell_price.toFixed(2));
+                });
 
+                $('#sell_price').keyup(function(event) {
+                    var list = document.getElementById('list_price').value;
+                    var selling = document.getElementById('sell_price').value;
+                    var discount = (((list - selling) / list) * 100);
+                    $("#discount").val(discount);
+                    $("#sell_price").val(selling.toFixed(2));
+                });
+
+                $('#list_price').keydown(function(event) {                  
+                    if (event.shiftKey == true) {
+                        event.preventDefault();
+                    }
+
+                    if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190 || event.keyCode == 110) {
+
+                    } else {
+                        event.preventDefault();
+                    }
+
+                    if ($(this).val().indexOf('.') !== -1 && event.keyCode == 190 && event.keyCode == 110)
+                        event.preventDefault();
+                });
+
+                $('#discount').keydown(function(event) {
+
+                    if (event.shiftKey == true) {
+                        event.preventDefault();
+                    }
+
+                    if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190 || event.keyCode == 110) {
+
+                    } else {
+                        event.preventDefault();
+                    }
+
+                    if ($(this).val().indexOf('.') !== -1 && event.keyCode == 190 && event.keyCode == 110)
+                        event.preventDefault();
+                });
+
+                $('#sell_price').keydown(function(event) {
+
+                    if (event.shiftKey == true) {
+                        event.preventDefault();
+                    }
+
+                    if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190 || event.keyCode == 110) {
+
+                    } else {
+                        event.preventDefault();
+                    }
+
+                    if ($(this).val().indexOf('.') !== -1 && event.keyCode == 190 && event.keyCode == 110)
+                        event.preventDefault();
+                });
+
+            });
+            
+            
              
              $(document).ready(function() {
                 
@@ -230,13 +354,75 @@ if (isset($_REQUEST['Delete'])) {
                     });
                 }
             }
-         </script>
-         
-         <style>
-             .none{
-                 display: none;
-             }
-         </style>
+            
+            function show_splty_dtls(ID)
+            {
+                var acc_hide    =   $("#acc_hide_"+ID).val();                
+                if(acc_hide != '1'){ 
+                     $.ajax
+                        ({
+                        type: "POST",
+                        url: "get_customer_selected.php",
+                        data: "customer_selected=1&customer_id="+ID,
+                        beforeSend: loadStart,
+                        complete: loadStop,
+                        success: function(option)
+                        {   
+                              
+                            $(".splty_dtls_class").slideUp();
+                            $("#splty_dtls_"+ID).slideDown();
+                            $(".acc_hide_class").val('0');
+                            $("#acc_hide_"+ID).val('1');   
+                            $("#assigned_customers_"+ID).val(option);                            
+                            apply_customer(ID);   
+                        }
+                    });
+                } 
+            }
+            
+            function update_product_to_customer(ID)
+            {   
+                var product_name             =   $("#product_name_"+ID).val();
+                var list_price               =   $("#list_price_"+ID).val(); 
+                var discount                 =   $("#discount_"+ID).val(); 
+                var sell_price               =   $("#sell_price_"+ID).val(); 
+                var customers_value          =   $("#customer_list_"+ID+"_chosen").html();
+                $.ajax
+                   ({
+                   type: "POST",
+                   url: "get_customer_selected.php",
+                   data: "update_product_customer=1&customers_value="+encodeURIComponent(customers_value)+
+                         "&product_name="+encodeURIComponent(product_name)+
+                         "&list_price="+encodeURIComponent(list_price)+
+                         "&discount="+encodeURIComponent(discount)+
+                         "&sell_price="+encodeURIComponent(sell_price)+"&product_id="+ID,
+                   beforeSend: loadStart,
+                   complete: loadStop,
+                   success: function(option)
+                   {   
+                        if(option == true){
+                            
+                            var list_price_pre   = parseFloat(list_price).toFixed(2);
+                            var discount_pre     = parseFloat(discount).toFixed(2);
+                            var sell_price_pre   = parseFloat(sell_price).toFixed(2);
+                            
+                            
+                            $("#list_price_"+ID).val(list_price_pre); 
+                            $("#discount_"+ID).val(discount_pre); 
+                            $("#sell_price_"+ID).val(sell_price_pre); 
+                            
+                            $("#fav_prod_spn_"+ID).html(product_name);
+                            $("#fav_list_spn_"+ID).html(list_price_pre);
+                            $("#fav_disc_spn_"+ID).html(discount_pre+"%");
+                            $("#fav_sell_spn_"+ID).html(sell_price_pre);
+                            $("#success_msg_"+ID).html("Updated successfully.");
+                            $("#success_msg_"+ID).slideDown(1200);
+                            $("#success_msg_"+ID).slideUp(1200);
+                        }
+                   }
+               });
+            }
+         </script>         
     </head>
 
     <body>
@@ -293,6 +479,7 @@ if (isset($_REQUEST['Delete'])) {
                                                 <input type="hidden" name="cus_id" id="cus_id" value="<?php echo $_GET['comp_id']; ?>" />
                                                 <input type="hidden" name="comp_id_order" id="comp_id_order" value="<?php echo $comp_id; ?>" />
                                                 <input type="hidden" name="comp_name" id="comp_name" value="<?php echo getCompName($comp_id); ?>" />
+                                                
                                                 <div style="float: left;width: 100%;"> 
                                                     <div style="float: left;width: 19%;text-align: left;padding-bottom: 10px;padding-top: 10px;padding-left: 10px;"><input type="button" onclick="return back_to_customer();" name="Back" value="BACK" style="background: #FF7E00;color: #FFF;padding: 5px 10px;border-radius: 6px;font-weight: bold;cursor: pointer;border: 0px;" /></div>
                                                     <div style="float: left;width: 38%;text-align: center;padding-bottom: 10px;padding-top: 10px;"><h2><?php echo getCompName($comp_id); ?></h2></div>                                                    
@@ -320,8 +507,9 @@ if (isset($_REQUEST['Delete'])) {
                                                         $id = $fav['id'];
                                                         $product_name       = getProName($fav['id']);
                                                         $list_price         = number_format($fav['list_price'], 2, '.', '');
-                                                        $discount_price     = number_format($fav['discount_price'], 2, '.', '');
-                                                        $sell_price         = number_format($fav['sell_price'], 2, '.', '');
+                                                        $discount_price     = number_format($fav['discount'], 2, '.', '')."%";
+                                                        $discount_price_dtl = number_format($fav['discount'], 2, '.', '');
+                                                        $sell_price         = number_format($fav['price'], 2, '.', '');
                                                         $super_id           = getsuper($fav['id']);
                                                         $cat_id             = getcat($fav['id']);
                                                         $sub_id             = getsub($fav['id']);
@@ -334,11 +522,13 @@ if (isset($_REQUEST['Delete'])) {
                                                         $speciality_title   = ($fav['speciality'] == '1') ? 'Specialty Item' : 'Standard Item';
                                                         $special_class      = ($fav['speciality'] == '1') ? 'spl_std'  : 'std_spl';
                                                         ?>
-                                                    <tr  bgcolor="<?php echo $rowColor; ?>" id="order_<?php echo $id; ?>">
+                                                    <tr  bgcolor="<?php echo $rowColor; ?>" id="order_<?php echo $id; ?>" style="cursor: pointer;" onclick="return show_splty_dtls('<?php echo $id; ?>');">
                                                     <input type="hidden" name="spl_text" id="spl_text_<?php echo $id; ?>" value="<?php echo $fav['speciality']; ?>" />
+                                                    <input type="hidden" name="acc_hide" class="acc_hide_class" id="acc_hide_<?php echo $id; ?>" value="" />
                                                             <td height="28" width="80" align="center" valign="middle" class="brdr_1" ><?php echo $i; ?></td>
                                                             <td height="28" width="325" valign="middle" class="brdr_1" style="font-size: 15px;padding-left: 10px;">
-                                                                <?php echo $product_name . '<br>'; ?>
+                                                                <span id="fav_prod_spn_<?php echo $id; ?>"><?php echo $product_name; ?></span>
+                                                                <?php echo '<br>'; ?>
                                                                 <span class="trail" style="font-size: 11px;color: #2a9be3;"><?php echo $super_name . $cat_name . $sub_name; ?></span>  
                                                             </td>
                                                             <td height="28" valign="middle" width="85" class="brdr_1" align="center" onclick="return edit_inline(<?php echo $id; ?>);">
@@ -360,6 +550,51 @@ if (isset($_REQUEST['Delete'])) {
                                                             <td height="28" width="50" style="width: 80px;" align="center" valign="middle" >
                                                                 <div title="<?php echo $speciality_title; ?>" alt="<?php echo $speciality_title; ?>" id="std_spl_<?php echo $id; ?>" class="<?php echo $special_class; ?>" onclick="return change_std_to_spl('<?php echo $id; ?>');"><?php echo $speciality; ?></div>
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="7"> 
+                                                                <div class="none splty_dtls_class" id="splty_dtls_<?php echo $id; ?>" style="width: 95%;margin: auto;border: 2px solid #F99B3E;margin-top: 3px;margin-bottom: 3px;">
+                                                                    <div id="success_msg_<?php echo $id; ?>" class="success_class none"></div>
+                                                                    <div class="assi_cus_container">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <label>Product Name:</label>
+                                                                                <input type="text" autocomplete="off" name="product_name" class="" id="product_name_<?php echo $fav['id']; ?>" value="<?php echo $product_name; ?>" />
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>List Price:</label>
+                                                                                <input type="text" autocomplete="off" name="product_name" class="list_list" onkeyup="return list_price('<?php echo $fav['id']; ?>');" id="list_price_<?php echo $fav['id']; ?>" value="<?php echo $list_price; ?>" />
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>Discount:</label>
+                                                                                <input type="text" autocomplete="off" name="product_name" class="disc_disc" onkeyup="return discount_price('<?php echo $fav['id']; ?>');" id="discount_<?php echo $fav['id']; ?>" value="<?php echo $discount_price_dtl; ?>" />
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>Sell Price:</label>
+                                                                                <input type="text" autocomplete="off" name="product_name" class="sell_sell" onkeyup="return sell_price('<?php echo $fav['id']; ?>');" id="sell_price_<?php echo $fav['id']; ?>" value="<?php echo $sell_price; ?>" />
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>Assigned Customers:</label>                                                                               
+                                                                                <input type="hidden" id="assigned_customers_<?php echo $fav['id']; ?>" value=""/>
+                                                                                <select data-placeholder="Choose a Customer..." id="customer_list_<?php echo $fav['id']; ?>" multiple >
+                                                                                    <?php
+                                                                                    $all_customer = CustomersCount();
+                                                                                    foreach ($all_customer as $customers){
+                                                                                    ?>
+                                                                                    <option value="<?php echo $customers['comp_name']; ?>"><?php echo $customers['comp_name']; ?></option>
+                                                                                    <?php
+                                                                                    }
+                                                                                    ?>   
+                                                                                </select>
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>&nbsp;</label>
+                                                                                <input type="button" name="update_fav_dtls" id="update_fav_dtls" value="UPDATE" onclick="return update_product_to_customer('<?php echo $fav['id']; ?>');" />
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </td> 
                                                         </tr>
                                                         <?php 
                                                         $i++;
@@ -563,6 +798,46 @@ function back_to_customer()
                         });
 
 
-  
+                function list_price(ID){
+                    var list = document.getElementById('list_price_'+ID).value;
+                    var discount = document.getElementById('discount_'+ID).value;
+                    var discount_price = (discount == '') ? '0' : discount;
+                    var price = (discount * (list / 100));
+                    var sell_price = (list - price);
+                    $("#discount_"+ID).val(discount_price);
+                    $("#sell_price_"+ID).val(sell_price.toFixed(2));
+                }
+                
+                function discount_price(ID){
+                    var list = document.getElementById('list_price_'+ID).value;
+                    var discount = document.getElementById('discount_'+ID).value;
+                    var price = (discount * (list / 100));
+                    var sell_price = (list - price);
+                    $("#discount_"+ID).val(discount);
+                    $("#sell_price_"+ID).val(sell_price.toFixed(2));
+                }
 
-</script>                    
+                function sell_price(ID){
+                    var list = document.getElementById('list_price_'+ID).value;
+                    var selling = document.getElementById('sell_price_'+ID).value;
+                    var discount = (((list - selling) / list) * 100);
+                    $("#discount_"+ID).val(discount);
+                    $("#sell_price_"+ID).val(selling.toFixed(2));
+                }
+
+  
+function apply_customer(ID)
+{
+    var assigned_customers = document.getElementById("assigned_customers_"+ID).value;
+
+    var str_array = assigned_customers.split(",");
+
+    for (var i = 0; i < str_array.length; i++) {
+        str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+    }
+    $("#customer_list_"+ID).chosen();
+    $("#customer_list_"+ID).val(str_array).trigger("chosen:updated");
+}
+</script>    
+<script src="docsupport/chosen.jquery.js" type="text/javascript"></script>
+<script src="docsupport/prism.js" type="text/javascript" charset="utf-8"></script>

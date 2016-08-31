@@ -252,7 +252,7 @@ function show_service_acc(ID){
     $(".service_recipient").slideUp();
     $("#recipient_"+ID).slideDown('slow');
     $(".open_accordian").val('0');
-    $("#open_accordian_"+ID).val('1');
+    $("#open_accordian_"+ID).val('1');        
     }
 }
 </script>
