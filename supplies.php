@@ -977,14 +977,33 @@ if ($_GET['for_err'] == '1') {
                 $su_id = $Subc['id'];
                 
                 $check_in_fav               = CheckFavExistCus($_SESSION['sohorepro_companyid']);
-            foreach ($check_in_fav as $fav_items){
-            $fav_id_pre[] =  $fav_items['product_id'];
-            }
-            $fav_arr_form   =   array_unique($fav_id_pre);
-            $fav_arr        =   implode(",", $fav_arr_form); 
             
+                 foreach ($check_in_fav as $fav_items){
+            $fav_id_pret[] =  $fav_items['product_id']; 
+            }           
+            $fav_arr_form   =   array_unique($fav_id_pret);  
+            $fav_arr        =   implode(",", $fav_arr_form);    
+            
+            
+            $company_fav            =   CheckFavExistCusComp($_SESSION['sohorepro_companyid']);       
+            
+            foreach ($company_fav as $fav_items_comp){
+            $fav_id_pret_comp[] =  $fav_items_comp['product_id']; 
+            }  
+            $fav_arr_yes_comp   =   array_unique($fav_id_pret_comp);            
+            $fav_arr_all_comp   =   implode(",", $fav_arr_yes_comp); 
+            
+            foreach ($get_other_cust_prod as $whole_fav){
+                $fav_yes[] = $whole_fav['product_id'];
+            }            
+            $fav_arr_yes   =   array_unique($fav_yes);            
+            $fav_arr_all   =   implode(",", $fav_arr_yes); 
+            
+            
+            $replaced_fav_val   = str_replace($fav_arr_all_comp, "0", $fav_arr);
+                
             //$superProductsUser = (count($check_in_fav) > "0") ? getsuperProducts_fav($c_id,$fav_arr) : getsuperProducts($c_id);
-            $ProductsUser = (count($check_in_fav) > "0") ? getProductsU_fav($c_id, $s_id, $su_id,$fav_arr) : getProductsU($c_id, $s_id, $su_id);
+            $ProductsUser = (count($check_in_fav) > "0") ? getProductsU_fav($c_id, $s_id, $su_id,$replaced_fav_val) : getProductsU_fav($c_id, $s_id, $su_id,$fav_arr);
                 ?>    
                                                                                                                                     <li>
                                                                                                                                         <h3><div style="width:25px;margin-left:65px; float:left;"><img src="store_files/r2.png"></div><div><h3 style="border:none;padding-top:0px;padding-bottom:0px;width:100%;text-align:left;text-transform: uppercase"><?php echo $Subc['category_name']; ?></h3></div><div class="oline"></div>
@@ -1063,13 +1082,34 @@ echo 'readonly="readonly"';
 
 <li>
             <?php
-            $check_in_fav               = CheckFavExistCus($_SESSION['sohorepro_companyid']);
+            $check_in_fav               = CheckFavExistCus($_SESSION['sohorepro_companyid']);                        
+                        
             foreach ($check_in_fav as $fav_items){
-            $fav_id_pre[] =  $fav_items['product_id'];
-            }
-            $fav_arr_form   =   array_unique($fav_id_pre);
-            $fav_arr        =   implode(",", $fav_arr_form); 
-            $super_subcatProductsUser   = (count($check_in_fav) > "0") ? getsuper_subcatProducts_fav($c_id, $s_id,$fav_arr) : getsuper_subcatProducts($c_id, $s_id);
+            $fav_id_pret[] =  $fav_items['product_id']; 
+            }           
+            $fav_arr_form   =   array_unique($fav_id_pret);  
+            $fav_arr        =   implode(",", $fav_arr_form);    
+            
+            
+            $company_fav            =   CheckFavExistCusComp($_SESSION['sohorepro_companyid']);       
+            
+            foreach ($company_fav as $fav_items_comp){
+            $fav_id_pret_comp[] =  $fav_items_comp['product_id']; 
+            }  
+            $fav_arr_yes_comp   =   array_unique($fav_id_pret_comp);            
+            $fav_arr_all_comp   =   implode(",", $fav_arr_yes_comp); 
+            
+            foreach ($get_other_cust_prod as $whole_fav){
+                $fav_yes[] = $whole_fav['product_id'];
+            }            
+            $fav_arr_yes   =   array_unique($fav_yes);            
+            $fav_arr_all   =   implode(",", $fav_arr_yes); 
+            
+            
+            $replaced_fav_val   = str_replace($fav_arr_all_comp, "0", $fav_arr);
+            
+            $super_subcatProductsUser       =    (count($fav_id_pret_comp) > "0") ? getsuper_subcatProducts_fav($c_id, $s_id, $replaced_fav_val) : getsuper_subcatProducts_fav($c_id, $s_id,$fav_arr);
+            
             foreach ($super_subcatProductsUser as $get_id) {
                 $id_array[] = $get_id['id'];
             }
@@ -1160,13 +1200,32 @@ $prd_id = implode(",", $product_id_array);
 
             <?php
             $check_in_fav               = CheckFavExistCus($_SESSION['sohorepro_companyid']);
-            foreach ($check_in_fav as $fav_items){
-            $fav_id_pre[] =  $fav_items['product_id'];
-            }
-            $fav_arr_form   =   array_unique($fav_id_pre);
-            $fav_arr        =   implode(",", $fav_arr_form); 
             
-            $superProductsUser = (count($check_in_fav) > "0") ? getsuperProducts_fav($c_id,$fav_arr) : getsuperProducts($c_id);
+            foreach ($check_in_fav as $fav_items){
+            $fav_id_pret[] =  $fav_items['product_id']; 
+            }           
+            $fav_arr_form   =   array_unique($fav_id_pret);  
+            $fav_arr        =   implode(",", $fav_arr_form);    
+            
+            
+            $company_fav            =   CheckFavExistCusComp($_SESSION['sohorepro_companyid']);       
+            
+            foreach ($company_fav as $fav_items_comp){
+            $fav_id_pret_comp[] =  $fav_items_comp['product_id']; 
+            }  
+            $fav_arr_yes_comp   =   array_unique($fav_id_pret_comp);            
+            $fav_arr_all_comp   =   implode(",", $fav_arr_yes_comp); 
+            
+            foreach ($get_other_cust_prod as $whole_fav){
+                $fav_yes[] = $whole_fav['product_id'];
+            }            
+            $fav_arr_yes   =   array_unique($fav_yes);            
+            $fav_arr_all   =   implode(",", $fav_arr_yes); 
+            
+            
+            $replaced_fav_val   = str_replace($fav_arr_all_comp, "0", $fav_arr);
+            
+            $superProductsUser = (count($fav_id_pret_comp) > "0") ? getsuperProducts_fav($c_id,$replaced_fav_val) : getsuperProducts_fav($c_id,$fav_arr);
 
             if (count($superProductsUser) > 0) {
                 ?>

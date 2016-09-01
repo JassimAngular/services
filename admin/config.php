@@ -3555,7 +3555,26 @@ function LastFileOptionEnteredLFP($company_id, $user_id){
 }
 
 function CheckFavExistCus($comp_id) {
-    $select_fav = "SELECT * FROM sohorepro_favorites WHERE comp_id <> '".$comp_id."'" ;
+//    $select_fav = "SELECT * FROM sohorepro_favorites WHERE comp_id = '".$comp_id."'" ;
+    $select_fav = "SELECT * FROM sohorepro_favorites" ;
+    $details       = mysql_query($select_fav);
+    while ($object = mysql_fetch_assoc($details)):
+        $value[] = $object;
+    endwhile;
+    return $value;
+}
+
+function CheckFavExistCusComp($comp_id) {
+    $select_fav = "SELECT * FROM sohorepro_favorites WHERE comp_id = '".$comp_id."'" ;    
+    $details       = mysql_query($select_fav);
+    while ($object = mysql_fetch_assoc($details)):
+        $value[] = $object;
+    endwhile;
+    return $value;
+}
+
+function GetOtherCustProd($prod_id) {
+    $select_fav = "SELECT * FROM sohorepro_favorites WHERE product_id NOT IN($prod_id)";
 //    $select_fav = "SELECT * FROM sohorepro_favorites" ;
     $details       = mysql_query($select_fav);
     while ($object = mysql_fetch_assoc($details)):
@@ -3564,8 +3583,10 @@ function CheckFavExistCus($comp_id) {
     return $value;
 }
 
+
 function getsuper_subcatProducts_fav($c_id,$s_id,$prod_id) {
-    $select_products = "SELECT * FROM sohorepro_products WHERE supercategory_id = '".$c_id."' AND category_id = '".$s_id."' AND id NOT IN($prod_id) AND (subcategory_id = '' OR subcategory_id = '0') ORDER BY sort ASC" ;
+    $prod_nul = ($prod_id != '')? "AND id NOT IN(".$prod_id.")" : "";
+    $select_products = "SELECT * FROM sohorepro_products WHERE supercategory_id = '".$c_id."' AND category_id = '".$s_id."' $prod_nul AND (subcategory_id = '' OR subcategory_id = '0') ORDER BY sort ASC" ;
     $products = mysql_query($select_products);
     while ($object = mysql_fetch_assoc($products)):
         $value[] = $object;
@@ -3574,7 +3595,8 @@ function getsuper_subcatProducts_fav($c_id,$s_id,$prod_id) {
 }
 
 function getsuperProducts_fav($c_id,$prod_id) {
-    $select_products = "SELECT * FROM sohorepro_products WHERE supercategory_id = '".$c_id."' AND id NOT IN($prod_id) AND(category_id = '' OR category_id = '0') AND (subcategory_id = '' OR subcategory_id = '0') ORDER BY sort ASC" ;
+    $prod_nul = ($prod_id != '')? "AND id NOT IN(".$prod_id.")" : "";
+    $select_products = "SELECT * FROM sohorepro_products WHERE supercategory_id = '".$c_id."' AND(category_id = '' OR category_id = '0') $prod_nul AND (subcategory_id = '' OR subcategory_id = '0') ORDER BY sort ASC" ;
     $products = mysql_query($select_products);
     while ($object = mysql_fetch_assoc($products)):
         $value[] = $object;
@@ -3583,7 +3605,8 @@ function getsuperProducts_fav($c_id,$prod_id) {
 }
 
 function getProductsU_fav($c_id,$s_id,$su_id,$prod_id) {
-    $select_products = "SELECT * FROM sohorepro_products WHERE supercategory_id = '".$c_id."' AND category_id = '".$s_id."' AND subcategory_id = '".$su_id."' AND id NOT IN($prod_id) ORDER BY sort ASC" ;
+    $prod_nul = ($prod_id != '')? "AND id NOT IN(".$prod_id.")" : "";
+    $select_products = "SELECT * FROM sohorepro_products WHERE supercategory_id = '".$c_id."' AND category_id = '".$s_id."' AND subcategory_id = '".$su_id."' $prod_nul ORDER BY sort ASC" ;
     $products = mysql_query($select_products);
     while ($object = mysql_fetch_assoc($products)):
         $value[] = $object;
@@ -3608,4 +3631,14 @@ function CompanyExistSplty($comp_id, $product_id) {
     endwhile;
     return $value;
 }
+
+function CompanyExistSpltyNot($comp_id, $product_id) {
+    $select_fav = "SELECT * FROM sohorepro_favorites WHERE comp_id = '".$comp_id."' AND product_id <> '".$product_id."'" ;
+    $details       = mysql_query($select_fav);
+    while ($object = mysql_fetch_assoc($details)):
+        $value[] = $object;
+    endwhile;
+    return $value;
+}
+
 ?>
