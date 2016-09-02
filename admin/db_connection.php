@@ -4,7 +4,6 @@ error_reporting(E_ALL ^ E_DEPRECATED);
    error_reporting(0);
 //error_reporting(E_ALL & ~E_NOTICE);
 
-
    
     $link = mysql_connect('localhost', 'root', '');
 

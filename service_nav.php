@@ -15,7 +15,7 @@ $totoal_cart     = totalCart($user_id);
             </a>
         </li>
         
-<!--        <li class="navLargeFormat" style="">
+        <li class="navLargeFormat" style="">
             <a href="#" class="" tooltip="Coming Soon" style="text-decoration: none !important;color: grey !important;">
                 LARGE FORMAT COLOR &amp; BW
             </a>
@@ -49,9 +49,9 @@ $totoal_cart     = totalCart($user_id);
             <a href="#" class="" tooltip="Coming Soon" style="text-decoration: none !important;color: grey !important;">
                 OFFSET PRINTING
             </a>
-        </li>-->
+        </li>
         
-        <li class="navLargeFormat">
+<!--        <li class="navLargeFormat">
             <a href="service_largeformat.php" class=""  style="<?php if($page_name_new=='service_largeformat.php') { echo "font-weight: bold;"; } ?>">
                 LARGE FORMAT COLOR &amp; BW
             </a>
@@ -85,7 +85,7 @@ $totoal_cart     = totalCart($user_id);
             <a href="service_offset.php" class="" style="<?php if($page_name_new=='service_offset.php') { echo "font-weight: bold;"; } ?>">
                 OFFSET PRINTING
             </a>
-        </li>
+        </li>-->
     </ul>
     <div style="clear:both">
     </div>

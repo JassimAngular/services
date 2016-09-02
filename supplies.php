@@ -520,7 +520,7 @@ if (isset($_REQUEST['login_submit'])) {
                                                                         <div id="body_content" class="body_wrapper">
                                                                             <div id="body_content-inner" class="body_wrapper-inner">
                                                                                 <div class="responsive_container"> 
-<?php include "includes/header_sidebar.php"; ?>
+                                                                                <?php include "includes/header_sidebar.php"; ?>
 
                                                                                     <div id="content_output">
 

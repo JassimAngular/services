@@ -4,11 +4,10 @@ error_reporting(E_ALL ^ E_DEPRECATED);
    error_reporting(0);
 //error_reporting(E_ALL & ~E_NOTICE);
 
-
    
-    $$link = mysql_connect('localhost', 'colandbe_jassim', 'Colan#20o4');
+    $link = mysql_connect('localhost', 'root', '');
 
-    $db_selected = mysql_select_db('colandbe_sohorepro', $link);
+    $db_selected = mysql_select_db('supply.sohorepro.com', $link);
     
     $base_url="http://".$_SERVER['SERVER_NAME']."";
 

@@ -64,8 +64,265 @@ foreach ($special_pricelist as $newprice) {
  <link rel="stylesheet" href="store_files/kendo.css" type="text/css" media="screen"> 
  <link rel="stylesheet" href="store_files/kendo_002.css" type="text/css" media="screen"> 
  <link rel="stylesheet" href="store_files/style_002.css" type="text/css" media="screen">
- <script type="text/javascript" src="store_files/scripts.js"></script>
+ 
  <script src="store_files/jquery.min.js"></script>
+ 
+                                                        <!--<script type="text/javascript" src="store_files/scripts.js"></script>-->
+                                                        <script type="text/javascript"> 
+                                                                //STICKY NAV
+                                                                $(document).ready(function () {  
+                                                                  var top = $('#top_header').offset().top - parseFloat($('#top_header').css('marginTop').replace(/auto/, 100));
+                                                                  $(window).scroll(function (event) {
+                                                                    // what the y position of the scroll is
+                                                                    var y = $(this).scrollTop();
+                                                                
+                                                                    // whether that's below the form
+                                                                    if (y > top) {
+                                                                      // if so, ad the fixed class
+                                                                      $('.sticky-navigation').addClass('top_header_css');
+                                                                    } else {
+                                                                      // otherwise remove it
+                                                                      $('.sticky-navigation').removeClass('top_header_css');
+                                                                    }
+                                                                  });
+                                                                });
+                                                                </script>
+
+                                                                <script src="waypoints.js"></script>
+                                                                <script src="waypoints-sticky.js"></script>
+                                                                <script type="text/javascript">
+                                                                     $(document).ready(function() {
+                                                                         $('.sticky-navigation').waypoint('sticky');
+                                                                     });
+                                                                </script>
+                                                        <script type="text/javascript" src="jquery.sticky.js"></script>
+                                                        <script>
+//                                                            $(window).load(function() {
+//                                                                $("#supply_hdr").sticky({topSpacing: 0});
+//                                                            });
+                                                        </script>
+                                                        <link href="style/popup_style.css" rel="stylesheet" type="text/css" media="all" />
+                                                        <script>
+                                                            $(document).ready(function() {
+                                                                
+                                                                $(".super_cat").click(function() {
+                                                                    $(this).next(".sub_cat").slideToggle("slow");
+                                                                });                                                              
+                                                                
+                                                            });
+                                                        </script>
+                                                        <script src="js/jquery.js" type="text/javascript" ></script>
+                                                                <script src="js/jquery.validate.js" type="text/javascript" ></script>
+                                                                <script src="js/jquery.maskedinput.js" type="text/javascript" ></script>
+                                                                
+                                                                <!--scroll set to top--->
+                                                                
+                                                                <style>
+                                                                    .sticky-navigation
+                                                                    {
+                                                                        padding: 10px;
+                                                                        background: #FFF;   
+                                                                        font-size: 18px;
+                                                                        width: 720px;   
+                                                                    }
+                                                                    .sticky-navigation.stuck
+                                                                    {
+                                                                        position: fixed;
+                                                                        top: 0;
+                                                                        /*box-shadow: 0 2px 4px rgba(0, 0, 0, .2);*/
+                                                                        z-index: 1;
+                                                                    }
+                                                                    .top_header_css{
+                                                                        box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+                                                                    }
+                                                                    #result_ref
+                                                                    {
+                                                                        position: absolute;
+                                                                        width: 185px;
+                                                                        padding: 10px;
+                                                                        display: none;
+                                                                        margin-top: 2px;
+                                                                        border-top: 0px;
+                                                                        overflow: hidden;
+                                                                        background-color: #F3f3f3;
+                                                                        box-shadow: 0px 0px 5px #ccc;
+                                                                        position: absolute;
+                                                                        right: 2px;
+                                                                    }
+
+                                                                    .auto_reference{
+                                                                        cursor: pointer;
+                                                                        list-style-type: none;
+                                                                    }
+
+                                                                    .auto_reference li:hover
+                                                                    {
+                                                                        background:#FF7E00;
+                                                                        color:#FFF;
+                                                                        cursor:pointer;
+                                                                    }
+                                                                    .auto_reference li
+                                                                    {
+                                                                        border-bottom: 1px #999 dashed;
+                                                                    }
+                                                                    .auto_reference span{
+                                                                        font-size: 18px;
+                                                                    }
+
+                                                                    .tot_cart{
+                                                                        text-align: right;color:#5C5C5C;font-size:18px;font-weight:bold;
+                                                                    }
+                                                                    .tot_cart_spm{
+                                                                        text-align: right;color:#5C5C5C;font-size:18px;font-weight:bold;
+                                                                    }
+                                                                    .curr_tot_div{
+                                                                        color:#5C5C5C;font-weight:bold;font-size:18px;padding-right:0px;padding-bottom: 0px;;
+                                                                    }
+                                                                    .curr_tot_div1
+                                                                    {
+                                                                        color:#5C5C5C;font-weight:bold;font-size:18px;margin-top:10px;padding-right:0px;
+                                                                    }
+                                                                    .curr_ord_tot{
+                                                                        font-size: 18px;font-weight:bold;
+                                                                    }
+                                                                </style>
+                                                                <!--[if IE 7]>
+                                                                <link rel="stylesheet" type="text/css" href="css/ie_7_hacks.css" />
+                                                                <![endif]-->
+
+
+
+                                                                <!-- Validation script starts here -->
+
+                                                                <style type="text/css">
+                                                                    label.error{
+                                                                        color: red !important; 
+                                                                    }
+                                                                    .super_cat{
+                                                                        margin: 15px;
+                                                                    }
+
+                                                                    input.error,select.error{
+                                                                        border: 1px solid red !important;
+                                                                    }
+                                                                    .cat_products span:hover {font-size: 16px; cursor: pointer;}
+                                                                    #search span:hover {font-size: 16px; cursor: pointer;}
+                                                                    .fixed_1{border-style:solid;border-width:0px; position: fixed; width: 740px; top: 0; z-index: 1; background: #fff;}
+                                                                    #to_tal{ display:block !important;}
+                                                                    .pointer{cursor: pointer;}
+                                                                    .ref_div{
+                                                                        float:right;margin-top:-63px;position: relative;
+                                                                    }
+                                                                    .ref_span{
+                                                                        font-size:22px; font-weight:bold;
+                                                                    }
+
+                                                                    .ref_div_star{
+                                                                        color:red; margin-top: -5px;font-size: 16px;font-weight: bold;
+                                                                    }
+                                                                    .favorites{float: left;font-size: 16px;font-weight: bold;cursor:pointer;}
+                                                                </style>
+                                                                <script src="js/jquery.js" type="text/javascript" ></script>
+                                                                <script src="js/jquery.validate.js" type="text/javascript" ></script>
+                                                                <script src="js/jquery.maskedinput.js" type="text/javascript" ></script>
+
+                                                                <!--scroll set to top--->
+                                                                <script type="text/javascript"> 
+                                                                //STICKY NAV
+                                                                $(document).ready(function () {  
+                                                                  var top = $('#top_header').offset().top - parseFloat($('#top_header').css('marginTop').replace(/auto/, 100));
+                                                                  $(window).scroll(function (event) {
+                                                                    // what the y position of the scroll is
+                                                                    var y = $(this).scrollTop();
+                                                                
+                                                                    // whether that's below the form
+                                                                    if (y > top) {
+                                                                      // if so, ad the fixed class
+                                                                      $('.sticky-navigation').addClass('top_header_css');
+                                                                    } else {
+                                                                      // otherwise remove it
+                                                                      $('.sticky-navigation').removeClass('top_header_css');
+                                                                    }
+                                                                  });
+                                                                });
+                                                                </script>
+
+                                                                <script src="waypoints.js"></script>
+                                                                <script src="waypoints-sticky.js"></script>
+                                                                <script type="text/javascript">
+                                                                     $(document).ready(function() {
+                                                                         $('.sticky-navigation').waypoint('sticky');
+                                                                     });
+                                                                </script>
+                                                                <style>
+                                                                    .sticky-navigation
+                                                                    {
+                                                                        padding: 10px;
+                                                                        background: #FFF;   
+                                                                        font-size: 18px;
+                                                                        width: 720px;   
+                                                                    }
+                                                                    .sticky-navigation.stuck
+                                                                    {
+                                                                        position: fixed;
+                                                                        top: 0;
+                                                                        /*box-shadow: 0 2px 4px rgba(0, 0, 0, .2);*/
+                                                                        z-index: 1;
+                                                                    }
+                                                                    .top_header_css{
+                                                                        box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+                                                                    }
+                                                                    #result_ref
+                                                                    {
+                                                                        position: absolute;
+                                                                        width: 185px;
+                                                                        padding: 10px;
+                                                                        display: none;
+                                                                        margin-top: 2px;
+                                                                        border-top: 0px;
+                                                                        overflow: hidden;
+                                                                        background-color: #F3f3f3;
+                                                                        box-shadow: 0px 0px 5px #ccc;
+                                                                        position: absolute;
+                                                                        right: 2px;
+                                                                    }
+
+                                                                    .auto_reference{
+                                                                        cursor: pointer;
+                                                                        list-style-type: none;
+                                                                    }
+
+                                                                    .auto_reference li:hover
+                                                                    {
+                                                                        background:#FF7E00;
+                                                                        color:#FFF;
+                                                                        cursor:pointer;
+                                                                    }
+                                                                    .auto_reference li
+                                                                    {
+                                                                        border-bottom: 1px #999 dashed;
+                                                                    }
+                                                                    .auto_reference span{
+                                                                        font-size: 18px;
+                                                                    }
+
+                                                                    .tot_cart{
+                                                                        text-align: right;color:#5C5C5C;font-size:18px;font-weight:bold;
+                                                                    }
+                                                                    .tot_cart_spm{
+                                                                        text-align: right;color:#5C5C5C;font-size:18px;font-weight:bold;
+                                                                    }
+                                                                    .curr_tot_div{
+                                                                        color:#5C5C5C;font-weight:bold;font-size:18px;padding-right:0px;padding-bottom: 0px;;
+                                                                    }
+                                                                    .curr_tot_div1
+                                                                    {
+                                                                        color:#5C5C5C;font-weight:bold;font-size:18px;margin-top:10px;padding-right:0px;
+                                                                    }
+                                                                    .curr_ord_tot{
+                                                                        font-size: 18px;font-weight:bold;
+                                                                    }
+                                                                </style>
  <style type="text/css">
 .btn_shopping{background:url(images/button.jpg) no-repeat right; width:154px; height:28px; float: right; font-family:Arial; font-size:11px; font-weight:bold; color:#ffffff; border:0px; cursor:pointer; text-transform:uppercase;}
 .product_table{font-family:Arial; font-size:13px; line-height:20px; color:#59432d; border:1px solid #ffc68f; border-right:0px;}
@@ -232,7 +489,9 @@ color:red; margin-top: -5px;font-size: 16px;font-weight: bold;
  
  <div id="content_output">
 
-<?php include "includes/top_nav.php"; ?>
+<div id="top_header" style="float:left;width: 100%;">
+    <?php include "includes/top_nav.php"; ?>
+</div>
  
  <div id="content_output-data" style="margin-bottom:20px;">
 <!--- TABLE START -->
